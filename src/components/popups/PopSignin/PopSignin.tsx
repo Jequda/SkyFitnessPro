@@ -1,3 +1,6 @@
+import { Link } from "react-router-dom";
+import { appRoutes } from "../../../route/appRoutes";
+
 export default function PopSignin() {
   return (
     <div className="flex justify-center items-center h-screen">
@@ -27,7 +30,9 @@ export default function PopSignin() {
           <button className="btn-green w-[280px] mt-[24px]">
             Зарегистироваться
           </button>
-          <button className="btn-white">Войти</button>
+          <Link to={appRoutes.LOGIN} className="btn-white">
+            Войти
+          </Link>
         </form>
       </div>
     </div>
