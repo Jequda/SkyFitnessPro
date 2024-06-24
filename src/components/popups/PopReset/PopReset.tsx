@@ -1,4 +1,4 @@
-export default function PopLogin() {
+export default function PopReset() {
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="popup-container">
@@ -7,19 +7,18 @@ export default function PopLogin() {
         </div>
         <form className="grid gap-y-[10px]">
           <input
-            type="text"
-            name="login"
-            placeholder="Логин"
+            type="password"
+            name="password"
+            placeholder="Новый пароль"
             className="text-area"
           />
           <input
             type="password"
-            name="password"
-            placeholder="Пароль"
+            name="repeatPassword"
+            placeholder="Повторите пароль"
             className="text-area"
           />
-          <button className="btn-green w-[280px] mt-[24px]">Войти</button>
-          <button className="btn-white">Зарегистироваться</button>
+          <button className="btn-green w-[280px] mt-[24px]">Подтвердить</button>
         </form>
       </div>
     </div>

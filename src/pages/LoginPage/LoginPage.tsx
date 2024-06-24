@@ -1,5 +1,5 @@
 import PopLogin from "../../components/popups/PopLogin/PopLogin";
 
-export default function ExitPage() {
+export default function LoginPage() {
   return <PopLogin />;
 }
