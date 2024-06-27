@@ -15,12 +15,18 @@ export default function PopSignin() {
   });
   const inputs = document.querySelectorAll("input");
   const [errorName, setErrorName] = useState("");
+  const EMAIL_REGEXP =
+    /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/iu;
 
   initializeRedBorder("input", removeRedBorder);
 
   const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
     handleInputChange(e, setSigninData, signinData);
   };
+
+  function isEmailValid(value: string): boolean {
+    return EMAIL_REGEXP.test(value);
+  }
 
   useEffect(() => {
     if (
@@ -30,17 +36,26 @@ export default function PopSignin() {
     ) {
       setErrorName("");
     }
-    if (signinData.password === signinData.repeatPassword) {
+    if (
+      signinData.password === signinData.repeatPassword &&
+      signinData.email.length !== 0
+    ) {
       inputs.forEach((element) => {
         element.classList.remove("error-form");
       });
+    } else if (signinData.password === signinData.repeatPassword) {
+      inputs[1]?.classList.remove("error-form");
+      inputs[2]?.classList.remove("error-form");
     }
   }, [signinData]);
 
   const handleRegister = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    if (
+    if (!isEmailValid(signinData.email)) {
+      inputs[0].classList.add("error-form");
+      setErrorName("Некорректный email");
+    } else if (
       signinData.email.length === 0 &&
       signinData.password.length === 0 &&
       signinData.repeatPassword.length === 0
@@ -105,6 +120,10 @@ export default function PopSignin() {
           {errorName === "Пароли не совпадают" && (
             <div className="error-message">Пароли не совпадают</div>
           )}
+          {errorName === "Некорректный email" && (
+            <div className="error-message">Введите корректный email</div>
+          )}
+
           <button
             onClick={handleRegister}
             className="btn-green w-[280px] mt-[24px]"
