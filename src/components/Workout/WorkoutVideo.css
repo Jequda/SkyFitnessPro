@@ -1,0 +1,160 @@
+/* * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+} */
+
+.wrapper {
+  position: relative;
+}
+
+.header__block {
+  height: 70px;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  top: 0;
+  left: 0;
+  padding: 0 10px;
+}
+
+.header__top {
+  display: flex;
+  /* flex-wrap: wrap; */
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.header__logo {
+  padding-left: 140px;
+  padding-top: 50px;
+}
+
+.header__nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 46px;
+}
+
+.header__nav-name {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.header__nav-dropdown {
+  position: relative;
+  left: 10px;
+}
+
+/* .header__logo-img {
+  height: 40px;
+} */
+
+.header__user {
+  /* //styleName: 24; */
+  font-family: Roboto;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 26.4px;
+  /* text-align: right; */
+  color: #333;
+}
+
+.header__pop-user-set {
+  display: block;
+  position: absolute;
+  top: 120px;
+  width: 265px;
+  height: 260px;
+  border-radius: 30px;
+  border: 0.7px solid rgba(148, 166, 190, 0.4);
+  background: #FFF;
+  box-shadow: 0px 10px 39px 0px rgba(26, 56, 101, 0.21);
+  padding: 34px;
+  text-align: center;
+  /* z-index: 2; */
+}
+
+.pop-user-set {
+  margin-bottom: 34px;
+}
+
+.pop-user-set__name {
+  font-family: StratosSkyeng;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 19.8px;
+  /* text-align: left; */
+  padding-bottom: 5px;
+  /* margin-bottom: 64px; */
+}
+
+pop-user-set__mail {
+  font-family: StratosSkyeng;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 19.8px;
+  padding-top: 5px;
+  margin-bottom: 20px;
+  color: #999999;
+}
+
+.button__profile {
+  width: 206px;
+  height: 52px;
+  /* padding: 16px 26px 16px 26px;
+  gap: 10px; */
+  border-radius: 46px 46px 46px 46px;
+  background: #C6FF00;
+  margin-bottom: 5px;
+}
+
+.button__exit {
+  width: 206px;
+  height: 52px;
+  border-radius: 46px 46px 46px 46px;
+  border: 1px solid #000000;
+  margin-top: 5px;
+}
+
+.workout_card {
+  display: flex;
+  flex-direction: column;
+  padding-left: 140px;
+  padding-top: 56px;
+}
+
+.workout_card-title {
+  font-family: Roboto;
+  font-size: 60px;
+  font-weight: 500;
+  line-height: 60px;
+  text-align: left;
+}
+
+.workout_card-description {
+  padding-top: 24px;
+  padding-bottom: 40px;
+  font-family: Roboto;
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 35.2px;
+  text-align: left;
+}
+
+.workout__exercises {
+  padding-left: 140px;
+  padding-top: 40px;
+}
+
+.workout__exercises-description {
+  font-family: StratosSkyeng;
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 35.2px;
+  text-align: left;
+}

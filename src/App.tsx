@@ -5,6 +5,7 @@ import LoginPage from "./pages/LoginPage/LoginPage";
 import SigninPage from "./pages/SigninPage/SigninPage";
 import ResetPage from "./pages/ResetPage/ResetPage";
 import ResetMailPage from "./pages/ResetMailPage/ResetMailPage";
+import WorkoutVideoPage from "./pages/WorkoutVideoPage/WorkoutVideoPage";
 
 function App() {
   return (
@@ -13,7 +14,7 @@ function App() {
         {/* { <Route path={appRoutes.MAIN} element={< />}></Route> */}
         {/* <Route path={appRoutes.COURSE} element={< />}></Route> */}
         {/* <Route path={appRoutes.PROFILE} element={< />}></Route> */}
-        {/* <Route path={appRoutes.TRAINING} element={< />}></Route> */}
+        <Route path={appRoutes.TRAINING} element={< WorkoutVideoPage/>}></Route>
         <Route path={appRoutes.LOGIN} element={<LoginPage />}></Route>
         <Route path={appRoutes.SIGNIN} element={<SigninPage />}></Route>
         <Route path={appRoutes.RESET} element={<ResetPage />}></Route>
