@@ -4,7 +4,7 @@
 
 @layer components {
   .btn-green {
-    @apply bg-lime hover:bg-limeHover active:bg-black active:text-white text-black  text-lg rounded-[46px] h-[52px];
+    @apply bg-lime hover:bg-limeHover active:bg-black active:text-white text-black  text-lg rounded-[46px] py-[16px];
   }
   .btn-white {
     @apply bg-white hover:bg-whiteHover active:bg-whiteActive text-black   text-lg w-[280px] h-[52px] rounded-[46px] border-[1px] border-black  flex items-center justify-center;

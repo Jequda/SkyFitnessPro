@@ -17,7 +17,7 @@ export default function Main() {
                 <Card />
                 <Card />
             </div>
-            <div onClick={() => { window.scrollTo(0, 0) }} className="px-[26px] py-[16px] bg-lime rounded-[46px] hover:bg-limeHover">Наверх ↑</div>
+            <div onClick={() => { window.scrollTo(0, 0) }} className="px-[26px] btn-green">Наверх ↑</div>
         </div>
     );
 }

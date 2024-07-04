@@ -1,10 +1,18 @@
+import { Link } from "react-router-dom";
+import { appRoutes } from "../../route/appRoutes";
+import { ToolTipComponent } from "../Tooltip/Tooltip";
+
 export default function Card() {
     return (
         <div className="w-[360px] flex flex-col justify-center items-center gap-[24px] rounded-[30px] shadow-lg">
             <div className="flex flex-row-reverse w-[360px]">
-                <svg className="absolute pt-[20px] pr-[20px] w-[56px] h-[56px]" width="56" height="56" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M14 27.3333C21.3638 27.3333 27.3333 21.3638 27.3333 14C27.3333 6.63616 21.3638 0.666626 14 0.666626C6.63619 0.666626 0.666656 6.63616 0.666656 14C0.666656 21.3638 6.63619 27.3333 14 27.3333ZM12.6667 12.6666V7.33329H15.3333V12.6666H20.6667V15.3333H15.3333V20.6666H12.6667V15.3333H7.33332V12.6666H12.6667Z" fill="white" />
-                </svg>
+                <Link to={appRoutes.LOGIN} className="absolute pt-[20px] pr-[20px] z-10">
+                    <ToolTipComponent>
+                        <svg className="w-[27px] h-[27px]" width="56" height="56" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M14 27.3333C21.3638 27.3333 27.3333 21.3638 27.3333 14C27.3333 6.63616 21.3638 0.666626 14 0.666626C6.63619 0.666626 0.666656 6.63616 0.666656 14C0.666656 21.3638 6.63619 27.3333 14 27.3333ZM12.6667 12.6666V7.33329H15.3333V12.6666H20.6667V15.3333H15.3333V20.6666H12.6667V15.3333H7.33332V12.6666H12.6667Z" fill="white" />
+                        </svg>
+                    </ToolTipComponent>
+                </Link>
                 <img alt="изображение курса" className="rounded-[30px] w-[360px] h-[325px]" src="/yogaImg.jpg" />
             </div>
             <div className="flex px-[30px] pt-[24px] pb-[15px] gap-[20px] flex-col">
