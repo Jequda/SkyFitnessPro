@@ -61,42 +61,37 @@ export default function PopReset() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="popup-container">
-        <div className="logo-container">
-          <img src="../public/logo.png" alt="logo" />
-        </div>
-        <form className="form-container">
-          <input
-            type="password"
-            name="password"
-            placeholder="Новый пароль"
-            className="text-area"
-            onChange={handleInput}
-            id="input1"
-          />
-          <input
-            type="password"
-            name="repeatPassword"
-            placeholder="Повторите пароль"
-            className="text-area"
-            onChange={handleInput}
-            id="input2"
-          />
-          {errorName === "Не введены данные" && (
-            <div className="error-message">Не все поля заполнены</div>
-          )}
-          {errorName === "Пароли не совпадают" && (
-            <div className="error-message">Пароли не совпадают</div>
-          )}
-          <button
-            className="btn-green w-[280px] mt-[24px]"
-            onClick={handleReset}
-          >
-            Подтвердить
-          </button>
-        </form>
+    <div className="popup-container">
+      <div className="logo-container">
+        <img src="../public/logo.png" alt="logo" />
       </div>
+      <form className="form-container">
+        <input
+          type="password"
+          name="password"
+          placeholder="Новый пароль"
+          className="text-area"
+          onChange={handleInput}
+          id="input1"
+        />
+        <input
+          type="password"
+          name="repeatPassword"
+          placeholder="Повторите пароль"
+          className="text-area"
+          onChange={handleInput}
+          id="input2"
+        />
+        {errorName === "Не введены данные" && (
+          <div className="error-message">Не все поля заполнены</div>
+        )}
+        {errorName === "Пароли не совпадают" && (
+          <div className="error-message">Пароли не совпадают</div>
+        )}
+        <button className="btn-green w-[280px] mt-[24px]" onClick={handleReset}>
+          Подтвердить
+        </button>
+      </form>
     </div>
   );
 }

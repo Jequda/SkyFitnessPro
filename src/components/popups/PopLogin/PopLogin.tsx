@@ -44,42 +44,37 @@ export default function PopLogin() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="popup-container">
-        <div className="logo-container">
-          <img src="../public/logo.png" alt="logo" />
-        </div>
-        <form className="form-container">
-          <input
-            type="text"
-            name="login"
-            placeholder="Логин"
-            className="text-area"
-            onChange={handleInput}
-            id="input1"
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Пароль"
-            className="text-area"
-            onChange={handleInput}
-            id="input2"
-          />
-          {errorName === "Не введены данные" && (
-            <div className="error-message">Не все поля заполнены</div>
-          )}
-          <button
-            className="btn-green w-[280px] mt-[24px]"
-            onClick={handleLogin}
-          >
-            Войти
-          </button>
-          <Link to={appRoutes.SIGNIN} className="btn-white">
-            Зарегистироваться
-          </Link>
-        </form>
+    <div className="popup-container">
+      <div className="logo-container">
+        <img src="../public/logo.png" alt="logo" />
       </div>
+      <form className="form-container">
+        <input
+          type="text"
+          name="login"
+          placeholder="Логин"
+          className="text-area"
+          onChange={handleInput}
+          id="input1"
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Пароль"
+          className="text-area"
+          onChange={handleInput}
+          id="input2"
+        />
+        {errorName === "Не введены данные" && (
+          <div className="error-message">Не все поля заполнены</div>
+        )}
+        <button className="btn-green w-[280px] mt-[24px]" onClick={handleLogin}>
+          Войти
+        </button>
+        <Link to={appRoutes.SIGNIN} className="btn-white">
+          Зарегистироваться
+        </Link>
+      </form>
     </div>
   );
 }

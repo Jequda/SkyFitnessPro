@@ -4,16 +4,16 @@
 
 @layer components {
   .btn-green {
-    @apply bg-lime hover:bg-limeHover active:bg-black active:text-white text-black  text-lg rounded-[46px] h-[52px];
+    @apply bg-lime hover:bg-limeHover active:bg-black active:text-white text-black  text-lg rounded-[46px] py-[16px];
   }
   .btn-white {
-    @apply bg-white hover:bg-whiteHover active:bg-whiteActive text-black   text-lg w-[280px] h-[52px] rounded-[46px] border-[1px] border-black  flex items-center justify-center;
+    @apply bg-white hover:bg-whiteHover active:bg-whiteActive text-black   text-lg w-[280px] py-[16px] rounded-[46px] border-[1px] border-black  flex items-center justify-center;
   }
   .text-area {
     @apply w-[280px] h-[52px] rounded-[8px] border-[1px] border-solid border-gray-300 flex justify-center pl-[18px];
   }
   .popup-container {
-    @apply grid justify-center items-center  rounded-[30px] shadow-[0px_4px_67px_-12px_rgba(0,0,0,0.13)] p-10;
+    @apply grid justify-center items-center  rounded-[30px] shadow-[0px_4px_67px_-12px_rgba(0,0,0,0.13)] p-10 z-20 bg-white mx-auto my-auto w-[360px];
   }
   .logo-container {
     @apply flex items-center justify-center mb-[48px];
