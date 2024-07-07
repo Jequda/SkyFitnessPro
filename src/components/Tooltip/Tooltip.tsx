@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 
-export function ToolTipComponent({children}:any) {
+export function ToolTipComponent({children}:{children:ReactNode}) {
     const text = {
         main: 'Добавить курс',
         profile: 'Удалить курс'
