@@ -6,13 +6,8 @@ import initializeRedBorder, {
   removeRedBorder,
 } from "../../../utills/initializeRedBorder";
 import handleInputChange from "../../../utills/handleInputChange";
-import { getCourses } from "../../../firebase";
 
 export default function PopLogin() {
-  useEffect(() => {
-    getCourses();
-  }, []);
-
   const [loginData, setLoginData] = useState({ login: "", password: "" });
   const inputs = document.querySelectorAll("input");
   const [errorName, setErrorName] = useState("");

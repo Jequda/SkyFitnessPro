@@ -1,6 +1,4 @@
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, get } from "firebase/database";
-import { collection, getDocs, getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDEZ0a2W2aKtWZS0BLkbkukrl4WvUDQLCM",
@@ -14,57 +12,31 @@ const firebaseConfig = {
 };
 
 export const app = initializeApp(firebaseConfig);
-const db = ref(getDatabase(app));
-// const db = getFirestore(app);
+// const db = ref(getDatabase(app));
 
-// Конкретный путь к вашим данным. Например, /courses.json
-const endpoint = "/courses.json";
-
-// URL для запроса
-// const url = collection(db, "courses");
+const CourseEndpoint = "/courses.json";
+const WorkoutsEndpoint = "/workouts.json";
 const baseUrl =
   "https://fitness-pro-team3-default-rtdb.europe-west1.firebasedatabase.app";
 
 export const getCourses = async () => {
-  const result: any[] = [];
-
-  try {
-    const q = await get(db);
-    // debugger;
-    // const documents = await getDocs(q);
-
-    q.forEach((e) => {
-      result.push(q.child("courses"));
+  fetch(baseUrl + CourseEndpoint)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Data retrieved from Firebase:", data);
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
     });
-  } catch (e) {
-    console.error(e);
-  }
-
-  return result;
 };
 
-// export const getCourses = async () => {
-//   fetch(baseUrl + "/courses.json")
-//     .then((response) => response.json())
-//     .then((data) => {
-//       console.log("Data retrieved from Firebase:", data);
-//     })
-//     .catch((error) => {
-//       console.error("Error fetching data:", error);
-//     });
-// };
-
-// export async function getCourses() {
-//   const res = await fetch(db + endpoint, {
-//     method: "GET",
-//     // cache: "no-cache",
-//   });
-
-//   if (!res.ok) {
-//     throw new Error("Ошибка при получении данных");
-//   }
-
-//   const data = await res.json();
-
-//   return data;
-// }
+export const getWorkouts = async () => {
+  fetch(baseUrl + WorkoutsEndpoint)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log("Data retrieved from Firebase:", data);
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+    });
+};
