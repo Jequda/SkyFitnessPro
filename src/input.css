@@ -15,4 +15,16 @@
   .popup-container {
     @apply grid justify-center items-center  rounded-[30px] shadow-[0px_4px_67px_-12px_rgba(0,0,0,0.13)] p-10;
   }
+  .logo-container {
+    @apply flex items-center justify-center mb-[48px];
+  }
+  .form-container {
+    @apply grid gap-y-[10px];
+  }
+  .error-form {
+    @apply border-[1px] border-red-500;
+  }
+  .error-message {
+    @apply text-red-500 text-center text-sm;
+  }
 }
