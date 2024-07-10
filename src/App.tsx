@@ -6,6 +6,7 @@ import SigninPage from "./pages/SigninPage/SigninPage";
 import ResetPage from "./pages/ResetPage/ResetPage";
 import MainPage from "./pages/MainPage/MainPage";
 import CoursePage from "./pages/CoursePage/CoursePage";
+import ResetMailPage from "./pages/ResetMailPage/ResetMailPage";
 
 function App() {
   return (
