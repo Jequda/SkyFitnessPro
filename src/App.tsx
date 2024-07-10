@@ -4,15 +4,15 @@ import { appRoutes } from "./route/appRoutes";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import SigninPage from "./pages/SigninPage/SigninPage";
 import ResetPage from "./pages/ResetPage/ResetPage";
-import ResetMailPage from "./pages/ResetMailPage/ResetMailPage";
 import MainPage from "./pages/MainPage/MainPage";
+import CoursePage from "./pages/CoursePage/CoursePage";
 
 function App() {
   return (
     <>
       <Routes>
         {/* { <Route path={appRoutes.MAIN} element={< />}></Route> */}
-        {/* <Route path={appRoutes.COURSE} element={< />}></Route> */}
+        <Route path={appRoutes.COURSE} element={<CoursePage />}></Route>
         {/* <Route path={appRoutes.PROFILE} element={< />}></Route> */}
         {/* <Route path={appRoutes.TRAINING} element={< />}></Route> */}
         <Route path={appRoutes.LOGIN} element={<LoginPage />}></Route>
