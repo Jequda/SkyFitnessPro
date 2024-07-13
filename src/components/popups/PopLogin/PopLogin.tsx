@@ -7,7 +7,11 @@ import initializeRedBorder, {
 } from "../../../utills/initializeRedBorder";
 import handleInputChange from "../../../utills/handleInputChange";
 
-export default function PopLogin() {
+type PopLoginType = {
+  openPopSignin?: (e: React.MouseEvent<HTMLButtonElement>) => void,
+  transitionFromMainPage?: boolean
+}
+export default function PopLogin({ openPopSignin, transitionFromMainPage }: PopLoginType) {
   const [loginData, setLoginData] = useState({ login: "", password: "" });
   const inputs = document.querySelectorAll("input");
   const [errorName, setErrorName] = useState("");
@@ -44,42 +48,42 @@ export default function PopLogin() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="popup-container">
-        <div className="logo-container">
-          <img src="../public/logo.png" alt="logo" />
-        </div>
-        <form className="form-container">
-          <input
-            type="text"
-            name="login"
-            placeholder="Логин"
-            className="text-area"
-            onChange={handleInput}
-            id="input1"
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Пароль"
-            className="text-area"
-            onChange={handleInput}
-            id="input2"
-          />
-          {errorName === "Не введены данные" && (
-            <div className="error-message">Не все поля заполнены</div>
-          )}
-          <button
-            className="btn-green w-[280px] mt-[24px]"
-            onClick={handleLogin}
-          >
-            Войти
-          </button>
+    <div className="popup-container">
+      <div className="logo-container">
+        <img src="../public/logo.png" alt="logo" />
+      </div>
+      <form className="form-container">
+        <input
+          type="text"
+          name="login"
+          placeholder="Логин"
+          className="text-area"
+          onChange={handleInput}
+          id="input1"
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Пароль"
+          className="text-area"
+          onChange={handleInput}
+          id="input2"
+        />
+        {errorName === "Не введены данные" && (
+          <div className="error-message">Не все поля заполнены</div>
+        )}
+        <button className="btn-green w-[280px] mt-[24px]" onClick={handleLogin}>
+          Войти
+        </button>
+        {transitionFromMainPage ?
+          <button onClick={openPopSignin} className="btn-white">
+            Зарегистироваться
+          </button> :
           <Link to={appRoutes.SIGNIN} className="btn-white">
             Зарегистироваться
           </Link>
-        </form>
-      </div>
+        }
+      </form>
     </div>
   );
 }

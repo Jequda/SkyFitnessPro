@@ -1,10 +1,15 @@
 import { Link } from "react-router-dom";
 import Header from "../../components/Header/Header";
+import { useState } from "react";
 
 export default function CoursePage() {
+  const [isOpened, setIsOpened] = useState(false);
+  function togglePopup() {
+    setIsOpened((prev) => !prev);
+  }
   return (
     <>
-    <Header/>
+      <Header />
       {/* <Link to={`/login`}>
       </Link> */}
       <div className="mx-[140px] my-[60px]">
@@ -210,10 +215,17 @@ export default function CoursePage() {
                     </div>
                     <div className="pl-[28px] cursor-pointer">
                       <Link to={`/login`}>
-                        <div className="btn-green w-[437px] h-[52px] text-2xl py-2 px-4 font-semibold text-center">
+                        <div className="btn-green w-[437px] h-[52px] text-2xl py-2 px-4 text-center">
                           Войдите, чтобы добавить курс
                         </div>
                       </Link>
+
+                      {/* Если пользователь авторизован */}
+                      {/* <Link to={""}>
+                        <div className="btn-green w-[437px] h-[52px] text-2xl py-2 px-4 text-center">
+                          Добавить курс
+                        </div>
+                      </Link> */}
                     </div>
                   </div>
                   <div>

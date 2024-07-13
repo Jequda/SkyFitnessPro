@@ -7,7 +7,12 @@ import initializeRedBorder, {
 } from "../../../utills/initializeRedBorder";
 import handleInputChange from "../../../utills/handleInputChange";
 
-export default function PopSignin() {
+type PopSigninType = {
+  openPopLogin?: (e: React.MouseEvent<HTMLButtonElement>) => void,
+  transitionFromMainPage?: boolean
+}
+
+export default function PopSignin({ openPopLogin, transitionFromMainPage }: PopSigninType) {
   const [signinData, setSigninData] = useState({
     email: "",
     password: "",
@@ -84,57 +89,58 @@ export default function PopSignin() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="popup-container">
-        <div className="logo-container">
-          <img src="../public/logo.png" alt="logo" />
-        </div>
-        <form className="form-container">
-          <input
-            type="email"
-            name="email"
-            placeholder="Эл. почта"
-            className="text-area"
-            onChange={handleInput}
-            id="input1"
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Пароль"
-            className="text-area"
-            onChange={handleInput}
-            id="input2"
-          />
-          <input
-            type="password"
-            name="repeatPassword"
-            placeholder="Повторите пароль"
-            className="text-area"
-            onChange={handleInput}
-            id="input3"
-          />
-          {errorName === "Не введены данные" && (
-            <div className="error-message">Не все поля заполнены</div>
-          )}
-          {errorName === "Пароли не совпадают" && (
-            <div className="error-message">Пароли не совпадают</div>
-          )}
-          {errorName === "Некорректный email" && (
-            <div className="error-message">Введите корректный email</div>
-          )}
+    <div className="popup-container">
+      <div className="logo-container">
+        <img src="../public/logo.png" alt="logo" />
+      </div>
+      <form className="form-container">
+        <input
+          type="email"
+          name="email"
+          placeholder="Эл. почта"
+          className="text-area"
+          onChange={handleInput}
+          id="input1"
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Пароль"
+          className="text-area"
+          onChange={handleInput}
+          id="input2"
+        />
+        <input
+          type="password"
+          name="repeatPassword"
+          placeholder="Повторите пароль"
+          className="text-area"
+          onChange={handleInput}
+          id="input3"
+        />
+        {errorName === "Не введены данные" && (
+          <div className="error-message">Не все поля заполнены</div>
+        )}
+        {errorName === "Пароли не совпадают" && (
+          <div className="error-message">Пароли не совпадают</div>
+        )}
+        {errorName === "Некорректный email" && (
+          <div className="error-message">Введите корректный email</div>
+        )}
 
-          <button
-            onClick={handleRegister}
-            className="btn-green w-[280px] mt-[24px]"
-          >
-            Зарегистироваться
-          </button>
+        <button
+          onClick={handleRegister}
+          className="btn-green w-[280px] mt-[24px]"
+        >
+          Зарегистироваться
+        </button>
+        {transitionFromMainPage ? <button onClick={openPopLogin} className="btn-white">
+          Войти
+        </button> :
           <Link to={appRoutes.LOGIN} className="btn-white">
             Войти
-          </Link>
-        </form>
-      </div>
+          </Link>}
+      </form>
     </div>
   );
 }
