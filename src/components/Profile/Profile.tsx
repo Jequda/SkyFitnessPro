@@ -7,9 +7,22 @@ import PopSelectTraining from "../popups/PopSelectTraining/PopSelectTraining";
 export default function Profile() {
   const [showPopReset, setShowPopReset] = useState(false);
   const [showPopSelectTraining, setShowPopSelectTraining] = useState(false);
+  const [cards, setCards] = useState([
+    { id: 1, title: "Йога", duration: "25 дней", timePerDay: "20-50 мин/день", level: "Сложный" },
+    { id: 2, title: "Йога", duration: "25 дней", timePerDay: "20-50 мин/день", level: "Сложный" },
+    { id: 3, title: "Йога", duration: "25 дней", timePerDay: "20-50 мин/день", level: "Сложный" }
+  ]);
+
+  const handleDeleteCard = (id: number) => {
+    setCards(cards.filter(card => card.id !== id));
+  };
 
   const handleOpenPopReset = () => {
     setShowPopReset(true);
+  };
+
+  const handleClosePopReset = () => {
+    setShowPopReset(false);
   };
 
   const handleOpenPopSelectTraining = () => {
@@ -22,7 +35,7 @@ export default function Profile() {
 
   return (
     <div className="flex flex-col px-[140px] font-roboto">
-      {showPopReset && <div className="fixed inset-0 bg-black bg-opacity-50 z-10"></div>}
+      {showPopReset && <div className="fixed inset-0 bg-black bg-opacity-50 z-10" onClick={handleClosePopReset}></div>}
       <Header />
       <div className="flex flex-col px-[140px] font-roboto pt-[60px]">
         <h1 className="text-[40px] leading-[35px] font-medium mb-[40px]">Профиль</h1>
@@ -46,12 +59,17 @@ export default function Profile() {
       <div className="flex flex-col px-[140px] pb-[81px] font-roboto">
         <h1 className="text-[40px] leading-[35px] font-medium mb-[40px]">Мои курсы</h1>
         <div className="flex gap-[40px] flex-wrap max-w-[1160px]">
-          <Card isProfilePage={true} handleOpenPopSelectTraining={handleOpenPopSelectTraining}/>
-          <Card isProfilePage={true} handleOpenPopSelectTraining={handleOpenPopSelectTraining}/>
-          <Card isProfilePage={true} handleOpenPopSelectTraining={handleOpenPopSelectTraining}/>
+        {cards.map((card) => (
+                <Card
+                    key={card.id}
+                    isProfilePage={true}
+                    handleOpenPopSelectTraining={handleOpenPopSelectTraining}
+                    handleDeleteCard={() => handleDeleteCard(card.id)}
+                />
+            ))}
         </div>
       </div>
-      {showPopReset && <PopReset />}
+      {showPopReset && <PopReset onClose={handleClosePopReset} />}
       {showPopSelectTraining && (
         <PopSelectTraining onClose={handleClosePopSelectTraining} />
       )}

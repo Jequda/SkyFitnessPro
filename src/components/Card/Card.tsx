@@ -1,14 +1,15 @@
 interface CardProps {
     isProfilePage: boolean;
     handleOpenPopSelectTraining: () => void;
+    handleDeleteCard: () => void;
 }
 
-export default function Card({ isProfilePage, handleOpenPopSelectTraining }: CardProps) {
+export default function Card({ isProfilePage, handleOpenPopSelectTraining, handleDeleteCard }: CardProps) {
 
     return (
         <div className="w-[360px] flex flex-col justify-center items-center gap-[24px] rounded-[30px] shadow-lg">
             <div className="flex flex-row-reverse w-[360px]">
-                <svg className="absolute pt-[20px] pr-[20px] w-[56px] h-[56px]" width="56" height="56" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg className="absolute pt-[20px] pr-[20px] w-[56px] h-[56px]" width="56" height="56" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" onClick={handleDeleteCard}>
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M14 27.3333C21.3638 27.3333 27.3333 21.3638 27.3333 14C27.3333 6.63616 21.3638 0.666626 14 0.666626C6.63619 0.666626 0.666656 6.63616 0.666656 14C0.666656 21.3638 6.63619 27.3333 14 27.3333ZM12.6667 12.6666V7.33329H15.3333V12.6666H20.6667V15.3333H15.3333V20.6666H12.6667V15.3333H7.33332V12.6666H12.6667Z" fill="white" />
                 </svg>
                 <img alt="изображение курса" className="rounded-[30px] w-[360px] h-[325px]" src="yoga.png" />
@@ -51,11 +52,11 @@ export default function Card({ isProfilePage, handleOpenPopSelectTraining }: Car
                 </div>
             </div>
             {isProfilePage && (
-                <div className="mb-[40px] w-full h-[100px] bg-white rounded-b-[30px] flex flex-col justify-between items-center px-[30px]">
+                <div className="mb-[15px] w-full bg-white rounded-b-[30px] flex flex-col justify-between items-center px-[30px]">
                     <div className="flex justify-between items-center w-full">
                         <div className="text-base leading-[18px] font-normal">Прогресс 50%</div>
                     </div>
-                    <div className="w-[300px] h-[10px] bg-gray-300 rounded-full mt-[10px]">
+                    <div className="w-[300px] h-[6px] bg-gray-300 rounded-full mt-[10px]">
                         <div className="w-[50%] h-full bg-[#00C1FF] rounded-full"></div>
                     </div>
                     <button onClick={handleOpenPopSelectTraining} className="btn-green w-[300px] mt-[40px]">
