@@ -7,7 +7,11 @@ import initializeRedBorder, {
 } from "../../../utills/initializeRedBorder";
 import handleInputChange from "../../../utills/handleInputChange";
 
-export default function PopLogin() {
+type PopLoginType = {
+  openPopSignin?: (e: React.MouseEvent<HTMLButtonElement>) => void,
+  transitionFromMainPage?: boolean
+}
+export default function PopLogin({ openPopSignin, transitionFromMainPage }: PopLoginType) {
   const [loginData, setLoginData] = useState({ login: "", password: "" });
   const inputs = document.querySelectorAll("input");
   const [errorName, setErrorName] = useState("");
@@ -71,9 +75,14 @@ export default function PopLogin() {
         <button className="btn-green w-[280px] mt-[24px]" onClick={handleLogin}>
           Войти
         </button>
-        <Link to={appRoutes.SIGNIN} className="btn-white">
-          Зарегистироваться
-        </Link>
+        {transitionFromMainPage ?
+          <button onClick={openPopSignin} className="btn-white">
+            Зарегистироваться
+          </button> :
+          <Link to={appRoutes.SIGNIN} className="btn-white">
+            Зарегистироваться
+          </Link>
+        }
       </form>
     </div>
   );

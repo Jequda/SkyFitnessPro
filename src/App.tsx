@@ -4,8 +4,9 @@ import { appRoutes } from "./route/appRoutes";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import SigninPage from "./pages/SigninPage/SigninPage";
 import ResetPage from "./pages/ResetPage/ResetPage";
-import ResetMailPage from "./pages/ResetMailPage/ResetMailPage";
+import MainPage from "./pages/MainPage/MainPage";
 import CoursePage from "./pages/CoursePage/CoursePage";
+import ResetMailPage from "./pages/ResetMailPage/ResetMailPage";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path={appRoutes.SIGNIN} element={<SigninPage />}></Route>
         <Route path={appRoutes.RESET} element={<ResetPage />}></Route>
         <Route path={appRoutes.RESET_MAIL} element={<ResetMailPage />}></Route>
+        <Route path={appRoutes.MAIN} element={<MainPage />}></Route>
       </Routes>
     </>
   );
