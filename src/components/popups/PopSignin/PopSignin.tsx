@@ -134,6 +134,7 @@ export default function PopSignin({ openPopLogin, transitionFromMainPage }: PopS
         >
           Зарегистироваться
         </button>
+
         {transitionFromMainPage ? <button onClick={openPopLogin} className="btn-white">
           Войти
         </button> :
