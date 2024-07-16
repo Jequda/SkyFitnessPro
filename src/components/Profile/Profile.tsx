@@ -3,6 +3,7 @@ import Card from "../Card/Card";
 import PopReset from "../popups/PopReset/PopReset";
 import Header from "../Header/Header";
 import PopSelectTraining from "../popups/PopSelectTraining/PopSelectTraining";
+import { Link } from 'react-router-dom';
 
 export default function Profile() {
   const [showPopReset, setShowPopReset] = useState(false);
@@ -34,10 +35,10 @@ export default function Profile() {
   };
 
   return (
-    <div className="flex flex-col px-[140px] font-roboto">
+    <div className="flex flex-col items-center font-roboto">
       {showPopReset && <div className="fixed inset-0 bg-black bg-opacity-50 z-10" onClick={handleClosePopReset}></div>}
       <Header />
-      <div className="flex flex-col px-[140px] font-roboto pt-[60px]">
+      <div className="flex flex-col font-roboto pt-[60px]">
         <h1 className="text-[40px] leading-[35px] font-medium mb-[40px]">Профиль</h1>
         <div className="flex items-center w-[1160px] h-[257px] bg-white rounded-[30px] shadow-lg mb-[60px]">
           <div className="w-[197px] h-[197px] bg-gray-300 rounded-[30px] m-[30px]">
@@ -51,22 +52,24 @@ export default function Profile() {
               <button
                 className="btn-green w-[192px] h-[52px]" onClick={handleOpenPopReset}>Изменить пароль
               </button>
-              <button className="w-[192px] h-[52px] ml-[10px] border border-black rounded-[46px] py-3 px-4 bg-white text-black text-[18px] hover:bg-whiteHover">Выйти</button>
+              <Link to="/signin">
+                <button className="w-[192px] h-[52px] ml-[10px] border border-black rounded-[46px] py-3 px-4 bg-white text-black text-[18px] hover:bg-whiteHover">Выйти</button>
+              </Link>
             </div>
           </div>
         </div>
       </div>
-      <div className="flex flex-col px-[140px] pb-[81px] font-roboto">
+      <div className="flex flex-col pb-[81px] font-roboto">
         <h1 className="text-[40px] leading-[35px] font-medium mb-[40px]">Мои курсы</h1>
         <div className="flex gap-[40px] flex-wrap max-w-[1160px]">
-        {cards.map((card) => (
-                <Card
-                    key={card.id}
-                    isProfilePage={true}
-                    handleOpenPopSelectTraining={handleOpenPopSelectTraining}
-                    handleDeleteCard={() => handleDeleteCard(card.id)}
-                />
-            ))}
+          {cards.map((card) => (
+            <Card
+              key={card.id}
+              isProfilePage={true}
+              handleOpenPopSelectTraining={handleOpenPopSelectTraining}
+              handleDeleteCard={() => handleDeleteCard(card.id)}
+            />
+          ))}
         </div>
       </div>
       {showPopReset && <PopReset onClose={handleClosePopReset} />}
