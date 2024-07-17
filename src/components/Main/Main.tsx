@@ -5,7 +5,7 @@ import PopSignin from "../popups/PopSignin/PopSignin";
 import { useCourses } from "../../hooks/useCourses";
 
 export default function Main() {
-    const {getCoursesList, cards} = useCourses()
+    const {getCoursesList, cards, isLoading} = useCourses()
 
     useEffect(() => {
         getCoursesList()
@@ -35,8 +35,8 @@ export default function Main() {
                 </div>
             </div>
             <div className="flex gap-[40px] flex-wrap justify-start max-w-[1160px] w-[100%]">
-                {
-                    cards?.map((card) => <Card card={card} openPopLogin={openPopLogin} />)
+                {isLoading ? (<div className="flex px-[16px] py-[20px] gap-[10px] text-[32px] leading-[35px] font-normal">Загружаем курсы...</div>):
+                    (cards?.map((card) => <Card card={card} openPopLogin={openPopLogin} />))
                 }
             </div>
             <div onClick={() => { window.scrollTo(0, 0) }} className="px-[26px] btn-green">Наверх ↑</div>
