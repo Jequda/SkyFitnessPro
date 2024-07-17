@@ -88,7 +88,7 @@ export default function WorkoutVideo() {
           </div>
         </div>
         <div className="workout__video">
-          <img src="../public/button and vidoe.jpg" alt="workout yoga video" />
+          <img src="../public/button and video.jpg" alt="workout yoga video" />
         </div>
         <div className="workout__list">
           <div className="workout__list-title">Упражнения тренировки 2</div>
@@ -228,6 +228,9 @@ export default function WorkoutVideo() {
                 </svg>
               </div>
             </div>
+          </div>
+          <div className="workout__btn-progress">
+            <button className="btn-progress">Заполнить свой прогресс</button>
           </div>
         </div>
       </div>
