@@ -1,9 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Card from "../Card/Card";
 import PopLogin from "../popups/PopLogin/PopLogin";
 import PopSignin from "../popups/PopSignin/PopSignin";
+import { useCourses } from "../../hooks/useCourses";
 
 export default function Main() {
+    const {getCoursesList, cards} = useCourses()
+
+    useEffect(() => {
+        getCoursesList()
+    }, [])
+    
     const [isOpenedPopLogin, setIsOpenedPopLogin] = useState<boolean>(false);
     const openPopLogin = () => {
         setIsOpenedPopLogin(!isOpenedPopLogin);
@@ -17,7 +24,7 @@ export default function Main() {
     }
     return (
         <div className="flex flex-col justify-center items-center gap-[50px] px-[140px] pb-[81px] font-roboto">
-            {(isOpenedPopLogin || isOpenedPopSignin) && <div onClick={() => {setIsOpenedPopLogin(false), setIsOpenedPopSignin(false)}} className="fixed inset-0 bg-black bg-opacity-50 z-[3]"></div>}
+            {(isOpenedPopLogin || isOpenedPopSignin) && <div onClick={() => { setIsOpenedPopLogin(false), setIsOpenedPopSignin(false) }} className="fixed inset-0 bg-black bg-opacity-50 z-[3]"></div>}
             <div className="flex justify-center items-center gap-[20px]">
                 <h1 className="text-6xl leading-[60px] font-medium">Начните заниматься спортом <br /> и улучшите качество жизни</h1>
                 <div className="flex flex-col items-center">
@@ -28,14 +35,15 @@ export default function Main() {
                 </div>
             </div>
             <div className="flex gap-[40px] flex-wrap justify-start max-w-[1160px] w-[100%]">
-                <Card openPopLogin={openPopLogin} />
+                {
+                    cards?.map((card) => <Card card={card} openPopLogin={openPopLogin} />)
+                }
             </div>
             <div onClick={() => { window.scrollTo(0, 0) }} className="px-[26px] btn-green">Наверх ↑</div>
             <div className="absolute z-[4]">
                 {isOpenedPopLogin && <PopLogin transitionFromMainPage={true} openPopSignin={openPopSignin} />}
-                {isOpenedPopSignin && <PopSignin transitionFromMainPage={true} openPopLogin={openPopLogin}/>}
+                {isOpenedPopSignin && <PopSignin transitionFromMainPage={true} openPopLogin={openPopLogin} />}
             </div>
-
         </div>
     );
 }
