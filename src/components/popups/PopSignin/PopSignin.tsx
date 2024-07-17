@@ -6,6 +6,7 @@ import initializeRedBorder, {
   removeRedBorder,
 } from "../../../utills/initializeRedBorder";
 import handleInputChange from "../../../utills/handleInputChange";
+import { signupUser } from "../../../firebase";
 
 export default function PopSignin() {
   const [signinData, setSigninData] = useState({
@@ -30,47 +31,52 @@ export default function PopSignin() {
 
   useEffect(() => {
     if (
-      signinData.email.length !== 0 &&
-      signinData.password.length !== 0 &&
-      signinData.repeatPassword.length !== 0
+      !signinData.email.trim() &&
+      !signinData.password.trim() &&
+      !signinData.repeatPassword.trim()
     ) {
       setErrorName("");
     }
     if (
-      signinData.password === signinData.repeatPassword &&
-      signinData.email.length !== 0
+      !signinData.password === !signinData.repeatPassword &&
+      !signinData.email.trim()
     ) {
       inputs.forEach((element) => {
         element.classList.remove("error-form");
       });
-    } else if (signinData.password === signinData.repeatPassword) {
+    } else if (
+      signinData.password === signinData.repeatPassword &&
+      signinData.password.length > 5 &&
+      signinData.repeatPassword.length > 5
+    ) {
       inputs[1]?.classList.remove("error-form");
       inputs[2]?.classList.remove("error-form");
+      setErrorName("");
     }
   }, [signinData]);
 
   const handleRegister = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    if (!isEmailValid(signinData.email)) {
+    if (!isEmailValid(signinData.email.trim())) {
       inputs[0].classList.add("error-form");
       setErrorName("Некорректный email");
     } else if (
-      signinData.email.length === 0 &&
-      signinData.password.length === 0 &&
-      signinData.repeatPassword.length === 0
+      !signinData.email.trim() &&
+      !signinData.password.trim() &&
+      !signinData.repeatPassword.trim()
     ) {
       inputs.forEach((input) => {
         addRedBorder(input as HTMLInputElement);
       });
       setErrorName("Не введены данные");
-    } else if (signinData.email.length === 0) {
+    } else if (!signinData.email.trim()) {
       inputs[0].classList.add("error-form");
       setErrorName("Не введены данные");
-    } else if (signinData.password.length === 0) {
+    } else if (!signinData.password.trim()) {
       inputs[1].classList.add("error-form");
       setErrorName("Не введены данные");
-    } else if (signinData.repeatPassword.length === 0) {
+    } else if (!signinData.repeatPassword.trim()) {
       inputs[2].classList.add("error-form");
       setErrorName("Не введены данные");
     } else if (signinData.password !== signinData.repeatPassword) {
@@ -78,9 +84,24 @@ export default function PopSignin() {
       inputs[2].classList.add("error-form");
       setErrorName("Пароли не совпадают");
     } else
-      alert(`Логин: ${signinData.email} 
-Пароль: ${signinData.password}
-Повторение пароля: ${signinData.repeatPassword}`);
+      signupUser({
+        email: signinData.email,
+        password: signinData.password,
+      }).catch((error) => {
+        console.log(error.message);
+        if (
+          error.message ===
+          "Firebase: Password should be at least 6 characters (auth/weak-password)."
+        ) {
+          setErrorName("Слабый пароль");
+          inputs[1]?.classList.add("error-form");
+          inputs[2]?.classList.add("error-form");
+        }
+        if (error.message === "Firebase: Error (auth/email-already-in-use).") {
+          setErrorName("Почта уже используется");
+          inputs[0].classList.add("error-form");
+        }
+      });
   };
 
   return (
@@ -121,6 +142,16 @@ export default function PopSignin() {
         )}
         {errorName === "Некорректный email" && (
           <div className="error-message">Введите корректный email</div>
+        )}
+        {errorName === "Слабый пароль" && (
+          <div className="error-message">
+            Пароль должен содержать минимум 6 символов.
+          </div>
+        )}
+        {errorName === "Почта уже используется" && (
+          <div className="error-message">
+            Данная почта уже используется. Попробуйте войти.
+          </div>
         )}
 
         <button
