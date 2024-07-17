@@ -229,9 +229,10 @@ export default function WorkoutVideo() {
               </div>
             </div>
           </div>
-          <div className="workout__btn-progress">
-            <button className="btn-progress">Заполнить свой прогресс</button>
-          </div>
+          <button type="button" className="workout__btn-progress">
+            <a className="btn-progress" href="#">Заполнить свой прогресс</a>
+            {/* <button onClick={} className="btn-progress">Заполнить свой прогресс</button> */}
+          </button>
         </div>
       </div>
     </section>
