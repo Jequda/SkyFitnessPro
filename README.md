@@ -48,3 +48,52 @@ If you are developing a production application, we recommend updating the config
 - Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
 - Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
 - Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+
+header\_\_top
+width: 1160px;
+height: 50px;
+margin-bottom: 49px;
+display: flex;
+justify-content: space-between;
+
+    header__logo
+    padding-top: 50px;
+    margin-left: 140px;
+    width: 220px;
+    height: 35px;
+
+    header__nav
+    margin-top: 50px;
+    width: 168px;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    <!-- margin-right: 140px; -->
+
+    workout__card-video
+    width: 1160px;
+    height: 639px;
+
+    workout_card-title 
+    <!-- font-family: var(--font-family); -->
+    width: 810px;
+    height: 119px;
+    font-weight: 500;
+    font-size: 60px;
+    line-height: 100%;
+    color: #000;
+
+    workout_card-description
+    <!-- font-family: var(--font-family); -->
+    width: 810px;
+    height: 35px;
+    margin-bottom: 40px;
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 110%;
+    text-decoration: underline;
+    text-decoration-skip-ink: none;
+    color: #000;
+    margin-bottom: 40px;
+
