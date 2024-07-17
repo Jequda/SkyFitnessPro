@@ -1,6 +1,6 @@
 export const appRoutes = {
   MAIN: "/",
-  COURSE: "/course",
+  COURSE: "/course/:id",
   PROFILE: "/profile",
   TRAINING: "/training",
   LOGIN: "/login",
