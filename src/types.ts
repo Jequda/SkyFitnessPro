@@ -6,5 +6,7 @@ export type CourseType = {
     nameRU: string,
     order: number,
     workouts: string[],
-    _id: string
+    _id: string,
+    duration: string,
+    workoutTime: string
 }
