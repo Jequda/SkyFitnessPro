@@ -18,7 +18,6 @@ const firebaseConfig = {
 };
 
 export const app = initializeApp(firebaseConfig);
-// const db = ref(getDatabase(app));
 export const auth = getAuth(app);
 
 const CourseEndpoint = "/courses.json";

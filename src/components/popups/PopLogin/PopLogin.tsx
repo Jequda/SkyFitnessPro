@@ -8,7 +8,6 @@ import initializeRedBorder, {
 import handleInputChange from "../../../utills/handleInputChange";
 import { loginUser } from "../../../firebase";
 import { useEmail } from "../../../contexts/EmailContext";
-// import useEmail from "../../../hooks/useEmail";
 
 type PopLoginType = {
   openPopSignin?: (e: React.MouseEvent<HTMLButtonElement>) => void,

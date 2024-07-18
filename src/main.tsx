@@ -4,13 +4,16 @@ import App from "./App.tsx";
 import "./output.css";
 import { BrowserRouter } from "react-router-dom";
 import { EmailProvider } from "./contexts/EmailContext.tsx";
+import { UserProvider } from "./contexts/UserContext.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <BrowserRouter>
-    <EmailProvider>
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
-    </EmailProvider>
+    <UserProvider>
+      <EmailProvider>
+        <React.StrictMode>
+          <App />
+        </React.StrictMode>
+      </EmailProvider>
+    </UserProvider>
   </BrowserRouter>
 );
