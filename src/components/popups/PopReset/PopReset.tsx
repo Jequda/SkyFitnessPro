@@ -4,6 +4,7 @@ import initializeRedBorder, {
   removeRedBorder,
 } from "../../../utills/initializeRedBorder";
 import handleInputChange from "../../../utills/handleInputChange";
+import { updatePasswordUser } from "../../../firebase";
 
 export default function PopReset() {
   const [resetData, setResetData] = useState({
@@ -20,13 +21,10 @@ export default function PopReset() {
   };
 
   useEffect(() => {
-    if (
-      resetData.password.length !== 0 &&
-      resetData.repeatPassword.length !== 0
-    ) {
+    if (!resetData.password.trim() && !resetData.repeatPassword.trim()) {
       setErrorName("");
     }
-    if (resetData.password === resetData.repeatPassword) {
+    if (!resetData.password.trim() === !resetData.repeatPassword.trim()) {
       inputs.forEach((element) => {
         element.classList.remove("error-form");
       });
@@ -36,28 +34,25 @@ export default function PopReset() {
   const handleReset = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    if (
-      resetData.password.length === 0 &&
-      resetData.repeatPassword.length === 0
+    if (!resetData.password.trim() && !resetData.repeatPassword.trim()) {
+      inputs.forEach((input) => {
+        addRedBorder(input as HTMLInputElement);
+      });
+      setErrorName("Не введены данные");
+    } else if (!resetData.password.trim()) {
+      inputs[0].classList.add("error-form");
+      setErrorName("Не введены данные");
+    } else if (!resetData.repeatPassword.trim()) {
+      inputs[1].classList.add("error-form");
+      setErrorName("Не введены данные");
+    } else if (
+      !resetData.password.trim() !== !resetData.repeatPassword.trim()
     ) {
       inputs.forEach((input) => {
         addRedBorder(input as HTMLInputElement);
       });
-      setErrorName("Не введены данные");
-    } else if (resetData.password.length === 0) {
-      inputs[0].classList.add("error-form");
-      setErrorName("Не введены данные");
-    } else if (resetData.repeatPassword.length === 0) {
-      inputs[1].classList.add("error-form");
-      setErrorName("Не введены данные");
-    } else if (resetData.password !== resetData.repeatPassword) {
-      inputs.forEach((input) => {
-        addRedBorder(input as HTMLInputElement);
-      });
       setErrorName("Пароли не совпадают");
-    } else
-      alert(`Пароль: ${resetData.password} 
-Повтор пароля: ${resetData.repeatPassword}`);
+    } else updatePasswordUser({ password: resetData.password });
   };
 
   return (
