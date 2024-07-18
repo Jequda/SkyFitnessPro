@@ -7,6 +7,7 @@ import ResetPage from "./pages/ResetPage/ResetPage";
 import MainPage from "./pages/MainPage/MainPage";
 import CoursePage from "./pages/CoursePage/CoursePage";
 import ResetMailPage from "./pages/ResetMailPage/ResetMailPage";
+import ProfilePage from "./pages/ProfilePage/ProfilePage";
 
 function App() {
   return (
@@ -14,7 +15,7 @@ function App() {
       <Routes>
         {/* { <Route path={appRoutes.MAIN} element={< />}></Route> */}
         <Route path={appRoutes.COURSE} element={<CoursePage />}></Route>
-        {/* <Route path={appRoutes.PROFILE} element={< />}></Route> */}
+        <Route path={appRoutes.PROFILE} element={< ProfilePage/>}></Route>
         {/* <Route path={appRoutes.TRAINING} element={< />}></Route> */}
         <Route path={appRoutes.LOGIN} element={<LoginPage />}></Route>
         <Route path={appRoutes.SIGNIN} element={<SigninPage />}></Route>
