@@ -64,6 +64,7 @@ export default function PopReset({ onClose }: PopResetType) {
     if (e.target === e.currentTarget) {
       onClose();
     }
+
   };
 
   return (
