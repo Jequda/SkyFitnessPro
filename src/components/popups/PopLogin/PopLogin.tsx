@@ -8,7 +8,6 @@ import initializeRedBorder, {
 import handleInputChange from "../../../utills/handleInputChange";
 import { loginUser } from "../../../firebase";
 import { useEmail } from "../../../contexts/EmailContext";
-// import useEmail from "../../../hooks/useEmail";
 
 export default function PopLogin() {
   const [loginData, setLoginData] = useState({ login: "", password: "" });

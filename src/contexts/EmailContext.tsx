@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
 
 interface EmailContextType {
   email: string;
@@ -8,7 +14,14 @@ interface EmailContextType {
 const EmailContext = createContext<EmailContextType | undefined>(undefined);
 
 export const EmailProvider = ({ children }: { children: ReactNode }) => {
-  const [email, setEmail] = useState<string>("");
+  const [email, setEmail] = useState<string>(() => {
+    const savedEmail = localStorage.getItem("email");
+    return savedEmail ? savedEmail : "";
+  });
+
+  useEffect(() => {
+    localStorage.setItem("email", email);
+  }, [email]);
 
   return (
     <EmailContext.Provider value={{ email, setEmail }}>
