@@ -9,5 +9,6 @@ export type CourseType = {
     _id: string,
     duration: string,
     workoutTime: string,
-    complexity: number
+    complexity: number,
+    users: string[]
 }

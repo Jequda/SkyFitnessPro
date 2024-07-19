@@ -22,8 +22,6 @@ const baseUrl =
 export const getCourses = async () => {
   const response = await fetch(baseUrl + CourseEndpoint)
     const data = await response.json();
-    console.log(data)
-    
     return data
 };
 
