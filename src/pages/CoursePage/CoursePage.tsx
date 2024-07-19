@@ -3,8 +3,10 @@ import Header from "../../components/Header/Header";
 import { useCourses } from "../../hooks/useCourses";
 import Fitting from "../../components/Course/Fitting";
 import Directions from "../../components/Course/Directions";
+import { useUser } from "../../contexts/UserContext";
 
-export default function CoursePage() {
+export default function CoursePage({ description }: { description: string }) {
+  const { user } = useUser();
   const { id } = useParams();
   console.log(id);
   const { cards } = useCourses();
@@ -13,6 +15,7 @@ export default function CoursePage() {
   const imagePath = "../coursesImages/" + id + ".png";
 
   console.log(imagePath);
+  console.log(description);
 
   // const {getCoursesList, cards, isLoading} = useCourses()
 
@@ -64,11 +67,11 @@ export default function CoursePage() {
             <p className="text-4xl font-bold pb-[40px]">
               Подойдет для вас, если:
             </p>
-              <div className="w-[1160px] flex justify-between flex-row flex-wrap ">
-                {currentCourse?.fitting.map((text, index, i) => (
-                  <Fitting key={index} text={text} i={index} />
-                ))}
-              </div>
+            <div className="w-[1160px] flex justify-between flex-row flex-wrap ">
+              {currentCourse?.fitting.map((text, index, i) => (
+                <Fitting key={index} text={text} i={index} />
+              ))}
+            </div>
 
             <div className="">
               <h1 className="pt-[60px] text-4xl font-bold mb-[40px]">
@@ -91,6 +94,7 @@ export default function CoursePage() {
                         Начните путь <br />к новому телу
                       </h1>
                       <div className="">
+                        {/* {currentCourse?.description} */}
                         <ul className="w-[437px] h-[178px] text-2xl/loose pl-[28px] list-disc pb-[28px]">
                           <li>проработка всех групп мышц</li>
                           <li>тренировка суставов</li>
@@ -100,21 +104,31 @@ export default function CoursePage() {
                         </ul>
                       </div>
                     </div>
-                    <div className="pl-[28px] cursor-pointer">
-                      <Link to={`/login`}>
+
+                    {user ? (
+                      <Link to={""}>
                         <div className="btn-green w-[437px] h-[52px] text-2xl py-2 px-4 text-center">
-                          Войдите, чтобы добавить курс
+                          Добавить курс
                         </div>
                       </Link>
+                    ) : (
+                      <div className="pl-[28px] cursor-pointer">
+                        <Link to={`/login`}>
+                          <div className="btn-green w-[437px] h-[52px] text-2xl py-2 px-4 text-center">
+                            Войдите, чтобы добавить курс
+                          </div>
+                        </Link>
+                      </div>
+                    )}
 
-                      {/* Если пользователь авторизован */}
-                      {/* <Link to={""}>
+                    {/* Если пользователь авторизован */}
+                    {/* <Link to={""}>
                         <div className="btn-green w-[437px] h-[52px] text-2xl py-2 px-4 text-center">
                           Добавить курс
                         </div>
                       </Link> */}
-                    </div>
                   </div>
+
                   <div>
                     <img
                       className="rotate-[355deg] pt-[100px] relative "

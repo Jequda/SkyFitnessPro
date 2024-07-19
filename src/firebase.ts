@@ -18,6 +18,7 @@ const firebaseConfig = {
 };
 
 export const app = initializeApp(firebaseConfig);
+// const db = ref(getDatabase(app));
 export const auth = getAuth(app);
 
 const CourseEndpoint = "/courses.json";
@@ -25,17 +26,13 @@ const WorkoutsEndpoint = "/workouts.json";
 const baseUrl =
   "https://fitness-pro-team3-default-rtdb.europe-west1.firebasedatabase.app";
 
-
-export const getCourses = async () => {
-  fetch(baseUrl + CourseEndpoint)
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("Data retrieved from Firebase:", data);
-    })
-    .catch((error) => {
-      console.error("Error fetching data:", error);
-    });
-};
+  export const getCourses = async () => {
+    const response = await fetch(baseUrl + CourseEndpoint)
+      const data = await response.json();
+      console.log(data)
+      
+      return data
+  };
 
 export const getWorkouts = async () => {
   fetch(baseUrl + WorkoutsEndpoint)
@@ -46,8 +43,7 @@ export const getWorkouts = async () => {
     .catch((error) => {
       console.error("Error fetching data:", error);
     });
-};
-
+  }
 export const loginUser = async ({
   login,
   password,
