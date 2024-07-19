@@ -761,8 +761,8 @@ video {
   isolation: isolate;
 }
 
-.z-50 {
-  z-index: 50;
+.z-10 {
+  z-index: 10;
 }
 
 .z-50 {
@@ -1165,6 +1165,10 @@ video {
 
 .max-w-\[1160px\] {
   max-width: 1160px;
+}
+
+.max-w-\[772px\] {
+  max-width: 772px;
 }
 
 .flex-shrink {
@@ -1570,6 +1574,22 @@ video {
 
 .pt-\[60px\] {
   padding-top: 60px;
+}
+
+.pt-\[50px\] {
+  padding-top: 50px;
+}
+
+.pl-\[140px\] {
+  padding-left: 140px;
+}
+
+.pt-\[15px\] {
+  padding-top: 15px;
+}
+
+.pl-\[685px\] {
+  padding-left: 685px;
 }
 
 .text-center {

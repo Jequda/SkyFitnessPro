@@ -26,7 +26,7 @@ const baseUrl =
   "https://fitness-pro-team3-default-rtdb.europe-west1.firebasedatabase.app";
 
 export const getCourses = async () => {
-  const response = await fetch(baseUrl + CourseEndpoint)
+  const response = await fetch(baseUrl + "/courses.json")
     const data = await response.json();
     return data
 };
