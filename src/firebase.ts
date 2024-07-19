@@ -27,8 +27,8 @@ const baseUrl =
 
 export const getCourses = async () => {
   const response = await fetch(baseUrl + "/courses.json")
-    const data = await response.json();
-    return data
+  const data = await response.json();
+  return data
 };
 
 export const getWorkouts = async () => {
@@ -40,7 +40,7 @@ export const getWorkouts = async () => {
     .catch((error) => {
       if (error instanceof Error) throw new Error(error.message);
     });
-  }
+}
 
 export const loginUser = async ({
   login,
@@ -88,6 +88,7 @@ export const updatePasswordUser = async ({
   } catch (error) {
     if (error instanceof Error) throw new Error(error.message);
   }
+}
 
 export const addFavoriteCourse = async ({
   courseId,
