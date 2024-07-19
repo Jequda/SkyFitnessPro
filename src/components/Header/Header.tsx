@@ -5,8 +5,7 @@ import PopSignin from "../popups/PopSignin/PopSignin";
 import { useUser } from "../../contexts/UserContext";
 
 export default function Header() {
-  //API не подключено, для смены кнопки "Войти" на инфо о пользователе нужно поменять user true/false
-  const {user, userEmail} = useUser();
+  const { user } = useUser();
 
   const [isUserMenuOpened, setIsUserMenuOpened] = useState(false);
   const [isLoginOpened, setIsLoginOpened] = useState(false);
@@ -33,8 +32,8 @@ export default function Header() {
   return (
     <>
       {user ? (
-        <div className="flex flex-row">
-          <div className="mt-[50px] ml-[140px] ">
+        <div className="flex flex-row w-[1100px] ml-[140px] justify-between">
+          <div className="mt-[50px]  ">
             <img
               className=""
               src="/logo.png"
@@ -46,7 +45,7 @@ export default function Header() {
               Онлайн-тренировки для занятий дома
             </p>
           </div>
-          <div className="ml-[685px] mt-[50px] ">
+          <div className="mt-[50px] ">
             <div className="">
               <div
                 onClick={toggleUserMenuPopup}
@@ -60,7 +59,7 @@ export default function Header() {
                   height="50px"
                 />
                 <p className="text-lg/[26px] flex items-center pl-[15px] pr-[15px]">
-                  {userEmail}
+                  {user.email}
                 </p>
                 <img
                   className=""

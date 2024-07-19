@@ -32,7 +32,7 @@ export const getCourses = async () => {
 };
 
 export const getWorkouts = async () => {
-  fetch(baseUrl + "/workouts")
+  fetch(baseUrl + "/workouts.json")
     .then((response) => response.json())
     .then((data) => {
       console.log("Data retrieved from Firebase:", data);
@@ -88,7 +88,6 @@ export const updatePasswordUser = async ({
   } catch (error) {
     if (error instanceof Error) throw new Error(error.message);
   }
-};
 
 export const addFavoriteCourse = async ({
   courseId,

@@ -3,6 +3,7 @@ import Card from "../Card/Card";
 import PopLogin from "../popups/PopLogin/PopLogin";
 import PopSignin from "../popups/PopSignin/PopSignin";
 import { useCourses } from "../../hooks/useCourses";
+
 import { useUser } from "../../contexts/UserContext";
 
 export default function Main() {
@@ -29,6 +30,7 @@ export default function Main() {
         setIsOpenedPopLogin(false);
     }
     return (
+
         <div className="flex flex-col justify-center items-center gap-[50px] px-[140px] pb-[81px] font-roboto pt-[60px]">
             {(isOpenedPopLogin || isOpenedPopSignin) && <div onClick={() => { setIsOpenedPopLogin(false), setIsOpenedPopSignin(false) }} className="fixed inset-0 bg-black bg-opacity-50 z-[3]"></div>}
             <div className="flex justify-center items-center gap-[20px]">
@@ -46,6 +48,7 @@ export default function Main() {
                         (notAddedCards?.map((card) => <Card card={card} openPopLogin={openPopLogin} key={card._id} />))
                         : (cards?.map((card) => <Card card={card} openPopLogin={openPopLogin} key={card._id} />)))
                         : (<div className="flex px-[16px] py-[20px] gap-[10px] text-[32px] leading-[35px] font-normal">Вы добавили все курсы</div>)
+
                 }
             </div>
             <div onClick={() => { window.scrollTo(0, 0) }} className="px-[26px] btn-green">Наверх ↑</div>

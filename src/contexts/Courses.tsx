@@ -4,6 +4,7 @@ import { CourseType } from "../types";
 import { useUser } from "./UserContext";
 
 
+
 type CourseContextType = {
     cards: CourseType[];
     isLoading: boolean;
