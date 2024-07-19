@@ -2,10 +2,11 @@ import { useState } from "react";
 import PopLogin from "../popups/PopLogin/PopLogin";
 import PopUserMenu from "../popups/PopUserMenu/PopUserMenu";
 import PopSignin from "../popups/PopSignin/PopSignin";
+import { useUser } from "../../contexts/UserContext";
 
 export default function Header() {
   //API не подключено, для смены кнопки "Войти" на инфо о пользователе нужно поменять user true/false
-  const user = true;
+  const {user, userEmail} = useUser();
 
   const [isUserMenuOpened, setIsUserMenuOpened] = useState(false);
   const [isLoginOpened, setIsLoginOpened] = useState(false);
@@ -59,7 +60,7 @@ export default function Header() {
                   height="50px"
                 />
                 <p className="text-lg/[26px] flex items-center pl-[15px] pr-[15px]">
-                  Сергей
+                  {userEmail}
                 </p>
                 <img
                   className=""

@@ -10,6 +10,7 @@ export default function Main() {
     useEffect(() => {
         getCoursesList()
     }, [])
+
     
     const [isOpenedPopLogin, setIsOpenedPopLogin] = useState<boolean>(false);
     const openPopLogin = () => {
