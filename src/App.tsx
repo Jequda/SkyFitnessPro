@@ -8,6 +8,7 @@ import MainPage from "./pages/MainPage/MainPage";
 import CoursePage from "./pages/CoursePage/CoursePage";
 import ResetMailPage from "./pages/ResetMailPage/ResetMailPage";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
+import WorkoutVideoPage from "./pages/WorkoutVideoPage/WorkoutVideoPage";
 
 function App() {
   return (
@@ -15,8 +16,8 @@ function App() {
       <Routes>
         {/* { <Route path={appRoutes.MAIN} element={< />}></Route> */}
         <Route path={appRoutes.COURSE} element={<CoursePage />}></Route>
-        <Route path={appRoutes.PROFILE} element={< ProfilePage/>}></Route>
-        {/* <Route path={appRoutes.TRAINING} element={< />}></Route> */}
+        <Route path={appRoutes.PROFILE} element={<ProfilePage />}></Route>
+        <Route path={appRoutes.TRAINING} element={<WorkoutVideoPage />}></Route>
         <Route path={appRoutes.LOGIN} element={<LoginPage />}></Route>
         <Route path={appRoutes.SIGNIN} element={<SigninPage />}></Route>
         <Route path={appRoutes.RESET} element={<ResetPage />}></Route>
