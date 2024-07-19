@@ -9,7 +9,7 @@ export default function PopUserMenu() {
   const handleLogout = (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault
       logout()
-      navigate(appRoutes.LOGIN)
+      navigate(appRoutes.MAIN)
   }
   return (
     <div className="fixed inset-0 z-50 mt-[120px]">
