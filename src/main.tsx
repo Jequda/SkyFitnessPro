@@ -9,14 +9,14 @@ import { UserProvider } from "./contexts/UserContext.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <BrowserRouter>
-    <CoursesProvider>
-      <UserProvider>
+    <UserProvider>
+      <CoursesProvider>
         <EmailProvider>
           <React.StrictMode>
             <App />
           </React.StrictMode>
         </EmailProvider>
-      </UserProvider>
-    </CoursesProvider>
+      </CoursesProvider>
+    </UserProvider>
   </BrowserRouter>
 );

@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import { CourseType } from "../../types";
 import { imgObject } from "../../utills/imgObject";
 import { ToolTipComponent } from "../Tooltip/Tooltip";
+import { useUser } from "../../contexts/UserContext";
+import { addFavoriteCourse } from "../../firebase";
+import { useCourses } from "../../hooks/useCourses";
 type CardType = {
     card: CourseType;
     isProfilePage?: boolean;
@@ -12,13 +15,30 @@ type CardType = {
 }
 
 export default function Card({ openPopLogin, card, isProfilePage, handleOpenPopSelectTraining, handleDeleteCard }: CardType) {
+    const {userId} = useUser()
+    const courseId = card._id
+    const { getNotAddedCardsList} = useCourses()
+    
+
+    const handleAddFavoriteCourse = async (e: React.MouseEvent<HTMLDivElement>) => {
+        e.preventDefault()
+        if (userId) {
+            try {
+                await addFavoriteCourse({courseId, userId}).then(() => {
+                    getNotAddedCardsList()
+                })  
+            } catch (error) {
+                alert("ошибка")
+            }
+        } else console.log(userId)
+    }
 
     return (
         <>
             <Link to={`/course/${card?._id}`}>
                 <div className="w-[360px] flex flex-col justify-center items-center gap-[24px] rounded-[30px] shadow-lg">
                     <div className="flex flex-row-reverse w-[360px]">
-                        <div onClick={(e): void => { e.preventDefault(); openPopLogin() }} className="absolute pt-[20px] pr-[20px] z-[2]">
+                        <div onClick={userId ? handleAddFavoriteCourse : (e) => { e.preventDefault(); openPopLogin() }} className="absolute pt-[20px] pr-[20px] z-[2]">
                             <ToolTipComponent>
                                 <svg className="w-[27px] h-[27px]" width="56" height="56" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path fillRule="evenodd" clipRule="evenodd" d="M14 27.3333C21.3638 27.3333 27.3333 21.3638 27.3333 14C27.3333 6.63616 21.3638 0.666626 14 0.666626C6.63619 0.666626 0.666656 6.63616 0.666656 14C0.666656 21.3638 6.63619 27.3333 14 27.3333ZM12.6667 12.6666V7.33329H15.3333V12.6666H20.6667V15.3333H15.3333V20.6666H12.6667V15.3333H7.33332V12.6666H12.6667Z" fill="white" />
