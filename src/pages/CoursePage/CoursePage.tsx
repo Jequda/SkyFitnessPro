@@ -10,9 +10,9 @@ export default function CoursePage() {
   const { cards } = useCourses();
   console.dir(cards.find((course) => course._id === id));
   const currentCourse = cards.find((course) => course._id === id);
-  const imagePath = '../coursesImages/'+ id+".png"
+  const imagePath = "../coursesImages/" + id + ".png";
 
-  console.log(imagePath)
+  console.log(imagePath);
 
   // const {getCoursesList, cards, isLoading} = useCourses()
 
@@ -47,7 +47,7 @@ export default function CoursePage() {
       <div className="mx-[140px] my-[60px]">
         <div className="">
           <div className="relative w-[1160px] h-[310px] rounded-[20px] overflow-hidden">
-          <img
+            <img
               className="w-full h-full object-cover rounded-[20px]"
               src={imagePath}
               alt="course_picture"
@@ -59,28 +59,27 @@ export default function CoursePage() {
                 {currentCourse?.nameRU}
               </div>
             </div>
-
           </div>
           <div className="pt-[60px] gap-x-[3.75rem]">
             <p className="text-4xl font-bold pb-[40px]">
               Подойдет для вас, если:
             </p>
-            <div className="flex flex-row flex-wrap gap-4 ">
-            {currentCourse?.fitting.map((text, index, i) => (
-              <Fitting key={index} text={text} i={index}/>
-            ))}
-            </div>
+              <div className="w-[1160px] flex justify-between flex-row flex-wrap ">
+                {currentCourse?.fitting.map((text, index, i) => (
+                  <Fitting key={index} text={text} i={index} />
+                ))}
+              </div>
 
             <div className="">
               <h1 className="pt-[60px] text-4xl font-bold mb-[40px]">
                 Направления
               </h1>
               <div className="flex flex-row bg-[#BCEC30] w-[1160px] h-[146px] rounded-[20px] ">
-              <div className="flex flex-wrap justify-center gap-8 pt-[30px] pl-[30px]">
-                {currentCourse?.directions.map((text, index) => (
-              <Directions key={index} direction={text}/>
-            ))}
-            </div>
+                <div className="flex flex-wrap justify-between gap-8 pl-[30px]">
+                  {currentCourse?.directions.map((text, index) => (
+                    <Directions key={index} direction={text} />
+                  ))}
+                </div>
               </div>
             </div>
             <div className="">
