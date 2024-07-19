@@ -102,9 +102,12 @@ export const addFavoriteCourse = async ({
   userId: string;
 }) => {
   const userRef = ref(database, `courses/${courseId}/users/${userId}`);
+  const userData = {
+    userId: userId,
+  };
 
   try {
-    await set(userRef, userId);
+    await set(userRef, userData);
     console.log(`User with ID ${userId} added successfully.`);
   } catch (error) {
     if (error instanceof Error) throw new Error(error.message);
