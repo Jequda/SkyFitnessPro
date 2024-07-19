@@ -6,6 +6,6 @@ export const appRoutes = {
   LOGIN: "/login",
   SIGNIN: "/signin",
   RESET: "/reset",
-  RESET_MAIL: "resetmail",
+  RESET_MAIL: "/resetmail",
   NOT_FOUND: "*",
 };
