@@ -44,10 +44,11 @@ export default function CoursePage({ description }: { description: string }) {
   // }, []);
   return (
     <>
-      <Header />
-      {/* <Link to={`/login`}>
+      <div className="flex flex-col justify-center items-center gap-[50px] ">
+        <Header />
+        {/* <Link to={`/login`}>
       </Link> */}
-      <div className="mx-[140px] my-[60px]">
+
         <div className="">
           <div className="relative w-[1160px] h-[310px] rounded-[20px] overflow-hidden">
             <img
