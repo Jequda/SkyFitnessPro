@@ -5,6 +5,7 @@ import {
   signInWithEmailAndPassword,
   updatePassword,
 } from "firebase/auth";
+import { getDatabase, ref, set, remove } from "firebase/database";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDEZ0a2W2aKtWZS0BLkbkukrl4WvUDQLCM",
@@ -20,14 +21,12 @@ const firebaseConfig = {
 export const app = initializeApp(firebaseConfig);
 // const db = ref(getDatabase(app));
 export const auth = getAuth(app);
-
-const CourseEndpoint = "/courses.json";
-const WorkoutsEndpoint = "/workouts.json";
+const database = getDatabase(app);
 const baseUrl =
   "https://fitness-pro-team3-default-rtdb.europe-west1.firebasedatabase.app";
 
   export const getCourses = async () => {
-    const response = await fetch(baseUrl + CourseEndpoint)
+    const response = await fetch(baseUrl + "/courses.json)
       const data = await response.json();
       console.log(data)
       
@@ -35,13 +34,13 @@ const baseUrl =
   };
 
 export const getWorkouts = async () => {
-  fetch(baseUrl + WorkoutsEndpoint)
+  fetch(baseUrl + "/workouts.json")
     .then((response) => response.json())
     .then((data) => {
       console.log("Data retrieved from Firebase:", data);
     })
     .catch((error) => {
-      console.error("Error fetching data:", error);
+      if (error instanceof Error) throw new Error(error.message);
     });
   }
 export const loginUser = async ({
@@ -87,6 +86,42 @@ export const updatePasswordUser = async ({
     } else {
       throw new Error("NOT_USER");
     }
+  } catch (error) {
+    if (error instanceof Error) throw new Error(error.message);
+  }
+
+export const addFavoriteCourse = async ({
+  courseId,
+  userId,
+}: {
+  courseId: string;
+  userId: string;
+}) => {
+  const userRef = ref(database, `courses/${courseId}/users/${userId}`);
+  const userData = {
+    userId: userId,
+  };
+
+  try {
+    await set(userRef, userData);
+    console.log(`User with ID ${userId} added successfully.`);
+  } catch (error) {
+    if (error instanceof Error) throw new Error(error.message);
+  }
+};
+
+export const deleteFavoriteCourse = async ({
+  courseId,
+  userId,
+}: {
+  courseId: string;
+  userId: string;
+}) => {
+  const userRef = ref(database, `courses/${courseId}/users/${userId}`);
+
+  try {
+    await remove(userRef);
+    console.log(`User with ID ${userId} deleted successfully.`);
   } catch (error) {
     if (error instanceof Error) throw new Error(error.message);
   }
