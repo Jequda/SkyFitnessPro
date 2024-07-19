@@ -34,7 +34,6 @@ export const CoursesProvider = ({ children }: { children: ReactNode }) => {
             const coursesData = Object.keys(courses).map((id) => courses[id])
             setCards(coursesData)
             setIsLoading(false)
-            console.log(coursesData)
         }).catch((error) => { alert(error) })
     }
 

@@ -12,7 +12,7 @@ export default function Main() {
 
     useEffect(() => {
         getCoursesList()
-    }, [cards])
+    }, [cards, userId])
 
     useEffect(() => {
         getNotAddedCardsList()
@@ -44,11 +44,10 @@ export default function Main() {
             </div>
             <div className="flex gap-[40px] flex-wrap justify-start max-w-[1160px] w-[100%]">
                 {isLoading ? (<div className="flex px-[16px] py-[20px] gap-[10px] text-[32px] leading-[35px] font-normal">Загружаем курсы...</div>) :
-                    notAddedCards.length > 0 ?(userId ?
-                        (notAddedCards?.map((card) => <Card card={card} openPopLogin={openPopLogin} key={card._id} />))
+                    (userId ?
+                        (notAddedCards.length > 0 ? notAddedCards?.map((card) => <Card card={card} openPopLogin={openPopLogin} key={card._id} />)
+                        :  (<div className="flex px-[16px] py-[20px] gap-[10px] text-[32px] leading-[35px] font-normal">Вы добавили все курсы</div>))
                         : (cards?.map((card) => <Card card={card} openPopLogin={openPopLogin} key={card._id} />)))
-                        : (<div className="flex px-[16px] py-[20px] gap-[10px] text-[32px] leading-[35px] font-normal">Вы добавили все курсы</div>)
-
                 }
             </div>
             <div onClick={() => { window.scrollTo(0, 0) }} className="px-[26px] btn-green">Наверх ↑</div>
