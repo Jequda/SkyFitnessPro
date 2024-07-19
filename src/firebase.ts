@@ -25,7 +25,7 @@ const baseUrl =
   "https://fitness-pro-team3-default-rtdb.europe-west1.firebasedatabase.app";
 
 export const getCourses = async () => {
-  fetch(baseUrl + "/courses")
+  fetch(baseUrl + "/courses.json")
     .then((response) => response.json())
     .then((data) => {
       console.log("Data retrieved from Firebase:", data);
@@ -36,7 +36,7 @@ export const getCourses = async () => {
 };
 
 export const getWorkouts = async () => {
-  fetch(baseUrl + "/workouts")
+  fetch(baseUrl + "/workouts.json")
     .then((response) => response.json())
     .then((data) => {
       console.log("Data retrieved from Firebase:", data);
