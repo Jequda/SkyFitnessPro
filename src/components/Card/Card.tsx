@@ -4,11 +4,14 @@ import { CourseType } from "../../types";
 import { imgObject } from "../../utills/imgObject";
 import { ToolTipComponent } from "../Tooltip/Tooltip";
 type CardType = {
-    openPopLogin: () => void;
-    card: CourseType
+    card: CourseType;
+    isProfilePage?: boolean;
+    handleOpenPopSelectTraining?: () => void;
+    handleDeleteCard?: () => void;
+    openPopLogin?: () => void
 }
 
-export default function Card({ openPopLogin, card }: CardType) {
+export default function Card({ openPopLogin, card, isProfilePage, handleOpenPopSelectTraining, handleDeleteCard }: CardType) {
 
     return (
         <Link to={`/course/${card?._id}`}>
@@ -62,5 +65,19 @@ export default function Card({ openPopLogin, card }: CardType) {
                 </div>
             </div>
         </Link>
+            {isProfilePage && (
+                <div className="mb-[15px] w-full bg-white rounded-b-[30px] flex flex-col justify-between items-center px-[30px]">
+                    <div className="flex justify-between items-center w-full">
+                        <div className="text-base leading-[18px] font-normal">Прогресс 50%</div>
+                    </div>
+                    <div className="w-[300px] h-[6px] bg-gray-300 rounded-full mt-[10px]">
+                        <div className="w-[50%] h-full bg-[#00C1FF] rounded-full"></div>
+                    </div>
+                    <button onClick={handleOpenPopSelectTraining} className="btn-green w-[300px] mt-[40px]">
+                        Продолжить
+                    </button>
+                </div>
+            )}
+        </div>
     );
 };

@@ -13,7 +13,7 @@
     @apply w-[280px] h-[52px] rounded-[8px] border-[1px] border-solid border-gray-300 flex justify-center pl-[18px];
   }
   .popup-container {
-    @apply grid justify-center items-center  rounded-[30px] shadow-[0px_4px_67px_-12px_rgba(0,0,0,0.13)] p-10 z-20 bg-white mx-auto my-auto w-[360px];
+    @apply fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 grid justify-center items-center  rounded-[30px] shadow-[0px_4px_67px_-12px_rgba(0,0,0,0.13)] p-10 z-20 bg-white mx-auto my-auto w-[360px];
   }
   .logo-container {
     @apply flex items-center justify-center mb-[48px];
