@@ -5,6 +5,7 @@ import {
   signInWithEmailAndPassword,
   updatePassword,
 } from "firebase/auth";
+import { getDatabase, ref, set, remove } from "firebase/database";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDEZ0a2W2aKtWZS0BLkbkukrl4WvUDQLCM",
@@ -19,31 +20,29 @@ const firebaseConfig = {
 
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-
-const CourseEndpoint = "/courses.json";
-const WorkoutsEndpoint = "/workouts.json";
+const database = getDatabase(app);
 const baseUrl =
   "https://fitness-pro-team3-default-rtdb.europe-west1.firebasedatabase.app";
 
 export const getCourses = async () => {
-  fetch(baseUrl + CourseEndpoint)
+  fetch(baseUrl + "/courses")
     .then((response) => response.json())
     .then((data) => {
       console.log("Data retrieved from Firebase:", data);
     })
     .catch((error) => {
-      console.error("Error fetching data:", error);
+      if (error instanceof Error) throw new Error(error.message);
     });
 };
 
 export const getWorkouts = async () => {
-  fetch(baseUrl + WorkoutsEndpoint)
+  fetch(baseUrl + "/workouts")
     .then((response) => response.json())
     .then((data) => {
       console.log("Data retrieved from Firebase:", data);
     })
     .catch((error) => {
-      console.error("Error fetching data:", error);
+      if (error instanceof Error) throw new Error(error.message);
     });
 };
 
@@ -90,6 +89,40 @@ export const updatePasswordUser = async ({
     } else {
       throw new Error("NOT_USER");
     }
+  } catch (error) {
+    if (error instanceof Error) throw new Error(error.message);
+  }
+};
+
+export const addFavoriteCourse = async ({
+  courseId,
+  userId,
+}: {
+  courseId: string;
+  userId: string;
+}) => {
+  const userRef = ref(database, `courses/${courseId}/users/${userId}`);
+
+  try {
+    await set(userRef, userId);
+    console.log(`User with ID ${userId} added successfully.`);
+  } catch (error) {
+    if (error instanceof Error) throw new Error(error.message);
+  }
+};
+
+export const deleteFavoriteCourse = async ({
+  courseId,
+  userId,
+}: {
+  courseId: string;
+  userId: string;
+}) => {
+  const userRef = ref(database, `courses/${courseId}/users/${userId}`);
+
+  try {
+    await remove(userRef);
+    console.log(`User with ID ${userId} deleted successfully.`);
   } catch (error) {
     if (error instanceof Error) throw new Error(error.message);
   }
