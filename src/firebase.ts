@@ -25,13 +25,11 @@ const database = getDatabase(app);
 const baseUrl =
   "https://fitness-pro-team3-default-rtdb.europe-west1.firebasedatabase.app";
 
-  export const getCourses = async () => {
-    const response = await fetch(baseUrl + "/courses.json)
-      const data = await response.json();
-      console.log(data)
-      
-      return data
-  };
+export const getCourses = async () => {
+  const response = await fetch(baseUrl + "/courses.json")
+  const data = await response.json();
+  return data
+};
 
 export const getWorkouts = async () => {
   fetch(baseUrl + "/workouts.json")
@@ -42,7 +40,8 @@ export const getWorkouts = async () => {
     .catch((error) => {
       if (error instanceof Error) throw new Error(error.message);
     });
-  }
+}
+
 export const loginUser = async ({
   login,
   password,
@@ -89,6 +88,7 @@ export const updatePasswordUser = async ({
   } catch (error) {
     if (error instanceof Error) throw new Error(error.message);
   }
+}
 
 export const addFavoriteCourse = async ({
   courseId,

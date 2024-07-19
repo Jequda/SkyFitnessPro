@@ -4,13 +4,20 @@ import PopLogin from "../popups/PopLogin/PopLogin";
 import PopSignin from "../popups/PopSignin/PopSignin";
 import { useCourses } from "../../hooks/useCourses";
 
+import { useUser } from "../../contexts/UserContext";
+
 export default function Main() {
-    const {getCoursesList, cards, isLoading} = useCourses()
+    const { getCoursesList, cards, isLoading, getNotAddedCardsList, notAddedCards } = useCourses()
+    const { userId } = useUser();
 
     useEffect(() => {
         getCoursesList()
-    }, [])
-    
+    }, [cards, userId])
+
+    useEffect(() => {
+        getNotAddedCardsList()
+    }, [userId, cards, notAddedCards])
+
     const [isOpenedPopLogin, setIsOpenedPopLogin] = useState<boolean>(false);
     const openPopLogin = () => {
         setIsOpenedPopLogin(!isOpenedPopLogin);
@@ -23,7 +30,8 @@ export default function Main() {
         setIsOpenedPopLogin(false);
     }
     return (
-        <div className="flex flex-col justify-center items-center gap-[50px] px-[140px] pb-[81px] font-roboto">
+
+        <div className="flex flex-col justify-center items-center gap-[50px] px-[140px] pb-[81px] font-roboto pt-[60px]">
             {(isOpenedPopLogin || isOpenedPopSignin) && <div onClick={() => { setIsOpenedPopLogin(false), setIsOpenedPopSignin(false) }} className="fixed inset-0 bg-black bg-opacity-50 z-[3]"></div>}
             <div className="flex justify-center items-center gap-[20px]">
                 <h1 className="text-6xl leading-[60px] font-medium">Начните заниматься спортом <br /> и улучшите качество жизни</h1>
@@ -35,8 +43,11 @@ export default function Main() {
                 </div>
             </div>
             <div className="flex gap-[40px] flex-wrap justify-start max-w-[1160px] w-[100%]">
-                {isLoading ? (<div className="flex px-[16px] py-[20px] gap-[10px] text-[32px] leading-[35px] font-normal">Загружаем курсы...</div>):
-                    (cards?.map((card) => <Card card={card} openPopLogin={openPopLogin} />))
+                {isLoading ? (<div className="flex px-[16px] py-[20px] gap-[10px] text-[32px] leading-[35px] font-normal">Загружаем курсы...</div>) :
+                    (userId ?
+                        (notAddedCards.length > 0 ? notAddedCards?.map((card) => <Card card={card} openPopLogin={openPopLogin} key={card._id} />)
+                        :  (<div className="flex px-[16px] py-[20px] gap-[10px] text-[32px] leading-[35px] font-normal">Вы добавили все курсы</div>))
+                        : (cards?.map((card) => <Card card={card} openPopLogin={openPopLogin} key={card._id} />)))
                 }
             </div>
             <div onClick={() => { window.scrollTo(0, 0) }} className="px-[26px] btn-green">Наверх ↑</div>
