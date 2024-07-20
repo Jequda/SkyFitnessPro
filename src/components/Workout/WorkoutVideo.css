@@ -1,4 +1,6 @@
-* {
+/* Классы для добавлений новых элементов на странице */
+
+/* * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -10,7 +12,7 @@
   padding-top: 145px;
   padding-bottom: 200px;
   /* padding-left: 140px;
-  padding-right: 140px; */
+  padding-right: 140px; 
 }
 
 .container {
@@ -28,7 +30,7 @@
 .workout__name {
   width: 810px;
   height: 119px;
-  /* padding-bottom: 40px; */
+  /* padding-bottom: 40px; 
 }
 
 .workout__name-title {
@@ -56,7 +58,7 @@
   /* border-radius: 30px;
   padding: 40px;
   box-shadow: 0 4px 67px -12px rgba(0, 0, 0, 0.13);
-  background: #fff;*/
+  background: #fff;
   margin-bottom: 40px;
 
 }
@@ -126,7 +128,7 @@
   width: 320px;
   height: 52px;
   background: #bcec30;
-}
+} */
 
 /* .header__block {
   height: 70px;

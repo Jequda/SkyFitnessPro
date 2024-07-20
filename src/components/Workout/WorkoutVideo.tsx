@@ -2,8 +2,6 @@ import { useState } from "react";
 
 // import { appRoutes } from "../../../route/appRoutes";
 
-import "./WorkoutVideo.css";
-
 export default function WorkoutVideo() {
   const [isOpened, setIsOpened] = useState(false); // Состояние открытия модального окна
   function togglePopUp() {
@@ -77,25 +75,25 @@ export default function WorkoutVideo() {
     //   </div>
     // </header>
 
-    <section className="workout">
-      <div className="container">
-        <div className="workout__info">
-          <div className="workout__name">
-            <p className="workout__name-title">Йога</p>
-            <p className="workout__name-description">
+    <section className="workout w-[1440px] h-[1560px] pt-[145px] pb-[200px]">
+      <div className="container max-w-[1160px] h-[1213px] mx-auto px-[140px]">
+        <div className="workout__info pb-[40px]">
+          <div className="workout__name w-[810px] h-[119px]">
+            <p className="workout__name-title font-roboto font-medium text-[60px] leading-[100%] text-black pb-[24px]">Йога</p>
+            <p className="workout__name-description font-roboto font-normal text-[32px] leading-[110%] underline text-black">
               Красота и здоровье / Йога на каждый день / 2 день
             </p>
           </div>
         </div>
-        <div className="workout__video">
+        <div className="w-[1160px] h-[639px] mb-[40px]">
           <img src="../public/button and video.jpg" alt="workout yoga video" />
         </div>
-        <div className="workout__list">
-          <div className="workout__list-title">Упражнения тренировки 2</div>
-          <div className="workout__list-items">
+        <div className="workout__list rounded-[30px] p-[40px] w-[1160px] h-[375px] shadow-[0_4px_67px_-12px_rgba(0,0,0,0.13)] bg-white pt-[40px]">
+          <div className="workout__list-title font-sans font-normal text-[32px] leading-[110%] text-black pb-[20px]">Упражнения тренировки 2</div>
+          <div className="workout__list-items font-roboto font-normal text-[18px] leading-[110%] text-black flex flex-row justify-between">
             <div className="workout__list-item1">
-              <div className="workout__item1">
-                <p className="workout__item-title1">Наклоны вперед 0%</p>
+              <div className="workout__item1 pb-[20px]">
+                <p className="workout__item-title1 pb-[10px]">Наклоны вперед 0%</p>
                 <svg
                   className="workout__item-svg"
                   width="320"
@@ -108,8 +106,8 @@ export default function WorkoutVideo() {
                 </svg>
               </div>
 
-              <div className="workout__item2">
-                <p className="workout__item-title2">Наклоны назад 0%</p>
+              <div className="workout__item2 pb-[20px]">
+                <p className="workout__item-title2 pb-[10px]">Наклоны назад 0%</p>
                 <svg
                   className="workout__item-svg"
                   width="320"
@@ -122,8 +120,8 @@ export default function WorkoutVideo() {
                 </svg>
               </div>
 
-              <div className="workout__item3">
-                <p className="workout__item-title3">
+              <div className="workout__item3 pb-[20px]">
+                <p className="workout__item-title3 pb-[10px]">
                   Поднятие ног, согнутых в коленях 0%
                 </p>
                 <svg
@@ -139,8 +137,8 @@ export default function WorkoutVideo() {
               </div>
             </div>
             <div className="workout__list-item2">
-              <div className="workout__item1">
-                <p className="workout__item-title1">Наклоны вперед 0%</p>
+              <div className="workout__item1 pb-[20px]">
+                <p className="workout__item-title1 pb-[10px]">Наклоны вперед 0%</p>
                 <svg
                   className="workout__item-svg"
                   width="320"
@@ -153,8 +151,8 @@ export default function WorkoutVideo() {
                 </svg>
               </div>
 
-              <div className="workout__item2">
-                <p className="workout__item-title2">Наклоны назад 0%</p>
+              <div className="workout__item2 pb-[20px]">
+                <p className="workout__item-title2 pb-[10px]">Наклоны назад 0%</p>
                 <svg
                   className="workout__item-svg"
                   width="320"
@@ -167,8 +165,8 @@ export default function WorkoutVideo() {
                 </svg>
               </div>
 
-              <div className="workout__item3">
-                <p className="workout__item-title3">
+              <div className="workout__item3 pb-[20px]">
+                <p className="workout__item-title3 pb-[10px]">
                   Поднятие ног, согнутых в коленях 0%
                 </p>
                 <svg
@@ -184,8 +182,8 @@ export default function WorkoutVideo() {
               </div>
             </div>
             <div className="workout__list-item3">
-              <div className="workout__item1">
-                <p className="workout__item-title1">Наклоны вперед 0%</p>
+              <div className="workout__item1 pb-[20px]">
+                <p className="workout__item-title1 pb-[10px]">Наклоны вперед 0%</p>
                 <svg
                   className="workout__item-svg"
                   width="320"
@@ -198,8 +196,8 @@ export default function WorkoutVideo() {
                 </svg>
               </div>
 
-              <div className="workout__item2">
-                <p className="workout__item-title2">Наклоны назад 0%</p>
+              <div className="workout__item2 pb-[20px]">
+                <p className="workout__item-title2 pb-[10px]">Наклоны назад 0%</p>
                 <svg
                   className="workout__item-svg"
                   width="320"
@@ -212,8 +210,8 @@ export default function WorkoutVideo() {
                 </svg>
               </div>
 
-              <div className="workout__item3">
-                <p className="workout__item-title3">
+              <div className="workout__item3 pb-[20px]">
+                <p className="workout__item-title3 pb-[10px]">
                   Поднятие ног, согнутых в коленях 0%
                 </p>
                 <svg
@@ -229,8 +227,8 @@ export default function WorkoutVideo() {
               </div>
             </div>
           </div>
-          <button type="button" className="workout__btn-progress">
-            <a className="btn-progress" href="#">Заполнить свой прогресс</a>
+          <button type="button" className="workout__btn-progress pt-[40px]">
+            <a className="btn-progress font-roboto font-normal text-[18px] leading-[110%] text-black rounded-[46px] px-[26px] py-[16px] w-[320px] h-[52px] bg-[#bcec30]" href="#">Заполнить свой прогресс</a>
             {/* <button onClick={} className="btn-progress">Заполнить свой прогресс</button> */}
           </button>
         </div>
