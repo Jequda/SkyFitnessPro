@@ -18,11 +18,11 @@ export default function Main() {
 
   useEffect(() => {
     getCoursesList();
-  }, [cards, userId]);
+  }, []);
 
   useEffect(() => {
     getNotAddedCardsList();
-  }, [userId, cards, notAddedCards]);
+  }, []);
 
   const [isOpenedPopLogin, setIsOpenedPopLogin] = useState<boolean>(false);
   const openPopLogin = () => {
