@@ -5,7 +5,7 @@ import {
   signInWithEmailAndPassword,
   updatePassword,
 } from "firebase/auth";
-import { getDatabase, ref, set, remove } from "firebase/database";
+import { getDatabase, ref, set, remove, get } from "firebase/database";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDEZ0a2W2aKtWZS0BLkbkukrl4WvUDQLCM",
@@ -26,9 +26,9 @@ const baseUrl =
   "https://fitness-pro-team3-default-rtdb.europe-west1.firebasedatabase.app";
 
 export const getCourses = async () => {
-  const response = await fetch(baseUrl + "/courses.json")
+  const response = await fetch(baseUrl + "/courses.json");
   const data = await response.json();
-  return data
+  return data;
 };
 
 export const getWorkouts = async () => {
@@ -40,7 +40,7 @@ export const getWorkouts = async () => {
     .catch((error) => {
       if (error instanceof Error) throw new Error(error.message);
     });
-}
+};
 
 export const loginUser = async ({
   login,
@@ -88,7 +88,7 @@ export const updatePasswordUser = async ({
   } catch (error) {
     if (error instanceof Error) throw new Error(error.message);
   }
-}
+};
 
 export const addFavoriteCourse = async ({
   courseId,
@@ -124,5 +124,22 @@ export const deleteFavoriteCourse = async ({
     console.log(`User with ID ${userId} deleted successfully.`);
   } catch (error) {
     if (error instanceof Error) throw new Error(error.message);
+  }
+};
+
+export const checkIfFavorite = async ({
+  courseId,
+  userId,
+}: {
+  courseId: string;
+  userId: string;
+}): Promise<boolean> => {
+  const userRef = ref(database, `courses/${courseId}/users/${userId}`);
+  try {
+    const snapshot = await get(userRef);
+    return snapshot.exists();
+  } catch (error) {
+    if (error instanceof Error) throw new Error(error.message);
+    return false;
   }
 };
