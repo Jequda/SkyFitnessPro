@@ -4,8 +4,27 @@ import { useCourses } from "../../hooks/useCourses";
 import Fitting from "../../components/Course/Fitting";
 import Directions from "../../components/Course/Directions";
 import { useUser } from "../../contexts/UserContext";
+import { useState } from "react";
+import PopLogin from "../../components/popups/PopLogin/PopLogin";
+import PopSignin from "../../components/popups/PopSignin/PopSignin";
 
 export default function CoursePage({ description }: { description: string }) {
+  const [isLoginOpened, setIsLoginOpened] = useState(false);
+  const [isSigninOpened, setIsSigninOpened] = useState(false);
+
+  function openPopLogin() {
+    setIsLoginOpened((prev) => !prev);
+    if (isSigninOpened) {
+      openPopSignin();
+    }
+  }
+
+  function openPopSignin() {
+    setIsSigninOpened((prev) => !prev);
+    if (isLoginOpened) {
+      openPopLogin();
+    }
+  }
   const { user } = useUser();
   const { id } = useParams();
   console.log(id);
@@ -112,13 +131,35 @@ export default function CoursePage({ description }: { description: string }) {
                         </div>
                       </Link>
                     ) : (
-                      <div className="pl-[28px] cursor-pointer">
-                        <Link to={`/login`}>
-                          <div className="btn-green w-[437px] h-[52px] text-2xl py-2 px-4 text-center">
-                            Войдите, чтобы добавить курс
+                      <>
+                        {(isLoginOpened || isSigninOpened) && (
+                          <div
+                            onClick={() => {
+                              setIsLoginOpened(false), setIsSigninOpened(false);
+                            }}
+                            className="fixed inset-0 bg-black bg-opacity-50 z-[3]"
+                          ></div>
+                        )}
+                        <div className="pl-[28px] cursor-pointer">
+                          <button onClick={openPopLogin}>
+                            <div className="btn-green w-[437px] h-[52px] text-2xl py-2 px-4 text-center">
+                              Войдите, чтобы добавить курс
+                            </div>
+                          </button>
+                          <div className="absolute z-[4] bg-white rounded-[30px] mt-[267px] ml-[540px]">
+                            {isLoginOpened && (
+                              <PopLogin transitionFromMainPage={true}
+                              openPopSignin={openPopSignin} />
+                            )}
+                            {isSigninOpened && (
+                              <PopSignin
+                                transitionFromMainPage={true}
+                                openPopLogin={openPopLogin}
+                              />
+                            )}
                           </div>
-                        </Link>
-                      </div>
+                        </div>
+                      </>
                     )}
 
                     {/* Если пользователь авторизован */}
