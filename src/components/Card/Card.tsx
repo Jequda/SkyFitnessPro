@@ -17,7 +17,7 @@ type CardType = {
 export default function Card({ openPopLogin, card, isProfilePage, handleOpenPopSelectTraining, handleDeleteCard }: CardType) {
     const {userId} = useUser()
     const courseId = card._id
-    const { getNotAddedCardsList} = useCourses()
+    const { getCoursesList, getNotAddedCardsList} = useCourses()
     
 
     const handleAddFavoriteCourse = async (e: React.MouseEvent<HTMLDivElement>) => {
@@ -25,6 +25,7 @@ export default function Card({ openPopLogin, card, isProfilePage, handleOpenPopS
         if (userId) {
             try {
                 await addFavoriteCourse({courseId, userId}).then(() => {
+                    getCoursesList()
                     getNotAddedCardsList()
                 })  
             } catch (error) {
