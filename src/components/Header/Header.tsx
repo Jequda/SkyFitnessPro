@@ -32,7 +32,7 @@ export default function Header() {
   return (
     <>
       {user ? (
-        <div className="flex flex-row w-[1100px] ml-[140px] justify-between">
+        <div className="flex flex-row w-[1100px] mr-[40px] justify-between">
           <div className="mt-[50px]  ">
             <img
               className=""

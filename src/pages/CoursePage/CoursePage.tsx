@@ -38,8 +38,10 @@ export default function CoursePage({ description }: { description: string }) {
 
   return (
     <>
-      <Header />
-      <div className="mx-[140px] my-[60px]">
+      <div className="flex flex-col justify-center items-center gap-[50px] ">
+        <Header />
+
+
         <div className="">
           <div className="relative w-[1160px] h-[310px] rounded-[20px] overflow-hidden">
             <img
