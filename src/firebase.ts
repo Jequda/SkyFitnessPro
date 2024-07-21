@@ -30,6 +30,18 @@ export const getCourses = async () => {
   });
   const data = await response.json();
   return data;
+
+  // const coursesRef = ref(database, "courses");
+
+  // try {
+  //   const snapshot = await get(coursesRef);
+  //   if (snapshot.exists()) {
+  //     const data = snapshot.val();
+  //     return data;
+  //   }
+  // } catch (error) {
+  //   if (error instanceof Error) throw new Error(error.message);
+  // }
 };
 
 export const getWorkouts = async () => {
