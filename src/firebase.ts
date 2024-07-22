@@ -5,7 +5,7 @@ import {
   signInWithEmailAndPassword,
   updatePassword,
 } from "firebase/auth";
-import { getDatabase, ref, set, remove } from "firebase/database";
+import { getDatabase, ref, set, remove, get } from "firebase/database";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDEZ0a2W2aKtWZS0BLkbkukrl4WvUDQLCM",
@@ -19,16 +19,18 @@ const firebaseConfig = {
 };
 
 export const app = initializeApp(firebaseConfig);
-// const db = ref(getDatabase(app));
 export const auth = getAuth(app);
 const database = getDatabase(app);
 const baseUrl =
   "https://fitness-pro-team3-default-rtdb.europe-west1.firebasedatabase.app";
 
+
 export const getCourses = async () => {
-  const response = await fetch(baseUrl + "/courses.json")
+  const response = await fetch(baseUrl + "/courses.json").catch((error) => {
+    throw new Error(error.message);
+  });
   const data = await response.json();
-  return data
+  return data;
 };
 
 export const getWorkouts = async () => {
@@ -85,7 +87,8 @@ export const updatePasswordUser = async ({
   } catch (error) {
     if (error instanceof Error) throw new Error(error.message);
   }
-}
+};
+
 
 export const addFavoriteCourse = async ({
   courseId,
@@ -123,3 +126,49 @@ export const deleteFavoriteCourse = async ({
     if (error instanceof Error) throw new Error(error.message);
   }
 };
+
+
+export const checkIfFavorite = async ({
+  courseId,
+  userId,
+}: {
+  courseId: string;
+  userId: string;
+}): Promise<boolean> => {
+  const userRef = ref(database, `courses/${courseId}/users/${userId}`);
+  try {
+    const snapshot = await get(userRef);
+    return snapshot.exists();
+  } catch (error) {
+    if (error instanceof Error) throw new Error(error.message);
+    return false;
+  }
+};
+
+
+export const updateUserWorkout = async ({
+  courseId,
+  userId,
+  workoutId,
+  exercises,
+}: {
+  courseId: string;
+  userId: string;
+  workoutId: string;
+  exercises: { [exerciseName: string]: number };
+}) => {
+  const workoutRef = ref(database, `courses/${courseId}/users/${userId}`);
+  const workoutData = {
+    workouts: {
+      [workoutId]: { exercises },
+    },
+  };
+
+  try {
+    await set(workoutRef, workoutData);
+    console.log(`Data ${workoutData} added successfully.`);
+  } catch (error) {
+    if (error instanceof Error) throw new Error(error.message);
+  }
+};
+

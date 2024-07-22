@@ -18,11 +18,11 @@ export default function Main() {
 
   useEffect(() => {
     getCoursesList();
-  }, [cards, userId]);
+  }, []);
 
   useEffect(() => {
     getNotAddedCardsList();
-  }, [userId, cards, notAddedCards]);
+  }, [cards]);
 
   const [isOpenedPopLogin, setIsOpenedPopLogin] = useState<boolean>(false);
   const openPopLogin = () => {
@@ -70,7 +70,7 @@ export default function Main() {
       </div>
       <div className="flex gap-[40px] flex-wrap justify-start max-w-[1160px] w-[100%]">
         {isLoading ? (
-          <div className="flex px-[16px] py-[20px] gap-[10px] text-[32px] leading-[35px] font-normal">
+          <div className="flex gap-[10px] text-[32px] leading-[35px] font-normal">
             Загружаем курсы...
           </div>
         ) : userId ? (
@@ -79,7 +79,7 @@ export default function Main() {
               <Card card={card} openPopLogin={openPopLogin} key={card._id} />
             ))
           ) : (
-            <div className="flex px-[16px] py-[20px] gap-[10px] text-[32px] leading-[35px] font-normal">
+            <div className="flex gap-[10px] text-[32px] leading-[35px] font-normal">
               Вы добавили все курсы
             </div>
           )

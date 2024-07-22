@@ -4,50 +4,37 @@ import { useCourses } from "../../hooks/useCourses";
 import Fitting from "../../components/Course/Fitting";
 import Directions from "../../components/Course/Directions";
 import { useUser } from "../../contexts/UserContext";
+import { useState } from "react";
+import PopLogin from "../../components/popups/PopLogin/PopLogin";
+import PopSignin from "../../components/popups/PopSignin/PopSignin";
 
 export default function CoursePage({ description }: { description: string }) {
+  const [isLoginOpened, setIsLoginOpened] = useState(false);
+  const [isSigninOpened, setIsSigninOpened] = useState(false);
+
+  function openPopLogin() {
+    setIsLoginOpened((prev) => !prev);
+    if (isSigninOpened) {
+      openPopSignin();
+    }
+  }
+
+  function openPopSignin() {
+    setIsSigninOpened((prev) => !prev);
+    if (isLoginOpened) {
+      openPopLogin();
+    }
+  }
   const { user } = useUser();
   const { id } = useParams();
-  console.log(id);
   const { cards } = useCourses();
-  console.dir(cards.find((course) => course._id === id));
   const currentCourse = cards.find((course) => course._id === id);
   const imagePath = "../coursesImages/" + id + ".png";
 
-  console.log(imagePath);
-  console.log(description);
-
-  // const {getCoursesList, cards, isLoading} = useCourses()
-
-  //   useEffect(() => {
-  //       getCoursesList()
-  //   }, [])
-
-  // const [courses, setCourses] = useState<string[]>([]);
-
-  // const [isOpened, setIsOpened] = useState(false);
-  // function togglePopup() {
-  //   setIsOpened((prev) => !prev);
-  // }
-
-  // useEffect(() => {
-  //   async function fetchCourses() {
-  //     try {
-  //       const coursesData = await getCourses();
-  //       setCourses(coursesData as unknown as string[]);
-  //       console.log(coursesData);
-  //     } catch (error) {
-  //       console.error("Error fetching courses:", error);
-  //     }
-  //   }
-  //   fetchCourses();
-  // }, []);
   return (
     <>
       <div className="flex flex-col justify-center items-center gap-[50px] ">
         <Header />
-        {/* <Link to={`/login`}>
-      </Link> */}
 
         <div className="">
           <div className="relative w-[1160px] h-[310px] rounded-[20px] overflow-hidden">
@@ -88,46 +75,65 @@ export default function CoursePage({ description }: { description: string }) {
             </div>
             <div className="">
               <div className="overflow-hidden">
-                <div className="bg-[#FFFFFF] rounded-[20px] w-[1160px] h-[486px] shadow-2xl mt-[102px] flex flex-row ">
+                <div className="bg-[#FFFFFF] rounded-[20px] w-[1160px] min-h-[486px] max-h-[678px] shadow-2xl mt-[102px] flex flex-row ">
                   <div>
-                    <div className="w-[437px] h-[406px] p-[28px]">
-                      <h1 className="w-[398px] h-[120px] text-5xl font-semibold ">
+                    <div className="w-[437px] min-h-[200px] ">
+                      <h1 className=" pt-[28px] w-[398px] h-[120px] text-center text-5xl font-semibold ">
                         Начните путь <br />к новому телу
                       </h1>
-                      <div className="">
-                        {/* {currentCourse?.description} */}
-                        <ul className="w-[437px] h-[178px] text-2xl/loose pl-[28px] list-disc pb-[28px]">
+                      <div className="w-[437px] text-justify">
+                        {currentCourse?.description}
+                        {/* <ul className="w-[437px] h-[178px] text-2xl/loose pl-[28px] list-disc pb-[28px]">
                           <li>проработка всех групп мышц</li>
                           <li>тренировка суставов</li>
                           <li>улучшение циркуляции крови</li>
                           <li>упражнения заряжают бодростью</li>
                           <li>помогают противостоять стрессам</li>
-                        </ul>
+                        </ul> */}
                       </div>
                     </div>
-
-                    {user ? (
-                      <Link to={""}>
-                        <div className="btn-green w-[437px] h-[52px] text-2xl py-2 px-4 text-center">
-                          Добавить курс
-                        </div>
-                      </Link>
-                    ) : (
-                      <div className="pl-[28px] cursor-pointer">
-                        <Link to={`/login`}>
+                    <div className="pt-[10px]">
+                      {user ? (
+                        <Link to={""}>
                           <div className="btn-green w-[437px] h-[52px] text-2xl py-2 px-4 text-center">
-                            Войдите, чтобы добавить курс
+                            Добавить курс
                           </div>
                         </Link>
-                      </div>
-                    )}
-
-                    {/* Если пользователь авторизован */}
-                    {/* <Link to={""}>
-                        <div className="btn-green w-[437px] h-[52px] text-2xl py-2 px-4 text-center">
-                          Добавить курс
-                        </div>
-                      </Link> */}
+                      ) : (
+                        <>
+                          {(isLoginOpened || isSigninOpened) && (
+                            <div
+                              onClick={() => {
+                                setIsLoginOpened(false),
+                                  setIsSigninOpened(false);
+                              }}
+                              className="fixed inset-0 bg-black bg-opacity-50 z-[3]"
+                            ></div>
+                          )}
+                          <div className="justify-center cursor-pointer">
+                            <button onClick={openPopLogin}>
+                              <div className="btn-green w-[437px] h-[52px] text-2xl py-2 px-4 text-center">
+                                Войдите, чтобы добавить курс
+                              </div>
+                            </button>
+                            <div className="absolute z-[4] bg-white rounded-[30px] mt-[267px] ml-[540px]">
+                              {isLoginOpened && (
+                                <PopLogin
+                                  transitionFromMainPage={true}
+                                  openPopSignin={openPopSignin}
+                                />
+                              )}
+                              {isSigninOpened && (
+                                <PopSignin
+                                  transitionFromMainPage={true}
+                                  openPopLogin={openPopLogin}
+                                />
+                              )}
+                            </div>
+                          </div>
+                        </>
+                      )}
+                    </div>
                   </div>
 
                   <div>
