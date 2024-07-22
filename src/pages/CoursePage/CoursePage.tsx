@@ -27,20 +27,14 @@ export default function CoursePage({ description }: { description: string }) {
   }
   const { user } = useUser();
   const { id } = useParams();
-  console.log(id);
   const { cards } = useCourses();
-  console.dir(cards.find((course) => course._id === id));
   const currentCourse = cards.find((course) => course._id === id);
   const imagePath = "../coursesImages/" + id + ".png";
-
-  console.log(imagePath);
-  console.log(description);
 
   return (
     <>
       <div className="flex flex-col justify-center items-center gap-[50px] ">
         <Header />
-
 
         <div className="">
           <div className="relative w-[1160px] h-[310px] rounded-[20px] overflow-hidden">

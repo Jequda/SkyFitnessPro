@@ -4,15 +4,16 @@ import Card from "../Card/Card";
 import PopReset from "../popups/PopReset/PopReset";
 import Header from "../Header/Header";
 import PopSelectTraining from "../popups/PopSelectTraining/PopSelectTraining";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useCourses } from "../../hooks/useCourses";
 import { useUser } from "../../contexts/UserContext";
 
 export default function Profile() {
   const [showPopReset, setShowPopReset] = useState(false);
   const [showPopSelectTraining, setShowPopSelectTraining] = useState(false);
-  const { userId } = useUser();
+  const { userId, user, logout } = useUser();
   const { cards, getCoursesList, isLoading } = useCourses();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (userId) {
@@ -20,7 +21,7 @@ export default function Profile() {
     }
   }, [userId, getCoursesList]);
 
-  const addedCourses = cards.filter(course => {
+  const addedCourses = cards.filter((course) => {
     return userId && course.users && Object.keys(course.users).includes(userId);
   });
 
@@ -38,6 +39,12 @@ export default function Profile() {
 
   const handleClosePopSelectTraining = () => {
     setShowPopSelectTraining(false);
+  };
+
+  const handleLogout = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault;
+    logout();
+    navigate(appRoutes.MAIN);
   };
 
   return (
@@ -58,8 +65,8 @@ export default function Profile() {
             <img src="avatar.svg" alt="avatar" />
           </div>
           <div className="flex flex-col items-start">
-            <h2 className="text-[32px] mb-[30px] font-medium">Сергей</h2>
-            <p className="text-[18px] mb-[30px]">Логин: sergey.petrov96</p>
+            <h2 className="text-[32px] mb-[30px] font-medium">{user?.email}</h2>
+            <p className="text-[18px] mb-[30px]">Логин: {user?.email}</p>
             <div className="flex">
               <button
                 className="btn-green w-[192px] mr-[10px]"
@@ -67,9 +74,9 @@ export default function Profile() {
               >
                 Изменить пароль
               </button>
-              <Link to={appRoutes.MAIN} className="btn-white w-[192px]">
+              <button onClick={handleLogout} className="btn-white w-[192px]">
                 Выйти
-              </Link>
+              </button>
             </div>
           </div>
         </div>
@@ -88,7 +95,7 @@ export default function Profile() {
               <Card
                 key={card._id}
                 card={card}
-                openPopLogin={() => { }}
+                openPopLogin={() => {}}
                 isProfilePage={true}
                 handleOpenPopSelectTraining={handleOpenPopSelectTraining}
               />
