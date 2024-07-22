@@ -33,7 +33,7 @@ export default function Header() {
     <>
       {user ? (
         <div className="flex flex-row w-[1100px] mr-[40px] justify-between">
-          <div className="mt-[50px]  ">
+          <div className="mt-[50px]">
             <img
               className=""
               src="/logo.png"

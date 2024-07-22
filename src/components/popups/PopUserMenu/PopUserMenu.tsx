@@ -12,7 +12,7 @@ export default function PopUserMenu() {
     navigate(appRoutes.MAIN);
   };
   return (
-    <div className="absolute ml-[260px] inset-0 z-50 mt-[120px]">
+    <div className="absolute ml-[232px] inset-0 z-50 mt-[120px]">
       <div className="bg-white rounded-[30px] shadow-[0px_4px_67px_-12px_rgba(0,0,0,0.13)] ml-[1034px] w-[266px] h-[258px]">
         <div className="flex flex-col justify-center items-center pt-[30px]">
           <p className="text-center text-xl">{user?.email}</p>
