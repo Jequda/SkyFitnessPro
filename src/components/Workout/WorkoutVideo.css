@@ -1,12 +1,80 @@
+/*
+  Based on TailwindCSS recommendations,
+  consider using classes instead of the `@apply` directive
+  @see https://tailwindcss.com/docs/reusing-styles#avoiding-premature-abstraction
+*/
+.workout {
+  @apply w-[1440px] h-[1560px] pt-[145px] pb-[200px];
+}
+.container {
+  @apply max-w-[1160px] h-[1213px] m-auto px-[140px] py-0;
+}
+.workout__info {
+  @apply pb-10;
+}
+.workout__name {
+  @apply w-[810px] h-[119px];
+}
+.workout__name-title {
+  @apply font-medium text-6xl leading-[100%] text-black pb-6;
+  font-family: Roboto;
+}
+.workout__name-description {
+  @apply font-normal text-[32px] leading-[110%] underline text-black;
+  font-family: Roboto;
+  text-decoration-skip-ink: none;
+}
+.workout__video {
+  @apply w-[1160px] h-[639px] mb-10;
+}
+.workout__list {
+  @apply w-[1160px] h-[375px] shadow-[0_4px_67px_-12px_rgba(0,0,0,0.13)] p-10 rounded-[30px];
+  background: #fff;
+}
+.workout__list-title {
+  @apply font-normal text-[32px] leading-[110%] text-black pb-5;
+  font-family: StratosSkyeng;
+}
+.workout__list-items {
+  @apply font-normal text-lg leading-[110%] text-black flex flex-row justify-between;
+  font-family: Roboto;
+}
+.workout__item1 {
+  @apply pb-5;
+}
+.workout__item2 {
+  @apply pb-5;
+}
+.workout__item-title1 {
+  @apply pb-2.5;
+}
+.workout__item-title2 {
+  @apply pb-2.5;
+}
+.workout__item-title3 {
+  @apply pb-2.5;
+}
+.workout__btn-progress {
+  @apply pt-10;
+}
+.btn-progress {
+  @apply font-normal text-lg leading-[110%] text-black w-80 h-[52px] px-[26px] py-4 rounded-[46px];
+  font-family: Roboto;
+  background: #bcec30;
+}
+
+
+
 /* текущие стили */
 
-/* * {
+/* 
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-} */
+}
 
-/* .workout {
+.workout {
   width: 1440px;
   height: 1560px;
   padding-top: 145px;
