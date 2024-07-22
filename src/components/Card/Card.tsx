@@ -13,47 +13,49 @@ type CardType = {
     openPopLogin: () => void;
 }
 
+
 export default function Card({ openPopLogin, card, isProfilePage, handleOpenPopSelectTraining }: CardType) {
-    const { userId } = useUser();
-    const [isFavorite, setIsFavorite] = useState(false);
-    const courseId = card._id;
-    const { getNotAddedCardsList } = useCourses();
+  const { userId } = useUser();
+  const courseId = card._id;
+  const { getCoursesList, getNotAddedCardsList } = useCourses();
+  const [isFavorite, setIsFavorite] = useState(false);
 
-    useEffect(() => {
-        const checkFavoriteStatus = async () => {
-            if (userId) {
-                try {
-                    const result = await checkIfFavorite({ courseId, userId });
-                    setIsFavorite(result);
-                } catch (error) {
-                    console.error("Error checking favorite status:", error);
-                }
-            }
-        };
-
-        checkFavoriteStatus();
-    }, [userId, courseId]);
-
-
-    const handleToggleFavoriteCourse = async (e: React.MouseEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        if (userId) {
-            try {
-                if (isFavorite) {
-                    await deleteFavoriteCourse({ courseId, userId });
-                    setIsFavorite(false);
-                } else {
-                    await addFavoriteCourse({ courseId, userId });
-                    setIsFavorite(true);
-                }
-                getNotAddedCardsList();
-            } catch (error) {
-                alert("Ошибка");
-            }
-        } else {
-            openPopLogin();
+  useEffect(() => {
+    const checkFavoriteStatus = async () => {
+      if (userId) {
+        try {
+          const result = await checkIfFavorite({ courseId, userId });
+          setIsFavorite(result);
+        } catch (error) {
+          console.error("Error checking favorite status:", error);
         }
+      }
     };
+
+    checkFavoriteStatus();
+  }, [userId, courseId]);
+
+  const handleToggleFavoriteCourse = async (
+    e: React.MouseEvent<HTMLDivElement>
+  ) => {
+    e.preventDefault();
+    if (userId) {
+      try {
+        if (isFavorite) {
+          await deleteFavoriteCourse({ courseId, userId });
+          setIsFavorite(false);
+        } else {
+          await addFavoriteCourse({ courseId, userId });
+          setIsFavorite(true);
+        }
+        getCoursesList();
+        getNotAddedCardsList();
+      } catch (error) {
+        alert("ошибка");
+      }
+    } else console.log(userId);
+  };
+
 
     return (
         <>

@@ -19,27 +19,26 @@ const firebaseConfig = {
 };
 
 export const app = initializeApp(firebaseConfig);
-// const db = ref(getDatabase(app));
 export const auth = getAuth(app);
 const database = getDatabase(app);
 const baseUrl =
   "https://fitness-pro-team3-default-rtdb.europe-west1.firebasedatabase.app";
 
+
 export const getCourses = async () => {
-  const response = await fetch(baseUrl + "/courses.json");
+  const response = await fetch(baseUrl + "/courses.json").catch((error) => {
+    throw new Error(error.message);
+  });
   const data = await response.json();
   return data;
 };
 
 export const getWorkouts = async () => {
-  fetch(baseUrl + "/workouts.json")
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("Data retrieved from Firebase:", data);
-    })
-    .catch((error) => {
-      if (error instanceof Error) throw new Error(error.message);
-    });
+  const response = await fetch(baseUrl + "/workouts.json").catch((error) => {
+    throw new Error(error.message);
+  });
+  const data = await response.json();
+  return data;
 };
 
 export const loginUser = async ({
@@ -90,6 +89,7 @@ export const updatePasswordUser = async ({
   }
 };
 
+
 export const addFavoriteCourse = async ({
   courseId,
   userId,
@@ -127,6 +127,7 @@ export const deleteFavoriteCourse = async ({
   }
 };
 
+
 export const checkIfFavorite = async ({
   courseId,
   userId,
@@ -143,3 +144,31 @@ export const checkIfFavorite = async ({
     return false;
   }
 };
+
+
+export const updateUserWorkout = async ({
+  courseId,
+  userId,
+  workoutId,
+  exercises,
+}: {
+  courseId: string;
+  userId: string;
+  workoutId: string;
+  exercises: { [exerciseName: string]: number };
+}) => {
+  const workoutRef = ref(database, `courses/${courseId}/users/${userId}`);
+  const workoutData = {
+    workouts: {
+      [workoutId]: { exercises },
+    },
+  };
+
+  try {
+    await set(workoutRef, workoutData);
+    console.log(`Data ${workoutData} added successfully.`);
+  } catch (error) {
+    if (error instanceof Error) throw new Error(error.message);
+  }
+};
+
