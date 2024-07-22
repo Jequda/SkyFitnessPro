@@ -1,7 +1,13 @@
 import { Link } from "react-router-dom";
 import { appRoutes } from "../../../route/appRoutes";
 
-export default function PopLogin() {
+interface PopLoginProps {
+  transitionFromMainPage: boolean;
+  openPopLogin: () => void;
+  openPopSignin: () => void;
+}
+
+export default function PopLogin(props: PopLoginProps) {
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="popup-container">

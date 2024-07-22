@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  mode: "jit",
   content: ["./**/*.{html,tsx,ts}"],
   theme: {
     extend: {
@@ -14,5 +15,5 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: ["prettier-plugin-tailwindcss"],
 }

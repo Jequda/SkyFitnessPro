@@ -1,4 +1,11 @@
-export default function Card() {
+interface CardProps {
+    key: number;
+    isProfilePage: boolean;
+    handleOpenPopSelectTraining: () => void;
+    handleDeleteCard: () => void;
+  }
+
+export default function Card (props: CardProps) {
     return (
         <div className="w-[360px] flex flex-col justify-center items-center gap-[24px] rounded-[30px] shadow-lg">
             <div className="flex flex-row-reverse w-[360px]">

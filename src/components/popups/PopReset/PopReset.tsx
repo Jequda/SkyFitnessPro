@@ -1,4 +1,11 @@
-export default function PopReset() {
+interface PopResetProps {
+  onClose: () => void;
+}
+
+export default function PopReset({ onClose }: PopResetProps) {
+  const handleClose = () => {
+    onClose();
+  };
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="popup-container">
@@ -18,7 +25,7 @@ export default function PopReset() {
             placeholder="Повторите пароль"
             className="text-area"
           />
-          <button className="btn-green w-[280px] mt-[24px]">Подтвердить</button>
+          <button className="btn-green w-[280px] mt-[24px]" onClick={handleClose} >Подтвердить</button>
         </form>
       </div>
     </div>

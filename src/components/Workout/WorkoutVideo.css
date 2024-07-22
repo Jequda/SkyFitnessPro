@@ -1,16 +1,17 @@
-* {
+/* текущие стили */
+
+/* * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-}
+} */
 
-.workout {
+/* .workout {
   width: 1440px;
   height: 1560px;
   padding-top: 145px;
   padding-bottom: 200px;
-  /* padding-left: 140px;
-  padding-right: 140px; */
+  
 }
 
 .container {
@@ -28,14 +29,13 @@
 .workout__name {
   width: 810px;
   height: 119px;
-  /* padding-bottom: 40px; */
 }
 
 .workout__name-title {
   font-family: Roboto;
   font-weight: 500;
   font-size: 60px;
-  line-height: 100%;
+  line-height: 100%;  
   color: #000;
   padding-bottom: 24px;
 }
@@ -53,10 +53,6 @@
 .workout__video {
   width: 1160px;
   height: 639px;
-  /* border-radius: 30px;
-  padding: 40px;
-  box-shadow: 0 4px 67px -12px rgba(0, 0, 0, 0.13);
-  background: #fff;*/
   margin-bottom: 40px;
 
 }
@@ -126,7 +122,11 @@
   width: 320px;
   height: 52px;
   background: #bcec30;
-}
+} */
+
+
+
+/* стили для хедера и другие старые стили */
 
 /* .header__block {
   height: 70px;
