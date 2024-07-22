@@ -80,7 +80,7 @@ export default function Header() {
           </div>
         </div>
       ) : (
-        <div className="flex flex-row">
+        <div className="flex flex-row justify-between">
           {(isLoginOpened || isSigninOpened) && (
             <div
               onClick={() => {
@@ -89,7 +89,7 @@ export default function Header() {
               className="fixed inset-0 bg-black bg-opacity-50 z-[3]"
             ></div>
           )}
-          <div className="mt-[50px] ml-[140px] ">
+          <div className="mt-[50px]">
             <img
               className=""
               src="/logo.png"

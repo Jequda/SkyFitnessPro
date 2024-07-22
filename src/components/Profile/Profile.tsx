@@ -1,41 +1,29 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { appRoutes } from "../../../src/route/appRoutes";
 import Card from "../Card/Card";
 import PopReset from "../popups/PopReset/PopReset";
 import Header from "../Header/Header";
 import PopSelectTraining from "../popups/PopSelectTraining/PopSelectTraining";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useCourses } from "../../hooks/useCourses";
+import { useUser } from "../../contexts/UserContext";
 
 export default function Profile() {
   const [showPopReset, setShowPopReset] = useState(false);
   const [showPopSelectTraining, setShowPopSelectTraining] = useState(false);
-  const [cards, setCards] = useState([
-    {
-      id: 1,
-      title: "Йога",
-      duration: "25 дней",
-      timePerDay: "20-50 мин/день",
-      level: "Сложный",
-    },
-    {
-      id: 2,
-      title: "Йога",
-      duration: "25 дней",
-      timePerDay: "20-50 мин/день",
-      level: "Сложный",
-    },
-    {
-      id: 3,
-      title: "Йога",
-      duration: "25 дней",
-      timePerDay: "20-50 мин/день",
-      level: "Сложный",
-    },
-  ]);
+  const { userId, user, logout } = useUser();
+  const { cards, getCoursesList, isLoading } = useCourses();
+  const navigate = useNavigate();
 
-  const handleDeleteCard = (id: number) => {
-    setCards(cards.filter((card) => card.id !== id));
-  };
+  useEffect(() => {
+    if (userId) {
+      getCoursesList();
+    }
+  }, [userId, getCoursesList]);
+
+  const addedCourses = cards.filter((course) => {
+    return userId && course.users && Object.keys(course.users).includes(userId);
+  });
 
   const handleOpenPopReset = () => {
     setShowPopReset(true);
@@ -51,6 +39,12 @@ export default function Profile() {
 
   const handleClosePopSelectTraining = () => {
     setShowPopSelectTraining(false);
+  };
+
+  const handleLogout = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault;
+    logout();
+    navigate(appRoutes.MAIN);
   };
 
   return (
@@ -71,9 +65,8 @@ export default function Profile() {
             <img src="avatar.svg" alt="avatar" />
           </div>
           <div className="flex flex-col items-start">
-            <h2 className="text-[32px] mb-[30px] font-medium">Сергей</h2>
-            <p className="text-[18px]">Логин: sergey.petrov96</p>
-            <p className="text-[18px] mb-[30px]">Пароль: 4fkhdj880d</p>
+            <h2 className="text-[32px] mb-[30px] font-medium">{user?.email}</h2>
+            <p className="text-[18px] mb-[30px]">Логин: {user?.email}</p>
             <div className="flex">
               <button
                 className="btn-green w-[192px] mr-[10px]"
@@ -81,26 +74,37 @@ export default function Profile() {
               >
                 Изменить пароль
               </button>
-              <Link to={appRoutes.MAIN} className="btn-white w-[192px]">
+              <button onClick={handleLogout} className="btn-white w-[192px]">
                 Выйти
-              </Link>
+              </button>
             </div>
           </div>
         </div>
       </div>
-      <div className="flex flex-col pb-[81px] font-roboto">
+      <div className="flex flex-col items-start pb-[81px] font-roboto w-full max-w-[1160px]">
         <h1 className="text-[40px] leading-[35px] font-medium mb-[40px]">
           Мои курсы
         </h1>
         <div className="flex gap-[40px] flex-wrap max-w-[1160px]">
-          {/* {cards.map((card) => (
-            <Card
-              key={card.id}
-              isProfilePage={true}
-              handleOpenPopSelectTraining={handleOpenPopSelectTraining}
-              handleDeleteCard={() => handleDeleteCard(card.id)}
-            />
-          ))} */}
+          {isLoading ? (
+            <div className="flex gap-[10px] text-[32px] leading-[35px] font-normal">
+              Загружаем курсы...
+            </div>
+          ) : addedCourses.length > 0 ? (
+            addedCourses.map((card) => (
+              <Card
+                key={card._id}
+                card={card}
+                openPopLogin={() => {}}
+                isProfilePage={true}
+                handleOpenPopSelectTraining={handleOpenPopSelectTraining}
+              />
+            ))
+          ) : (
+            <div className="flex gap-[10px] text-[32px] leading-[35px] font-normal">
+              У вас нет добавленных курсов
+            </div>
+          )}
         </div>
       </div>
       {showPopReset && <PopReset onClose={handleClosePopReset} />}

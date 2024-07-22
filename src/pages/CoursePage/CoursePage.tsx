@@ -1,16 +1,37 @@
+import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import Header from "../../components/Header/Header";
-import { useCourses } from "../../hooks/useCourses";
 import Fitting from "../../components/Course/Fitting";
 import Directions from "../../components/Course/Directions";
 import { useUser } from "../../contexts/UserContext";
-import { useState } from "react";
 import PopLogin from "../../components/popups/PopLogin/PopLogin";
 import PopSignin from "../../components/popups/PopSignin/PopSignin";
+import { addFavoriteCourse, getCourses } from "../../firebase";
+import { CourseType } from "../../types";
+import { useCourses } from "../../hooks/useCourses";
 
-export default function CoursePage({ description }: { description: string }) {
+export default function CoursePage() {
   const [isLoginOpened, setIsLoginOpened] = useState(false);
   const [isSigninOpened, setIsSigninOpened] = useState(false);
+  const [currentCourse, setCurrentCourse] = useState<CourseType | null>(null);
+  const { getNotAddedCardsList } = useCourses();
+
+  const { userId } = useUser();
+  const { id } = useParams();
+  const courseId = id;
+
+  useEffect(() => {
+    // Загрузка данных из базы данных при первом рендере
+    getCourses()
+      .then((courses) => {
+        const coursesData = Object.keys(courses).map((id) => courses[id]);
+        const course = coursesData.find((course) => course._id === courseId);
+        setCurrentCourse(course);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  }, [courseId]);
 
   function openPopLogin() {
     setIsLoginOpened((prev) => !prev);
@@ -25,22 +46,32 @@ export default function CoursePage({ description }: { description: string }) {
       openPopLogin();
     }
   }
-  const { user } = useUser();
-  const { id } = useParams();
-  console.log(id);
-  const { cards } = useCourses();
-  console.dir(cards.find((course) => course._id === id));
-  const currentCourse = cards.find((course) => course._id === id);
-  const imagePath = "../coursesImages/" + id + ".png";
 
-  console.log(imagePath);
-  console.log(description);
+  const imagePath = "../coursesImages/" + courseId + ".png";
+
+  if (!currentCourse) {
+    return <div>Loading...</div>;
+  }
+
+  const handleAddFavoriteCourse = async (
+    e: React.MouseEvent<HTMLDivElement>
+  ) => {
+    e.preventDefault();
+    if (userId && courseId) {
+      try {
+        await addFavoriteCourse({ courseId, userId }).then(() => {
+          getNotAddedCardsList();
+        });
+      } catch (error) {
+        alert("ошибка");
+      }
+    } else console.log(userId);
+  };
 
   return (
     <>
       <div className="flex flex-col justify-center items-center gap-[50px] ">
         <Header />
-
 
         <div className="">
           <div className="relative w-[1160px] h-[310px] rounded-[20px] overflow-hidden">
@@ -62,7 +93,7 @@ export default function CoursePage({ description }: { description: string }) {
               Подойдет для вас, если:
             </p>
             <div className="w-[1160px] flex justify-between flex-row flex-wrap ">
-              {currentCourse?.fitting.map((text, index, i) => (
+              {currentCourse?.fitting.map((text, index) => (
                 <Fitting key={index} text={text} i={index} />
               ))}
             </div>
@@ -99,12 +130,10 @@ export default function CoursePage({ description }: { description: string }) {
                       </div>
                     </div>
                     <div className="pt-[10px]">
-                      {user ? (
-                        <Link to={""}>
-                          <div className="btn-green w-[437px] h-[52px] text-2xl py-2 px-4 text-center">
+                      {userId ? (
+                          <div onClick={handleAddFavoriteCourse} className="btn-green w-[437px] h-[52px] text-2xl py-2 px-4 text-center">
                             Добавить курс
                           </div>
-                        </Link>
                       ) : (
                         <>
                           {(isLoginOpened || isSigninOpened) && (
