@@ -1,49 +1,78 @@
-
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { CourseType } from "../../types";
 import { imgObject } from "../../utills/imgObject";
 import { ToolTipComponent } from "../Tooltip/Tooltip";
 import { useUser } from "../../contexts/UserContext";
-import { addFavoriteCourse } from "../../firebase";
+import { addFavoriteCourse, deleteFavoriteCourse, checkIfFavorite } from "../../firebase";
 import { useCourses } from "../../hooks/useCourses";
 type CardType = {
     card: CourseType;
     isProfilePage?: boolean;
     handleOpenPopSelectTraining?: () => void;
-    handleDeleteCard?: () => void;
-    openPopLogin: () => void
+    openPopLogin: () => void;
 }
 
-export default function Card({ openPopLogin, card, isProfilePage, handleOpenPopSelectTraining, handleDeleteCard }: CardType) {
-    const {userId} = useUser()
-    const courseId = card._id
-    const { getCoursesList, getNotAddedCardsList} = useCourses()
-    
 
-    const handleAddFavoriteCourse = async (e: React.MouseEvent<HTMLDivElement>) => {
-        e.preventDefault()
-        if (userId) {
-            try {
-                await addFavoriteCourse({courseId, userId}).then(() => {
-                    getCoursesList()
-                    getNotAddedCardsList()
-                })  
-            } catch (error) {
-                alert("ошибка")
-            }
-        } else console.log(userId)
-    }
+export default function Card({ openPopLogin, card, isProfilePage, handleOpenPopSelectTraining }: CardType) {
+  const { userId } = useUser();
+  const courseId = card._id;
+  const { getCoursesList, getNotAddedCardsList } = useCourses();
+  const [isFavorite, setIsFavorite] = useState(false);
+
+  useEffect(() => {
+    const checkFavoriteStatus = async () => {
+      if (userId) {
+        try {
+          const result = await checkIfFavorite({ courseId, userId });
+          setIsFavorite(result);
+        } catch (error) {
+          console.error("Error checking favorite status:", error);
+        }
+      }
+    };
+
+    checkFavoriteStatus();
+  }, [userId, courseId]);
+
+  const handleToggleFavoriteCourse = async (
+    e: React.MouseEvent<HTMLDivElement>
+  ) => {
+    e.preventDefault();
+    if (userId) {
+      try {
+        if (isFavorite) {
+          await deleteFavoriteCourse({ courseId, userId });
+          setIsFavorite(false);
+        } else {
+          await addFavoriteCourse({ courseId, userId });
+          setIsFavorite(true);
+        }
+        getCoursesList();
+        getNotAddedCardsList();
+      } catch (error) {
+        alert("ошибка");
+      }
+    } else console.log(userId);
+  };
+
 
     return (
         <>
-            <Link to={`/course/${card?._id}`}>
-                <div className="w-[360px] flex flex-col justify-center items-center gap-[24px] rounded-[30px] shadow-lg">
+            <div className="w-[360px] flex flex-col justify-center items-center gap-[24px] rounded-[30px] shadow-lg">
+                <Link to={`/course/${card?._id}`}>
                     <div className="flex flex-row-reverse w-[360px]">
-                        <div onClick={userId ? handleAddFavoriteCourse : (e) => { e.preventDefault(); openPopLogin() }} className="absolute pt-[20px] pr-[20px] z-[2]">
-                            <ToolTipComponent>
-                                <svg className="w-[27px] h-[27px]" width="56" height="56" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path fillRule="evenodd" clipRule="evenodd" d="M14 27.3333C21.3638 27.3333 27.3333 21.3638 27.3333 14C27.3333 6.63616 21.3638 0.666626 14 0.666626C6.63619 0.666626 0.666656 6.63616 0.666656 14C0.666656 21.3638 6.63619 27.3333 14 27.3333ZM12.6667 12.6666V7.33329H15.3333V12.6666H20.6667V15.3333H15.3333V20.6666H12.6667V15.3333H7.33332V12.6666H12.6667Z" fill="white" />
-                                </svg>
+                        <div onClick={userId ? handleToggleFavoriteCourse : (e) => { e.preventDefault(); openPopLogin() }} className="absolute pt-[20px] pr-[20px] z-[2]">
+                            <ToolTipComponent text={isFavorite ? "Удалить курс" : "Добавить курс"}>
+                                {isFavorite ? (
+                                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path fillRule="evenodd" clipRule="evenodd" d="M15.9998 29.3333C23.3636 29.3333 29.3332 23.3638 29.3332 16C29.3332 8.63616 23.3636 2.66663 15.9998 2.66663C8.63604 2.66663 2.6665 8.63616 2.6665 16C2.6665 23.3638 8.63604 29.3333 15.9998 29.3333ZM9.33317 14.6666V17.3333H22.6665V14.6666H9.33317Z" fill="white" />
+                                    </svg>
+                                ) : (
+                                    <svg className="w-[27px] h-[27px]" width="56" height="56" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path fillRule="evenodd" clipRule="evenodd" d="M14 27.3333C21.3638 27.3333 27.3333 21.3638 27.3333 14C27.3333 6.63616 21.3638 0.666626 14 0.666626C6.63619 0.666626 0.666656 6.63616 0.666656 14C0.666656 21.3638 6.63619 27.3333 14 27.3333ZM12.6667 12.6666V7.33329H15.3333V12.6666H20.6667V15.3333H15.3333V20.6666H12.6667V15.3333H7.33332V12.6666H12.6667Z" fill="white" />
+                                    </svg>
+                                )}
                             </ToolTipComponent>
                         </div>
                         <img alt="изображение курса" className="rounded-[30px] w-[360px] h-[325px]" src={imgObject[card?.nameEN]} />
@@ -85,20 +114,20 @@ export default function Card({ openPopLogin, card, isProfilePage, handleOpenPopS
                             </div>
                         </div>
                     </div>
-                </div>
-            </Link>
-            {isProfilePage && (
-                <div className="mb-[15px] w-full bg-white rounded-b-[30px] flex flex-col justify-between items-center px-[30px]">
-                    <div className="flex justify-between items-center w-full">
-                        <div className="text-base leading-[18px] font-normal">Прогресс 50%</div>
-                    </div>
-                    <div className="w-[300px] h-[6px] bg-gray-300 rounded-full mt-[10px]">
-                        <div className="w-[50%] h-full bg-[#00C1FF] rounded-full"></div>
-                    </div>
-                    <button onClick={handleOpenPopSelectTraining} className="btn-green w-[300px] mt-[40px]">
-                        Продолжить
-                    </button>
-                </div>)}
+                </Link>
+                {isProfilePage && (
+                    <div className="mb-[15px] w-full bg-white rounded-b-[30px] flex flex-col justify-between items-center px-[30px]">
+                        <div className="flex justify-between items-center w-full">
+                            <div className="text-base leading-[18px] font-normal">Прогресс 50%</div>
+                        </div>
+                        <div className="w-[300px] h-[6px] bg-gray-300 rounded-full mt-[10px]">
+                            <div className="w-[50%] h-full bg-[#00C1FF] rounded-full"></div>
+                        </div>
+                        <button onClick={handleOpenPopSelectTraining} className="btn-green w-[300px] mt-[40px]">
+                            Продолжить
+                        </button>
+                    </div>)}
+            </div>
         </>
     );
 };

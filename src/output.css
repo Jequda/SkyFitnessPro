@@ -829,8 +829,8 @@ video {
   margin-left: 1034px;
 }
 
-.ml-\[140px\] {
-  margin-left: 140px;
+.ml-\[232px\] {
+  margin-left: 232px;
 }
 
 .ml-\[260px\] {
@@ -1212,6 +1212,17 @@ video {
 .w-full {
   width: 100%;
 }
+
+
+.w-\[3000px\] {
+  width: 3000px;
+}
+
+.w-\[px\] {
+  width: px;
+}
+
+
 
 .max-w-\[1160px\] {
   max-width: 1160px;
