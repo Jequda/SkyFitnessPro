@@ -32,15 +32,12 @@ export const getCourses = async () => {
 };
 
 export const getWorkouts = async () => {
-  fetch(baseUrl + "/workouts.json")
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("Data retrieved from Firebase:", data);
-    })
-    .catch((error) => {
-      if (error instanceof Error) throw new Error(error.message);
-    });
-}
+  const response = await fetch(baseUrl + "/workouts.json").catch((error) => {
+    throw new Error(error.message);
+  });
+  const data = await response.json();
+  return data;
+};
 
 export const loginUser = async ({
   login,
