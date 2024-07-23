@@ -8,7 +8,7 @@ import { updatePasswordUser } from "../../../firebase";
 
 type PopResetType = {
   onClose: () => void;
-}
+};
 
 export default function PopReset({ onClose }: PopResetType) {
   const [resetData, setResetData] = useState({
@@ -64,12 +64,14 @@ export default function PopReset({ onClose }: PopResetType) {
     if (e.target === e.currentTarget) {
       onClose();
     }
-
   };
 
   return (
     <div onClick={handleClose}>
-      <div className="popup-container" onClick={(event) => event.stopPropagation()}>
+      <div
+        className="popup-container"
+        onClick={(event) => event.stopPropagation()}
+      >
         <div className="logo-container">
           <img src="../public/logo.png" alt="logo" />
         </div>
@@ -96,7 +98,10 @@ export default function PopReset({ onClose }: PopResetType) {
           {errorName === "Пароли не совпадают" && (
             <div className="error-message">Пароли не совпадают</div>
           )}
-          <button className="btn-green w-[280px] mt-[24px]" onClick={handleReset}>
+          <button
+            className="btn-green w-[280px] mt-[24px]"
+            onClick={handleReset}
+          >
             Подтвердить
           </button>
         </form>

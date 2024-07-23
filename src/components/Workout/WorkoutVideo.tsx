@@ -1,15 +1,16 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 
 // import { appRoutes } from "../../../route/appRoutes";
 
 import "./WorkoutVideo.css";
 import Header from "../Header/Header";
 import { getWorkouts } from "../../firebase";
+import handleInputChange from "../../utills/handleInputChange";
 
 export default function WorkoutVideo() {
   const [isOpened, setIsOpened] = useState(false); // Состояние открытия модального окна
-  function togglePopUp() {
-    // Функция открытия модального окна
+  const [loginData, setLoginData] = useState({ login: "", password: "" });
+  function togglePopUpExercises() {
     setIsOpened(!isOpened);
   }
 
@@ -38,7 +39,14 @@ export default function WorkoutVideo() {
     fetchWorkouts();
   }, []);
 
-  // console.log(workouts["3yvozj"].video);
+  const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
+    handleInputChange(e, setLoginData, loginData);
+  };
+
+  const handleSubmit = () => {
+    console.log("Данные");
+  };
+
   return (
     <>
       <div className="flex flex-col justify-center items-center gap-[50px] ">
@@ -199,12 +207,36 @@ export default function WorkoutVideo() {
                   </div>
                 </div>
               </div>
-              <button type="button" className="workout__btn-progress">
-                <a className="btn-progress" href="#">
-                  Заполнить свой прогресс
-                </a>
-                {/* <button onClick={} className="btn-progress">Заполнить свой прогресс</button> */}
+
+              <button className="btn-progress" onClick={togglePopUpExercises}>
+                Заполнить свой прогресс
               </button>
+
+              {isOpened ? (
+                <div className="popup-container">
+                  <div>
+                    <h2 className="flex text-3xl mb-12 text-left font-medium">
+                      Мой прогресс
+                    </h2>
+                  </div>
+                  <form className="form-container">
+                    <input
+                      type="number"
+                      name="login"
+                      placeholder="0"
+                      className="text-area"
+                      onChange={handleInput}
+                      id="input1"
+                    />
+                    <button
+                      className="btn-green w-[280px] mt-[24px] h-[52px] text-center leading-tight"
+                      onClick={handleSubmit}
+                    >
+                      Сохранить
+                    </button>
+                  </form>
+                </div>
+              ) : null}
             </div>
           </div>
         </section>
