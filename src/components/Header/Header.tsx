@@ -80,7 +80,7 @@ export default function Header() {
           </div>
         </div>
       ) : (
-        <div className="flex flex-row">
+        <div className="flex flex-row justify-between">
           {(isLoginOpened || isSigninOpened) && (
             <div
               onClick={() => {
