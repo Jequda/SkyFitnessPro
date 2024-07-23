@@ -6,57 +6,73 @@
 .workout {
   @apply w-[1440px] h-[1560px] pt-[145px] pb-[200px];
 }
+
 .container {
   @apply max-w-[1160px] h-[1213px] m-auto px-[140px] py-0;
 }
+
 .workout__info {
   @apply pb-10;
 }
+
 .workout__name {
   @apply w-[810px] h-[119px];
 }
+
 .workout__name-title {
   @apply font-medium text-6xl leading-[100%] text-black pb-6;
   font-family: Roboto;
 }
+
 .workout__name-description {
   @apply font-normal text-[32px] leading-[110%] underline text-black;
   font-family: Roboto;
   text-decoration-skip-ink: none;
 }
+
 .workout__video {
   @apply w-[1160px] h-[639px] mb-10;
 }
+
 .workout__list {
-  @apply w-[1160px] h-[375px] shadow-[0_4px_67px_-12px_rgba(0,0,0,0.13)] p-10 rounded-[30px];
+  @apply w-[1160px] h-[375px] shadow-[0_4px_67px_-12px_rgba(0, 0, 0, 0.13)] p-10 rounded-[30px];
   background: #fff;
 }
+
 .workout__list-title {
   @apply font-normal text-[32px] leading-[110%] text-black pb-5;
   font-family: StratosSkyeng;
 }
+
 .workout__list-items {
   @apply font-normal text-lg leading-[110%] text-black flex flex-row justify-between;
   font-family: Roboto;
 }
+
 .workout__item1 {
   @apply pb-5;
 }
+
 .workout__item2 {
   @apply pb-5;
 }
+
 .workout__item-title1 {
   @apply pb-2.5;
 }
+
 .workout__item-title2 {
   @apply pb-2.5;
 }
+
 .workout__item-title3 {
   @apply pb-2.5;
 }
+
 .workout__btn-progress {
   @apply pt-10;
 }
+
 .btn-progress {
   @apply font-normal text-lg leading-[110%] text-black w-80 h-[52px] px-[26px] py-4 rounded-[46px];
   font-family: Roboto;
@@ -191,6 +207,53 @@
   height: 52px;
   background: #bcec30;
 } */
+
+/* полоса прокрутки для WorkoutProgressCount css */
+/* .element::-webkit-scrollbar {
+  width: 10px;
+  background-color: #f9f9fd;
+}
+
+.element::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #18aaaa;
+}
+
+.element::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.2);
+  border-radius: 10px;
+  background-color: #f9f9fd;
+} */
+
+/* полоса прокрутки для WorkoutProgressCount tailwind.css */
+/* .element::-webkit-scrollbar {
+  @apply w-2.5 bg-[#f9f9fd];
+}
+.element::-webkit-scrollbar-thumb {
+  @apply bg-[#18aaaa] rounded-[10px];
+}
+.element::-webkit-scrollbar-track {
+  @apply bg-[#f9f9fd] rounded-[10px];
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
+} */
+
+
+/* <svg
+width="6"
+height="348"
+viewBox="0 0 6 348"
+fill="none"
+xmlns="http://www.w3.org/2000/svg"
+>
+<rect y="1.25" width="6" height="346" rx="3" fill="#F7F7F7" />
+<rect y="0.75" width="6" height="116" rx="3" fill="black" />
+</svg> */
+
+  /* стили для скролл бара */
+/* width: 6px; height: 346.5px; flex: none; order: 1; flex-grow:0; */
+
+  /* стили для ходунка  */
+/* position: absolute; width: 6px; height: 116px; left: 340px; top: 0px; background: #000000; border-radius: 10px; */
 
 
 

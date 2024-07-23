@@ -97,3 +97,37 @@ justify-content: space-between;
     color: #000;
     margin-bottom: 40px;
 
+Открытие модального окна
+const [isOpened, setIsOpened] = useState(false); // Состояние открытия модального окна
+  function togglePopUp() {
+    // Функция открытия модального окна
+    setIsOpened(!isOpened);
+  }
+
+<div onClick={togglePopUp} className="header__user _hover02">
+Сергей
+</div>
+{isOpened && (
+<div
+className="header__pop-user-set pop-user-set"
+id="user-set-target"
+>
+<div className="pop-user-set">
+<p className="pop-user-set__name">Сергей</p>
+<p className="pop-user-set__mail">sergey.petrov96@mail.ru</p>
+</div>
+<button type="button" className="button__profile">
+<a href="#popExit">Мой профиль</a>
+</button>{" "}
+<br />
+<button type="button" className="button__exit">
+<a href="#popExit">Выйти</a>
+</button>
+</div>
+)}
+
+{/* <div onClick={handleProgress} className="progress-count"> */}
+          {/* {isOpened && ( */}
+          {/* )} */}
+          {/* </div> */}
+

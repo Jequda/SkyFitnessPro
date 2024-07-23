@@ -168,7 +168,7 @@ export default function WorkoutVideo() {
           </div>
           <button type="button" className="workout__btn-progress">
             <a
-              className="btn-progress @apply font-normal text-lg leading-[110%] text-black w-80 h-[52px] px-[26px] py-4 rounded-[46px]"
+              className="btn-progress @apply font-normal text-lg leading-[110%] text-black w-80 h-[52px] px-[26px] py-4 rounded-[46px] bg-lime"
               href="#"
             >
               Заполнить свой прогресс

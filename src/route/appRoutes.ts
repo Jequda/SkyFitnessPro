@@ -3,6 +3,7 @@ export const appRoutes = {
   COURSE: "/course",
   PROFILE: "/profile",
   TRAINING: "/training",
+  PROGRESS_COUNT: "/progresscount",
   LOGIN: "/login",
   SIGNIN: "/signin",
   RESET: "/reset",
