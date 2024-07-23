@@ -24,7 +24,6 @@ const database = getDatabase(app);
 const baseUrl =
   "https://fitness-pro-team3-default-rtdb.europe-west1.firebasedatabase.app";
 
-
 export const getCourses = async () => {
   const response = await fetch(baseUrl + "/courses.json").catch((error) => {
     throw new Error(error.message);
@@ -89,7 +88,6 @@ export const updatePasswordUser = async ({
   }
 };
 
-
 export const addFavoriteCourse = async ({
   courseId,
   userId,
@@ -127,7 +125,6 @@ export const deleteFavoriteCourse = async ({
   }
 };
 
-
 export const checkIfFavorite = async ({
   courseId,
   userId,
@@ -144,7 +141,6 @@ export const checkIfFavorite = async ({
     return false;
   }
 };
-
 
 export const updateUserWorkout = async ({
   courseId,
@@ -172,3 +168,21 @@ export const updateUserWorkout = async ({
   }
 };
 
+export const getUser = async ({
+  courseId,
+  userId,
+}: {
+  courseId: string;
+  userId: string;
+}) => {
+  const coursesRef = ref(database, `courses/${courseId}/users/${userId}`);
+  try {
+    const snapshot = await get(coursesRef);
+    if (snapshot.exists()) {
+      const data = snapshot.val();
+      return data;
+    }
+  } catch (error) {
+    if (error instanceof Error) throw new Error(error.message);
+  }
+};

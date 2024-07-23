@@ -806,6 +806,10 @@ video {
   margin-bottom: 0.25rem;
 }
 
+.mb-12 {
+  margin-bottom: 3rem;
+}
+
 .mb-6 {
   margin-bottom: 1.5rem;
 }
@@ -1628,6 +1632,10 @@ video {
   padding-top: 40px;
 }
 
+.text-left {
+  text-align: left;
+}
+
 .text-center {
   text-align: center;
 }
@@ -1652,6 +1660,11 @@ video {
 .text-2xl\/loose {
   font-size: 1.5rem;
   line-height: 2;
+}
+
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
 }
 
 .text-4xl {
@@ -1816,6 +1829,10 @@ video {
 
 .leading-\[60px\] {
   line-height: 60px;
+}
+
+.leading-tight {
+  line-height: 1.25;
 }
 
 .text-\[\#7d7d7d\] {
