@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getWorkouts } from "../../firebase";
 import { WorkoutType } from "../../types";
 
-export default function WorkoutList({workoutId}:{workoutId: string }) {
+export default function WorkoutList({ workoutId }: { workoutId: string }) {
   const [currentWorkout, setCurrentWorkout] = useState<WorkoutType | null>(
     null
   );
@@ -19,7 +19,7 @@ export default function WorkoutList({workoutId}:{workoutId: string }) {
         alert(error);
       });
   }, [workoutId]);
-  console.log(workoutId);
+
   return (
     <div className="flex items-center p-3 cursor-pointer hover:bg-gray-100">
       <img src="icon-done.svg" alt="done" className="mr-3" />
