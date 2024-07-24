@@ -26,7 +26,7 @@ export default function Profile() {
     if (userId) {
       getCoursesList();
     }
-  }, [userId, getCoursesList]);
+  }, []);
 
   const addedCourses = cards.filter((course) => {
     return userId && course.users && Object.keys(course.users).includes(userId);

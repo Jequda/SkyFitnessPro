@@ -88,6 +88,22 @@ export const updatePasswordUser = async ({
   }
 };
 
+export const reauthenticateUser = async ({
+  password,
+}: {
+  password: string;
+}) => {
+  try {
+    if (auth.currentUser && auth.currentUser.email) {
+      await signInWithEmailAndPassword(auth, auth.currentUser.email, password);
+    } else {
+      throw new Error("NO_CURRENT_USER");
+    }
+  } catch (error) {
+    if (error instanceof Error) throw new Error(error.message);
+  }
+};
+
 export const addFavoriteCourse = async ({
   courseId,
   userId,
