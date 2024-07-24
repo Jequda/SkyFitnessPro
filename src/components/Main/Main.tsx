@@ -22,7 +22,7 @@ export default function Main() {
 
   useEffect(() => {
     getNotAddedCardsList();
-  }, [cards]);
+  }, [cards, userId]);
 
   const [isOpenedPopLogin, setIsOpenedPopLogin] = useState<boolean>(false);
   const openPopLogin = () => {

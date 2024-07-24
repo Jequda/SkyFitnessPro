@@ -6,37 +6,36 @@ import { useParams } from "react-router-dom";
 import handleInputChange from "../../utills/handleInputChange";
 // import { appRoutes } from "../../../route/appRoutes";
 
-// {
+export default function WorkoutVideo() {
 
-// }: {
-//   courseId: string
-//   userId: string
-//   workoutId: string
-//   exercises: { [exerciseName: string]: number};
-// }
-
-export default function WorkoutVideo(
-
-) {
+  const { userId } = useUser();
+  const { id } = useParams<{ id: string }>();
   
-const { userId } = useUser();
-const { id } = useParams<{ id: string }>();
-
-interface Exercise {
-  quantity: number;
-  name: string;
-}
-
-interface Workout {
-  exercises: {
-    [key: number]: Exercise;
-  };
-  name: string;
-}
-
-interface Workouts {
-  [key: string]: Workout;
-}
+  interface Exercise {
+    quantity: number;
+    name: string;
+  }
+  
+  interface Workout {
+    exercises: {
+      [key: number]: Exercise;
+    };
+    name: string;
+  }
+  
+  interface Workouts {
+    [key: string]: Workout;
+  }
+  
+const generateRandomId = (length: number = 6): string => {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return result;
+};
+    
 
 const [workouts, setWorkouts] = useState<Workouts | null>(null);
 
@@ -100,6 +99,37 @@ function WorkoutListItems() {
   if (workouts === null || id === undefined || !workouts[id]) {
     return <p>Loading workouts...</p>;
   }
+
+  function userProgressWorkouts() {
+
+
+    if (workouts === null || id === undefined || !workouts[id]) {
+      return <p>Loading workouts...</p>;
+    }
+  
+    return (
+      <>
+        {Object.keys(workouts[id].exercises).map(key => {
+          const userWorkoutItem = workouts[id].exercises[parseInt(key)];
+          return (
+            <>
+              <div className="workout__item1 pb-[20px]" key={key}>
+                <h2 className="text-xl font-normal mb-1">{userWorkoutItem.name}</h2>
+                <input
+                  type="number"
+                  name="quantity"
+                  placeholder="0"
+                  className="text-area"
+                  onChange={handleInput}
+                  id={generateRandomId()}
+                />
+              </div>
+            </>
+          );
+        })}
+      </>
+    );
+  }
   return (
     <div className="flex flex-col justify-center items-center gap-[50px]">
       <Header/>
@@ -122,45 +152,18 @@ function WorkoutListItems() {
           </div>
           <div className="workout__list rounded-[30px] p-[40px] w-[1160px] h-[375px] shadow-[0_4px_67px_-12px_rgba(0,0,0,0.13)] bg-white pt-[40px]">
             <div className="workout__list-title font-sans font-normal text-[32px] leading-[110%] text-black pb-[20px]">Упражнения тренировки 2</div>
-            <div className="workout__list-items font-roboto font-normal text-[18px] leading-[110%] text-black flex flex-row justify-between">
-              <div className="workout__list-item1">
+            <div className="workout__list-items-box font-roboto font-normal text-[18px] leading-[110%] text-black flex flex-row justify-between">
+              <div className="workout__list-items">
+
                 {WorkoutListItems()}
 
-                <div className="workout__item2 pb-[20px]">
-                  <p className="workout__item-title2 pb-[10px]">Наклоны назад 0%</p>
-                  <svg
-                    className="workout__item-svg"
-                    width="320"
-                    height="6"
-                    viewBox="0 0 320 6"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <rect width="320" height="6" rx="3" fill="#F7F7F7" />
-                  </svg>
-                </div>
-
-                <div className="workout__item3 pb-[20px]">
-                  <p className="workout__item-title3 pb-[10px]">
-                    Поднятие ног, согнутых в коленях 0%
-                  </p>
-                  <svg
-                    className="workout__item-svg"
-                    width="320"
-                    height="6"
-                    viewBox="0 0 320 6"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <rect width="320" height="6" rx="3" fill="#F7F7F7" />
-                  </svg>
-                </div>
               </div>
             </div>
             <button type="button" className="workout__btn-progress pt-[40px]">
               <a className="btn-progress font-roboto font-normal text-[18px] leading-[110%] text-black rounded-[46px] px-[26px] py-[16px] w-[320px] h-[52px] bg-[#bcec30]" href="#">Заполнить свой прогресс</a>
-              {/* <button onClick={} className="btn-green w-[280px] mt-[24px]">Заполнить свой прогресс</button> */}
+              <button onClick={togglePopUp} className="btn-green w-[280px] mt-[24px]">Заполнить свой прогресс</button>
               {isOpened ? (
+
                 <div className="popup-container">
                   <div>
                     <h2 className="flex text-3xl mb-12 text-left font-medium">
@@ -168,14 +171,7 @@ function WorkoutListItems() {
                     </h2>
                   </div>
                   <form className="form-container">
-                    <input
-                      type="number"
-                      name="login"
-                      placeholder="0"
-                      className="text-area"
-                      onChange={handleInput}
-                      id="input1"
-                    />
+                    {userProgressWorkouts()}
                     <button
                       className="btn-green w-[280px] mt-[24px] h-[52px] text-center leading-tight"
                       onClick={handleSubmit}

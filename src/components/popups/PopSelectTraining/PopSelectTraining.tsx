@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
+
 import { getCourses, getWorkouts } from "../../../firebase";
 import WorkoutList from "../../Workout/WorkoutList";
 import { CourseType } from "../../../types";
 import { Link } from "react-router-dom";
-
 type PopSelectTrainingType = {
   onClose: () => void;
   courseId: string | null;
@@ -13,6 +13,7 @@ export default function PopSelectTraining({
   onClose,
   courseId,
 }: PopSelectTrainingType) {
+
   const [currentCourse, setCurrentCourse] = useState<CourseType | null>(null);
   const handleClose = () => {
     onClose();
