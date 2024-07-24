@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import  Header from "../Header/Header";
-import { getWorkouts } from "../../firebase";
+import { getUser, getWorkouts } from "../../firebase";
 import { useUser } from "../../contexts/UserContext";
 import { useParams } from "react-router-dom";
 import handleInputChange from "../../utills/handleInputChange";
@@ -21,6 +21,8 @@ export default function WorkoutVideo() {
       [key: number]: Exercise;
     };
     name: string;
+    video: string;
+    userId: string
   }
   
   interface Workouts {
@@ -38,6 +40,7 @@ const generateRandomId = (length: number = 6): string => {
     
 
 const [workouts, setWorkouts] = useState<Workouts | null>(null);
+const [userWorkouts, setUserWorkouts] = useState<Workouts | null>(null);
 
 useEffect(() => {
   const loadWorkouts = async () => {
@@ -53,6 +56,29 @@ useEffect(() => {
   loadWorkouts();
 }, []);
 
+
+useEffect(() => {
+  const loadWorkouts = async () => {
+    try {
+      if (userId === null || courseId === null) {
+        return <p>Loading workouts...</p>;
+      }
+      const data = await getUser({courseId, userId});
+      setUserWorkouts(data);
+      console.log(data);
+    } catch (err) {
+      console.log('Failed to fetch workouts');
+    }
+  };
+
+  loadWorkouts();
+}, []);
+
+function updateProgressBar(percent: number) {
+  const progressBar = percent + '%';
+  return progressBar
+}
+
 function WorkoutListItems() {
   if (workouts === null || id === undefined || !workouts[id]) {
     return <p>Loading workouts...</p>;
@@ -63,16 +89,11 @@ function WorkoutListItems() {
       {Object.keys(workouts[id].exercises).map(key => {
         const workoutItem = workouts[id].exercises[parseInt(key)];
         return (
-          <div className="workout__item1 pb-[20px]" key={key}>
-            <p className="workout__item-title1 pb-[10px]">{workoutItem.name}</p>
-            <input 
-              className="appearance-none w-full bg-transparent cursor-pointer" 
-              type="range" 
-              id="volume" 
-              name="volume" 
-              min="0" 
-              max={workoutItem.quantity} 
-            />
+          <div className="pb-[20px]" key={key}>
+            <p className="pb-[10px]">{workoutItem.name}</p>
+            <div className="w-[320px] h-[6px] bg-gray-300 rounded-full overflow-hidden">
+              <div className="bg-blue-500 h-full transition-all duration-500 ease-out" id="progress-bar" style={{ width: updateProgressBar(33) }}></div>
+            </div>
           </div>
         );
       })}
@@ -93,7 +114,7 @@ function WorkoutListItems() {
   };
 
   const handleSubmit = () => {
-    console.log("Данные");
+    console.log(loginData);
   };
 
   if (workouts === null || id === undefined || !workouts[id]) {
@@ -113,7 +134,7 @@ function WorkoutListItems() {
           const userWorkoutItem = workouts[id].exercises[parseInt(key)];
           return (
             <>
-              <div className="workout__item1 pb-[20px]" key={key}>
+              <div className="pb-[20px]" key={key}>
                 <h2 className="text-xl font-normal mb-1">{userWorkoutItem.name}</h2>
                 <input
                   type="number"
@@ -121,7 +142,8 @@ function WorkoutListItems() {
                   placeholder="0"
                   className="text-area"
                   onChange={handleInput}
-                  id={generateRandomId()}
+                  id={"input"}
+                  key={generateRandomId()}
                 />
               </div>
             </>
@@ -131,36 +153,36 @@ function WorkoutListItems() {
     );
   }
   return (
-    <div className="flex flex-col justify-center items-center gap-[50px]">
+    <div className="flex flex-col justify-center items-center gap-[60px]">
       <Header/>
-      <section className="workout w-[1440px] h-[1560px] pt-[145px] pb-[200px]">
-        <div className="container max-w-[1160px] h-[1213px] mx-auto px-[140px]">
-          <div className="workout__info pb-[40px]">
-            <div className="workout__name w-[810px] h-[119px]">
-              <p className="workout__name-title font-roboto font-medium text-[60px] leading-[100%] text-black pb-[24px]">Йога</p>
-              <p className="workout__name-description font-roboto font-normal text-[32px] leading-[110%] underline text-black">
+      <section className="w-[1440px] h-[1560px] pb-[200px]">
+        <div className="max-w-[1160px] h-[1213px] mx-auto">
+          <div className="pb-[40px]">
+            <div className="w-[810px] h-[119px]">
+              <p className="font-roboto font-medium text-[56px] leading-[100%] text-black pb-[24px]">Йога</p>
+              <p className="font-roboto font-regular text-[32px] leading-[110%] underline text-black">
                 {workouts[id].name}
               </p>
             </div>
           </div>
           <div className="w-[1160px] h-[639px] mb-[40px]">
             <iframe
-              width="420"
-              height="345"
-              src={workouts[id].name}
+              className="rounded-3xl mt-[40px]"
+              width="1160px"
+              height="639px"
+              src={workouts[id].video}
             ></iframe>
           </div>
-          <div className="workout__list rounded-[30px] p-[40px] w-[1160px] h-[375px] shadow-[0_4px_67px_-12px_rgba(0,0,0,0.13)] bg-white pt-[40px]">
-            <div className="workout__list-title font-sans font-normal text-[32px] leading-[110%] text-black pb-[20px]">Упражнения тренировки 2</div>
-            <div className="workout__list-items-box font-roboto font-normal text-[18px] leading-[110%] text-black flex flex-row justify-between">
-              <div className="workout__list-items">
+          <div className="rounded-[30px] p-[40px] w-[1160px] h-[375px] shadow-[0_4px_67px_-12px_rgba(0,0,0,0.13)] bg-white pt-[40px]">
+            <div className="font-sans font-normal text-[32px] leading-[110%] text-black pb-[20px]">Упражнения тренировки 2</div>
+            <div className="font-roboto font-normal text-[18px] leading-[110%] text-black flex flex-row justify-between">
+              <div>
 
                 {WorkoutListItems()}
 
               </div>
             </div>
-            <button type="button" className="workout__btn-progress pt-[40px]">
-              <a className="btn-progress font-roboto font-normal text-[18px] leading-[110%] text-black rounded-[46px] px-[26px] py-[16px] w-[320px] h-[52px] bg-[#bcec30]" href="#">Заполнить свой прогресс</a>
+            <button type="button" className="pt-[40px]">
               <button onClick={togglePopUp} className="btn-green w-[280px] mt-[24px]">Заполнить свой прогресс</button>
               {isOpened ? (
 
