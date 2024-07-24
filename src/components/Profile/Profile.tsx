@@ -14,6 +14,13 @@ export default function Profile() {
   const { userId, user, logout } = useUser();
   const { cards, getCoursesList, isLoading } = useCourses();
   const navigate = useNavigate();
+  const [currentCourseId, setCurrentCourseId] = useState<string | null>(null);
+
+  const handleCourseId = (courseId: any) => {
+    setCurrentCourseId(courseId);
+    console.log("Received courseId:", courseId);
+    // Здесь можно выполнить любую необходимую логику с courseId
+  };
 
   useEffect(() => {
     if (userId) {
@@ -98,6 +105,7 @@ export default function Profile() {
                 openPopLogin={() => {}}
                 isProfilePage={true}
                 handleOpenPopSelectTraining={handleOpenPopSelectTraining}
+                onCourseId={handleCourseId}
               />
             ))
           ) : (
@@ -109,7 +117,10 @@ export default function Profile() {
       </div>
       {showPopReset && <PopReset onClose={handleClosePopReset} />}
       {showPopSelectTraining && (
-        <PopSelectTraining onClose={handleClosePopSelectTraining} />
+        <PopSelectTraining
+          courseId={currentCourseId}
+          onClose={handleClosePopSelectTraining}
+        />
       )}
     </div>
   );
