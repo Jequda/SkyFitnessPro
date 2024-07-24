@@ -2,7 +2,7 @@ export const appRoutes = {
   MAIN: "/",
   COURSE: "/course/:id",
   PROFILE: "/profile",
-  TRAINING: "/training",
+  TRAINING: "/training/:id",
   LOGIN: "/login",
   SIGNIN: "/signin",
   RESET: "/reset",

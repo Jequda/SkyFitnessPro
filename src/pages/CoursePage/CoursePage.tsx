@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Header from "../../components/Header/Header";
 import Fitting from "../../components/Course/Fitting";
 import Directions from "../../components/Course/Directions";
@@ -20,8 +20,8 @@ export default function CoursePage() {
   const { id } = useParams();
   const courseId = id;
 
+  console.log(courseId)
   useEffect(() => {
-    // Загрузка данных из базы данных при первом рендере
     getCourses()
       .then((courses) => {
         const coursesData = Object.keys(courses).map((id) => courses[id]);

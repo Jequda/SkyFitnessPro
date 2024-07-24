@@ -12,3 +12,9 @@ export type CourseType = {
     complexity: number,
     users: string[]
 }
+
+export type WorkoutType = {
+    name: string;
+    progress: number;
+    id: string;
+  };
