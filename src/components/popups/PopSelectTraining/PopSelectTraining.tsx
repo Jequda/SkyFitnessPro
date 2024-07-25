@@ -13,7 +13,6 @@ export default function PopSelectTraining({
   onClose,
   courseId,
 }: PopSelectTrainingType) {
-
   const [currentCourse, setCurrentCourse] = useState<CourseType | null>(null);
   const handleClose = () => {
     onClose();
@@ -43,7 +42,6 @@ export default function PopSelectTraining({
         alert(error);
       });
   }, [courseId]);
-  console.log(currentCourse?.workouts);
 
   return (
     <div className="fixed inset-0" onClick={handleClose}>
@@ -56,7 +54,7 @@ export default function PopSelectTraining({
           <h2 className="text-2xl mb-6 text-center font-medium">
             Выберите тренировку
           </h2>
-          <div className="w-full max-h-[320px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400">
+   <div className="w-full max-h-[320px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400">
             {currentCourse?.workouts.map((workoutId, index) => (
               <Link key={index} to={`/training/${workoutId}`}>
                 <div className="py-2 border-b border-black-300 text-lg text-gray-800 text-center">
