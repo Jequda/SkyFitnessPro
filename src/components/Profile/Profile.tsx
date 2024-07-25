@@ -18,8 +18,6 @@ export default function Profile() {
 
   const handleCourseId = (courseId: any) => {
     setCurrentCourseId(courseId);
-    console.log("Received courseId:", courseId);
-    // Здесь можно выполнить любую необходимую логику с courseId
   };
 
   useEffect(() => {

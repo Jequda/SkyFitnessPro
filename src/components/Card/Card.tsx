@@ -10,6 +10,7 @@ import {
   checkIfFavorite,
 } from "../../firebase";
 import { useCourses } from "../../hooks/useCourses";
+import { useCurrentCourse } from "../../contexts/CurrentCourseContext";
 type CardType = {
   card: CourseType;
   isProfilePage?: boolean;
@@ -29,6 +30,7 @@ export default function Card({
   const courseId = card._id;
   const { getCoursesList, getNotAddedCardsList } = useCourses();
   const [isFavorite, setIsFavorite] = useState(false);
+  const { setCurrentCourseId } = useCurrentCourse();
 
   useEffect(() => {
     const checkFavoriteStatus = async () => {
@@ -44,6 +46,10 @@ export default function Card({
 
     checkFavoriteStatus();
   }, [userId, courseId]);
+
+  const handleCourseId = (courseId: string) => {
+    setCurrentCourseId(courseId);
+  };
 
   const handleToggleFavoriteCourse = async (
     e: React.MouseEvent<HTMLDivElement>
@@ -68,11 +74,12 @@ export default function Card({
 
   const handleClick = () => {
     if (onCourseId) {
-      onCourseId(courseId); // Передача courseId при клике
+      onCourseId(courseId);
     }
     if (handleOpenPopSelectTraining) {
-      handleOpenPopSelectTraining(); // Вызов handleOpenPopSelectTraining при клике
+      handleOpenPopSelectTraining();
     }
+    handleCourseId(courseId);
   };
 
   return (
