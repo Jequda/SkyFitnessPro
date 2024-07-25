@@ -1,181 +1,207 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import  Header from "../Header/Header";
-import { getWorkouts } from "../../firebase";
+import { getWorkouts, getUser, updateUserWorkout } from "../../firebase";
 import { useUser } from "../../contexts/UserContext";
 import { useParams } from "react-router-dom";
-import handleInputChange from "../../utills/handleInputChange";
 import { useCurrentCourse } from "../../contexts/CurrentCourseContext";
-// import { appRoutes } from "../../../route/appRoutes";
+
+interface Exercise {
+  exercises: number;
+  quantity: number;
+  name: string;
+}
+
+interface Workout {
+  quantity: number;
+  exercises: { [key: number]: Exercise };
+  name: string;
+  video: string;
+  userId: string;
+  id: { [key: number]: number };
+}
+
+interface Workouts {
+  [key: string]: Workout;
+}
+
+interface UserWorkouts {
+  workouts: { [key: string]: number[] };
+}
+
+const generateRandomId = (length: number = 6): string => {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  return Array.from({ length }, () => characters.charAt(Math.floor(Math.random() * characters.length))).join('');
+};
 
 export default function WorkoutVideo() {
   const { currentCourseId } = useCurrentCourse();
-
   const { userId } = useUser();
   const { id } = useParams<{ id: string }>();
+  console.log(id);
+  console.log(userId);
+  console.log(currentCourseId);
 
-  interface Exercise {
-    quantity: number;
-    name: string;
-  }
+  const [workouts, setWorkouts] = useState<Workouts | null>(null);
+  const [exerciseData, setExerciseData] = useState<Workout[]>([]);
+  const [userWorkouts, setUserWorkouts] = useState<UserWorkouts | null>(null);
+  const [isOpened, setIsOpened] = useState(false);
+  const togglePopUp = () => setIsOpened(!isOpened);
 
-  interface Workout {
-    exercises: {
-      [key: number]: Exercise;
-    };
-    name: string;
-    video: string;
-    userId: string
-  }
-
-  interface Workouts {
-    [key: string]: Workout;
-  }
-
-  const generateRandomId = (length: number = 6): string => {
-    const characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    let result = "";
-    for (let i = 0; i < length; i++) {
-      result += characters.charAt(
-        Math.floor(Math.random() * characters.length)
-      );
+  const loadWorkouts = useCallback(async () => {
+    try {
+      const data = await getWorkouts();
+      setWorkouts(data);
+      console.log(data);
+    } catch {
+      console.log('Failed to fetch workouts');
     }
-    return result;
-  };
+  }, []);
 
-const [workouts, setWorkouts] = useState<Workouts | null>(null);
+  const loadUserWorkouts = useCallback(async () => {
+    if (!userId || !currentCourseId) return;
+    try {
+      const data = await getUser({ courseId: currentCourseId, userId });
+      setUserWorkouts(data);
+      console.log(data);
+    } catch {
+      console.log('Failed to fetch user workouts');
+    }
+  }, [userId, currentCourseId]);
 
   useEffect(() => {
-    const loadWorkouts = async () => {
-      try {
-        const data = await getWorkouts();
-        setWorkouts(data);
-        console.log(data);
-      } catch (err) {
-        console.log("Failed to fetch workouts");
+    loadWorkouts();
+  }, [loadWorkouts]);
+
+  useEffect(() => {
+    loadUserWorkouts();
+  }, [loadUserWorkouts]);
+
+  const updateProgressBar = (percent: number, index: number): string => {
+    console.log('userWorkouts:', userWorkouts);
+    console.log('index:', index);
+    console.log('id:', id);
+
+    if (id === undefined || !userWorkouts || !userWorkouts.workouts[id] || userWorkouts.workouts[id][index] == null) {
+      if (id === undefined || !userWorkouts) {
+        console.log("Вообще конец", userWorkouts);
+        return "0%";
       }
-    };
-
-  loadWorkouts();
-}, []);
-
-  function WorkoutListItems() {
-    if (workouts === null || id === undefined || !workouts[id]) {
-      return <p>Loading workouts...</p>;
+      console.log("Конец", userWorkouts.workouts[id]?.[index]);
+      return "0%";
     }
+    console.log('percent:', percent);
+    console.log('userWorkouts.workouts[id][index]:', userWorkouts.workouts[id][index]);
+    console.log(`${(percent / userWorkouts.workouts[id][index]) * 100}%`);
 
-  return (
-    <>
-      {Object.keys(workouts[id].exercises).map(key => {
-        const workoutItem = workouts[id].exercises[parseInt(key)];
-        return (
-          <div className="workout__item1 pb-[20px]" key={key}>
-            <p className="workout__item-title1 pb-[10px]">{workoutItem.name}</p>
-            <input 
-              className="appearance-none w-full bg-transparent cursor-pointer" 
-              type="range" 
-              id="volume" 
-              name="volume" 
-              min="0" 
-              max={workoutItem.quantity} 
-            />
-          </div>
-        );
-      })}
-    </>
-  );
-}
-  const [isOpened, setIsOpened] = useState(false); // Состояние открытия модального окна
-  function togglePopUp() {
-    // Функция открытия модального окна
-    setIsOpened(!isOpened);
-  }
+    return `${(userWorkouts.workouts[id][index] / percent) * 100}%`;
+  };
 
-  const [loginData, setLoginData] = useState({ login: "", password: "" });
-
-  const handleInput = (e: ChangeEvent<HTMLInputElement>) => {
-    handleInputChange(e, setLoginData, loginData);
+  const handleChange = (index: number, newQuantity: number) => {
+    setExerciseData(prevExercises => {
+      const updatedExercises = [...prevExercises];
+      updatedExercises[index] = { ...updatedExercises[index], quantity: newQuantity };
+      return updatedExercises;
+    });
   };
 
   const handleSubmit = () => {
-    console.log(loginData);
+    if (!id || !userId || !currentCourseId || !exerciseData) return;
+    updateUserWorkout({ courseId: currentCourseId, userId, workoutId: id, exercises: exerciseData });
   };
 
-  if (workouts === null || id === undefined || !workouts[id]) {
-    return <p>Loading workouts...</p>;
-  }
-
-  function userProgressWorkouts() {
-    if (workouts === null || id === undefined || !workouts[id]) {
+  const renderWorkoutItems = () => {
+    if (id === undefined || !workouts?.[id]) {
       return <p>Loading workouts...</p>;
     }
 
     return (
       <>
-        {Object.keys(workouts[id].exercises).map((key) => {
-          const userWorkoutItem = workouts[id].exercises[parseInt(key)];
+        {Object.keys(workouts[id].exercises).map((key, index) => {
+          const workoutItem = workouts[id].exercises[parseInt(key)];
           return (
-            <>
-              <div className="workout__item1 pb-[20px]" key={key}>
-                <h2 className="text-xl font-normal mb-1">{userWorkoutItem.name}</h2>
-                <input
-                  type="number"
-                  name="quantity"
-                  placeholder="0"
-                  className="text-area"
-                  onChange={handleInput}
-                  id={"input"}
-                  key={generateRandomId()}
-                />
+            <div className="pb-[20px]" key={key}>
+              <p className="pb-[10px]">{workoutItem.name}</p>
+              <div className="w-[320px] h-[6px] bg-gray-300 rounded-full overflow-hidden">
+                <div className="bg-blue-500 h-full transition-all duration-500 ease-out" style={{ width: updateProgressBar(workoutItem.quantity, index) }}></div>
               </div>
-            </>
+            </div>
           );
         })}
       </>
     );
+  };
+
+  const renderUserProgressWorkouts = () => {
+    if (id === undefined || !workouts?.[id]) {
+      return <p>Loading workouts...</p>;
+    }
+
+    return (
+      <>
+        {Object.keys(workouts[id].exercises).map((key, index) => {
+          const userWorkoutItem = workouts[id].exercises[parseInt(key)];
+          return (
+            <div className="pb-[20px]" key={key}>
+              <h2 className="text-xl font-normal mb-1">{userWorkoutItem.name}</h2>
+              <input
+                type="number"
+                name="quantity"
+                placeholder="0"
+                className="text-area"
+                onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(index, Number(e.target.value))}
+                key={index}
+              />
+            </div>
+          );
+        })}
+      </>
+    );
+  };
+
+  if (id === undefined || !workouts?.[id]) {
+    return <p>Loading workouts...</p>;
   }
+
   return (
-    <div className="flex flex-col justify-center items-center gap-[50px]">
-      <Header/>
-      <section className="workout w-[1440px] h-[1560px] pt-[145px] pb-[200px]">
-        <div className="container max-w-[1160px] h-[1213px] mx-auto px-[140px]">
-          <div className="workout__info pb-[40px]">
-            <div className="workout__name w-[810px] h-[119px]">
-              <p className="workout__name-title font-roboto font-medium text-[60px] leading-[100%] text-black pb-[24px]">Йога</p>
-              <p className="workout__name-description font-roboto font-normal text-[32px] leading-[110%] underline text-black">
+    <div className="flex flex-col justify-center items-center gap-[60px]">
+      <Header />
+      <section className="w-[1440px] h-[1560px] pb-[200px]">
+        <div className="max-w-[1160px] h-[1213px] mx-auto">
+          <div className="pb-[40px]">
+            <div className="w-[810px] h-[119px]">
+              <p className="font-roboto font-medium text-[56px] leading-[100%] text-black pb-[24px]">Йога</p>
+              <p className="font-roboto font-regular text-[32px] leading-[110%] underline text-black">
                 {workouts[id].name}
               </p>
             </div>
           </div>
           <div className="w-[1160px] h-[639px] mb-[40px]">
             <iframe
-              width="420"
-              height="345"
-              src={workouts[id].name}
+              className="rounded-3xl mt-[40px]"
+              width="1160px"
+              height="639px"
+              src={workouts[id].video}
+              title="Workout Video"
             ></iframe>
           </div>
-          <div className="workout__list rounded-[30px] p-[40px] w-[1160px] h-[375px] shadow-[0_4px_67px_-12px_rgba(0,0,0,0.13)] bg-white pt-[40px]">
-            <div className="workout__list-title font-sans font-normal text-[32px] leading-[110%] text-black pb-[20px]">Упражнения тренировки 2</div>
-            <div className="workout__list-items-box font-roboto font-normal text-[18px] leading-[110%] text-black flex flex-row justify-between">
-              <div className="workout__list-items">
-
-                {WorkoutListItems()}
-
+          <div className="rounded-[30px] p-[40px] w-[1160px] h-[375px] shadow-[0_4px_67px_-12px_rgba(0,0,0,0.13)] bg-white pt-[40px]">
+            <div className="font-sans font-normal text-[32px] leading-[110%] text-black pb-[20px]">Упражнения тренировки 2</div>
+            <div className="font-roboto font-normal text-[18px] leading-[110%] text-black flex flex-row justify-between">
+              <div>
+                {renderWorkoutItems()}
               </div>
             </div>
-            <button type="button" className="workout__btn-progress pt-[40px]">
-              <a className="btn-progress font-roboto font-normal text-[18px] leading-[110%] text-black rounded-[46px] px-[26px] py-[16px] w-[320px] h-[52px] bg-[#bcec30]" href="#">Заполнить свой прогресс</a>
-              <button onClick={togglePopUp} className="btn-green w-[280px] mt-[24px]">Заполнить свой прогресс</button>
-              {isOpened ? (
+            <button type="button" className="pt-[40px]" onClick={togglePopUp}>
+              <span className="btn-green w-[280px] mt-[24px]">Заполнить свой прогресс</span>
+              {isOpened && (
                 <div className="popup-container">
                   <div>
-                    <h2 className="flex text-3xl mb-12 text-left font-medium">
-                      Мой прогресс
-                    </h2>
+                    <h2 className="flex text-3xl mb-12 text-left font-medium">Мой прогресс</h2>
                   </div>
                   <form className="form-container">
-                    {userProgressWorkouts()}
+                    {renderUserProgressWorkouts()}
                     <button
+                      type="button"
                       className="btn-green w-[280px] mt-[24px] h-[52px] text-center leading-tight"
                       onClick={handleSubmit}
                     >
@@ -183,7 +209,7 @@ const [workouts, setWorkouts] = useState<Workouts | null>(null);
                     </button>
                   </form>
                 </div>
-              ) : null}
+              )}
             </button>
           </div>
         </div>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { getCourses, getWorkouts } from "../../../firebase";
-import WorkoutList from "../../Workout/WorkoutList";
+import WorkoutVideo from "../../Workout/WorkoutVideo";
 import { CourseType } from "../../../types";
 import { Link } from "react-router-dom";
 type PopSelectTrainingType = {
@@ -58,7 +58,7 @@ export default function PopSelectTraining({
             <div className="h-full overflow-y-auto divide-y divide-gray-300">
               {currentCourse?.workouts.map((workoutId, index) => (
                 <Link to={`/training/${workoutId}`}>
-                  <WorkoutList key={index} workoutId={workoutId} />
+                  <WorkoutVideo />
                 </Link>
               ))}
               {/* <li className="flex items-center p-3 cursor-pointer hover:bg-gray-100">
