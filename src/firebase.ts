@@ -5,7 +5,7 @@ import {
   signInWithEmailAndPassword,
   updatePassword,
 } from "firebase/auth";
-import { getDatabase, ref, set, remove, get } from "firebase/database";
+import { getDatabase, ref, set, remove, get, update } from "firebase/database";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDEZ0a2W2aKtWZS0BLkbkukrl4WvUDQLCM",
@@ -158,16 +158,18 @@ export const updateUserWorkout = async ({
   workoutId: string;
   exercises: Exercise[];
 }) => {
-  const workoutRef = ref(database, `courses/${courseId}/users/${userId}`);
-  const workoutData = {
-    workouts: {
-      [workoutId]: { exercises },
-    },
-  };
+  const workoutRef = ref(database, `courses/${courseId}/users/${userId}/workouts/${workoutId}`);
 
   try {
-    await set(workoutRef, workoutData);
-    console.log(`Data ${workoutData} added successfully.`);
+    const workoutSnapshot = await get(workoutRef);
+
+    // set(workours: { exercises: []})
+    if (workoutSnapshot.exists()) {
+      await update(workoutRef, { exercises });
+    } else {
+      await set(workoutRef, { exercises });
+
+    }
   } catch (error) {
     if (error instanceof Error) throw new Error(error.message);
   }

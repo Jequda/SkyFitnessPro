@@ -30,11 +30,6 @@ export default function Profile() {
     return userId && course.users && Object.keys(course.users).includes(userId);
   });
 
-// 
-// 
-// 
-// 
-
   const handleOpenPopReset = () => {
     setShowPopReset(true);
   };

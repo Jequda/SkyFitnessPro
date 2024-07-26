@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { CourseType } from "../../types";
 import { imgObject } from "../../utills/imgObject";
@@ -8,9 +8,12 @@ import {
   addFavoriteCourse,
   deleteFavoriteCourse,
   checkIfFavorite,
+  getWorkouts,
+  getCourses,
 } from "../../firebase";
 import { useCourses } from "../../hooks/useCourses";
 import { useCurrentCourse } from "../../contexts/CurrentCourseContext";
+
 type CardType = {
   card: CourseType;
   isProfilePage?: boolean;
@@ -19,6 +22,46 @@ type CardType = {
   onCourseId?: (courseId: string) => void;
 };
 
+interface Exercise {
+  quantity: number;
+}
+
+interface Workout {
+  _id: string;
+  exercises?: { [key: number]: Exercise[] };
+  name: string;
+  video: string;
+}
+
+interface Workouts {
+  [key: string]: Workout;
+}
+
+interface UserWorkouts {
+  workouts: { [key: string]: Exercise };
+}
+
+interface CoursesData {
+  _id: string;
+  complexity: number;
+  description: string;
+  directions: { [key: number]: string };
+  duration: string;
+  fitting: { [key: number]: string };
+  nameEN: string;
+  nameRU: string;
+  order: number;
+  users: { [key: string]: UserWorkouts };
+  workoutTime: string;
+  workouts: Workouts;
+}
+
+interface Courses {
+  [key: string]: CoursesData;
+}
+interface ImgObject {
+  [key: number]: { src: string }; // or use string as the key type if necessary
+}
 export default function Card({
   openPopLogin,
   card,
@@ -31,6 +74,18 @@ export default function Card({
   const { getCoursesList, getNotAddedCardsList } = useCourses();
   const [isFavorite, setIsFavorite] = useState(false);
   const { setCurrentCourseId } = useCurrentCourse();
+  const [workouts, setWorkouts] = useState<Workouts | null>(null);
+  const [courses, setCourses] = useState<Courses | null>(null);
+
+  const loadWorkoutsAndCourses = useCallback(async () => {
+    try {
+      const [workoutsData, coursesData] = await Promise.all([getWorkouts(), getCourses()]);
+      setWorkouts(workoutsData);
+      setCourses(coursesData);
+    } catch {
+      console.log("Failed to fetch workouts or courses");
+    }
+  }, []);
 
   useEffect(() => {
     const checkFavoriteStatus = async () => {
@@ -47,13 +102,58 @@ export default function Card({
     checkFavoriteStatus();
   }, [userId, courseId]);
 
+  useEffect(() => {
+    loadWorkoutsAndCourses();
+  }, [loadWorkoutsAndCourses]);
+
+  const areExercisesEqual = (exercises1: Exercise[], exercises2: Exercise[]): boolean => {
+    if (exercises1.length !== exercises2.length) return false;
+
+    return exercises1.every((exercise, index) => exercise.quantity === exercises2[index].quantity);
+  };
+
+  const checkUserWorkoutDone = () => {
+    if (!courses || !workouts || userId === null || !courses[courseId]?.users[userId]) return 0;
+  
+    const coursesUserWorkouts = courses[courseId].users[userId].workouts;
+  
+    const currentCoursesIdWorkouts = Object.keys(coursesUserWorkouts).map(id => {
+      const userExercises = coursesUserWorkouts[id];
+      const workout = workouts[id];
+      const workoutExercises = workout?.exercises;
+  
+      if (!workoutExercises) return false;
+  
+      const allExercisesMatch = Object.keys(workoutExercises).every(key => {
+        const workoutExerciseArray = workoutExercises[parseInt(key, 10)];
+  
+        // Check if workoutExerciseArray is an array
+        if (!Array.isArray(workoutExerciseArray)) {
+          return false;
+        }
+  
+        return workoutExerciseArray.some(exercise => areExercisesEqual([exercise], [userExercises]));
+      });
+  
+      return allExercisesMatch;
+    }).filter(Boolean);
+    // console.log(currentCoursesIdWorkouts)
+    return currentCoursesIdWorkouts.length;
+  };
+
+  const updateProgress = (): string => {
+    if (!courses || userId === null || !courses[courseId]?.users[userId]) return "0%";
+
+    const coursesUserWorkouts = courses[courseId].users[userId].workouts;
+
+    return `${(checkUserWorkoutDone() / Object.keys(coursesUserWorkouts).length) * 100}%`;
+  };
+
   const handleCourseId = (courseId: string) => {
     setCurrentCourseId(courseId);
   };
 
-  const handleToggleFavoriteCourse = async (
-    e: React.MouseEvent<HTMLDivElement>
-  ) => {
+  const handleToggleFavoriteCourse = async (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
     if (userId) {
       try {
@@ -82,25 +182,12 @@ export default function Card({
     handleCourseId(courseId);
   };
 
-  const updateProgress = (): string => {
-    // if (id === undefined || !userWorkouts || !userWorkouts.workouts[id]) {
-    //   return "0%";
-    // }
-    // const userExerciseData = userWorkouts.workouts[id].exercises[index].quantity;
-    // console.log(userExerciseData)
-
-    // if (userExerciseData === undefined) {
-    //   return "0%";
-    // }
-    // console.log(`${(userExerciseData / percent) * 100}%`)
-
-    return `${(1) * 100}%`;
-  };
-
+  if (!courses || !workouts || userId === null || !courses[courseId]?.users[userId]?.workouts) {
+    return null;
+  }
 
   return (
-    <>
-      <div className="w-[360px] flex flex-col justify-center items-center gap-[24px] rounded-[30px] shadow-lg">
+    <div className="w-[360px] flex flex-col justify-center items-center gap-[24px] rounded-[30px] shadow-lg">
         <Link to={`/course/${card?._id}`}>
           <div className="flex flex-row-reverse w-[360px]">
             <div
@@ -263,7 +350,7 @@ export default function Card({
           <div className="mb-[15px] w-full bg-white rounded-b-[30px] flex flex-col justify-between items-center px-[30px]">
             <div className="flex justify-between items-center w-full">
               <div className="text-base leading-[18px] font-normal">
-                Прогресс 50%
+                Прогресс {updateProgress()}
               </div>
             </div>
             <div className="w-[300px] h-[6px] bg-gray-300 rounded-full mt-[10px]">
@@ -281,7 +368,6 @@ export default function Card({
             </button>
           </div>
         )}
-      </div>
-    </>
-  );
+    </div>
+  )
 }

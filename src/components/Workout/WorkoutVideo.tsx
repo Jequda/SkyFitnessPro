@@ -99,7 +99,8 @@ export default function WorkoutVideo() {
 
 
   const updateProgressBar = (percent: number, index: number): string => {
-    if (id === undefined || userWorkouts === null || userWorkouts === undefined || userWorkouts.workouts === undefined || userWorkouts.workouts[id] === undefined || userWorkouts.workouts[id].exercises === undefined || userWorkouts.workouts[id].exercises[index] === undefined || userWorkouts.workouts[id].exercises[index].quantity === undefined) {
+    if (id === undefined ||
+      userWorkouts?.workouts?.[id]?.exercises?.[index]?.quantity === undefined) {
       return "0%";
     }
     const userExerciseData = userWorkouts.workouts[id].exercises[index].quantity;
@@ -121,7 +122,7 @@ export default function WorkoutVideo() {
       }
       updatedExercises[index].quantity = newQuantity;
       return updatedExercises;
-    });
+    })
   };
 
   const handleSubmit = () => {
@@ -132,9 +133,11 @@ export default function WorkoutVideo() {
       userId,
       workoutId: id,
       exercises: exerciseData,
-    });
-    loadUserWorkouts()
-    // setExerciseData([])
+      
+    })
+
+    setExerciseData([])
+    loadUserWorkouts
 
   };
 
@@ -229,7 +232,7 @@ export default function WorkoutVideo() {
         <div className="max-w-[1160px] h-[1213px] mx-auto">
           <div className="w-[810px] pb-[24px]">
             <p className="font-roboto font-medium text-[56px] leading-[100%] text-black ">
-              {/* {courses[currentCourseId].nameRU} */}
+              {courses[currentCourseId].nameRU}
             </p>
           </div>
           <div className="font-roboto font-regular text-[32px] leading-[110%] underline text-black">
