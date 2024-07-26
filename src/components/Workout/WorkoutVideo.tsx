@@ -51,8 +51,11 @@ export default function WorkoutVideo() {
 
   const [exerciseData, setExerciseData] = useState<Exercise[]>([]);
   const [userWorkouts, setUserWorkouts] = useState<UserWorkouts | null>(null);
-  const [isOpened, setIsOpened] = useState(false);
-  const togglePopUp = () => setIsOpened(!isOpened);
+  const [isOpened, setIsOpened] = useState<boolean>(false);
+  const togglePopUp = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setIsOpened(!isOpened);
+  };  
 
   const loadWorkouts = useCallback(async () => {
     try {
@@ -96,7 +99,7 @@ export default function WorkoutVideo() {
 
 
   const updateProgressBar = (percent: number, index: number): string => {
-    if (id === undefined || userWorkouts === null || userWorkouts === undefined || userWorkouts.workouts === undefined || userWorkouts.workouts[id] === undefined || userWorkouts.workouts[id].exercises === undefined || userWorkouts.workouts[id].exercises[index] === undefined || userWorkouts.workouts[id].exercises[index].quantity) {
+    if (id === undefined || userWorkouts === null || userWorkouts === undefined || userWorkouts.workouts === undefined || userWorkouts.workouts[id] === undefined || userWorkouts.workouts[id].exercises === undefined || userWorkouts.workouts[id].exercises[index] === undefined || userWorkouts.workouts[id].exercises[index].quantity === undefined) {
       return "0%";
     }
     const userExerciseData = userWorkouts.workouts[id].exercises[index].quantity;
@@ -107,7 +110,7 @@ export default function WorkoutVideo() {
     }
     console.log(`${(userExerciseData / percent) * 100}%`)
 
-    return `${(userExerciseData / percent) * 100}%`;
+    return `${Math.floor((userExerciseData / percent) * 100)}%`;
   };
 
   const handleChange = (index: number, newQuantity: number) => {
@@ -131,6 +134,8 @@ export default function WorkoutVideo() {
       exercises: exerciseData,
     });
     loadUserWorkouts()
+    // setExerciseData([])
+
   };
 
   const renderWorkoutItems = () => {
@@ -211,6 +216,14 @@ export default function WorkoutVideo() {
 
   return (
     <div className="flex flex-col justify-center items-center gap-[60px]">
+      {isOpened && (
+        <div
+          onClick={() => {
+            setIsOpened(false);
+          }}
+          className="fixed inset-0 bg-black bg-opacity-50 z-[3]"
+        ></div>
+      )}
       <Header />
       <section className="w-[1440px] h-[1560px] pb-[200px]">
         <div className="max-w-[1160px] h-[1213px] mx-auto">
