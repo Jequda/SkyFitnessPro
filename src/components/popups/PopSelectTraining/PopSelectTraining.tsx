@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { getCourses, getWorkouts } from "../../../firebase";
-import WorkoutVideo from "../../Workout/WorkoutVideo";
+import WorkoutList from "../../Workout/WorkoutList";
 import { CourseType } from "../../../types";
 import { Link } from "react-router-dom";
 type PopSelectTrainingType = {
@@ -48,54 +48,22 @@ export default function PopSelectTraining({
       <div className="fixed inset-0 bg-black bg-opacity-50"></div>
       <div className="fixed inset-0 flex items-center justify-center z-10">
         <div
-          className="w-[460px] h-[609px] rounded-[30px] border border-gray-300 bg-white p-[40px] z-index: 10"
+          className="w-[380px] max-h-[500px] rounded-[30px] border border-gray-300 bg-white p-8"
           onClick={(event) => event.stopPropagation()}
         >
           <h2 className="text-2xl mb-6 text-center font-medium">
             Выберите тренировку
           </h2>
-          <div className="w-[354px]">
-            <div className="h-full overflow-y-auto divide-y divide-gray-300">
-              {currentCourse?.workouts.map((workoutId, index) => (
-                <Link to={`/training/${workoutId}`}>
-                  <WorkoutVideo />
-                </Link>
-              ))}
-              {/* <li className="flex items-center p-3 cursor-pointer hover:bg-gray-100">
-                <img src="icon-done.svg" alt="done" className="mr-3" />
-                <div>
-                  <h3 className="text-xl font-normal mb-1">
-                    Красота и здоровье
-                  </h3>
-                  <p className="text-base">Йога на каждый день / 2 день</p>
+          <div className="w-full max-h-[320px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400">
+            {currentCourse?.workouts.map((workoutId, index) => (
+              <Link key={index} to={`/training/${workoutId}`}>
+                <div className="py-2 border-b border-black-300 text-lg text-gray-800 text-center">
+                  <WorkoutList workoutId={workoutId} />
                 </div>
-              </li>
-              <li className="flex items-center p-3 cursor-pointer hover:bg-gray-100">
-                <img src="icon-not-done.svg" alt="not done" className="mr-3" />
-                <div>
-                  <h3 className="text-xl font-normal mb-1">Асаны стоя</h3>
-                  <p className="text-base">Йога на каждый день / 3 день</p>
-                </div>
-              </li>
-              <li className="flex items-center p-3 cursor-pointer hover:bg-gray-100">
-                <img src="icon-not-done.svg" alt="not done" className="mr-3" />
-                <div>
-                  <h3 className="text-xl font-normal mb-1">
-                    Растягиваем мышцы бедра
-                  </h3>
-                  <p className="text-base">Йога на каждый день / 4 день</p>
-                </div>
-              </li>
-              <li className="flex items-center p-3 cursor-pointer hover:bg-gray-100">
-                <img src="icon-not-done.svg" alt="not done" className="mr-3" />
-                <div>
-                  <h3 className="text-xl font-normal mb-1">Гибкость спины</h3>
-                  <p className="text-base">Йога на каждый день / 5 день</p>
-                </div>
-              </li> */}
-            </div>
-            <button className="btn-green w-[380px] mt-[34px]">Начать</button>
+              </Link>
+            ))}
           </div>
+          <button className="btn-green h-[52px] w-full mt-3">Начать</button>
         </div>
       </div>
     </div>

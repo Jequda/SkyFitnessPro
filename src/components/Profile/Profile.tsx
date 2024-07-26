@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { appRoutes } from "../../../src/route/appRoutes";
 import Card from "../Card/Card";
 import PopReset from "../popups/PopReset/PopReset";
@@ -29,6 +29,11 @@ export default function Profile() {
   const addedCourses = cards.filter((course) => {
     return userId && course.users && Object.keys(course.users).includes(userId);
   });
+
+// 
+// 
+// 
+// 
 
   const handleOpenPopReset = () => {
     setShowPopReset(true);

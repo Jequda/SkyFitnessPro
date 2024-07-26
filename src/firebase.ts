@@ -143,18 +143,8 @@ export const checkIfFavorite = async ({
 };
 
 interface Exercise {
-  exercises: number;
   quantity: number;
   name: string;
-}
-
-interface Workout {
-  quantity: number;
-  exercises: { [key: number]: Exercise };
-  name: string;
-  video: string;
-  userId: string;
-  id: { [key: number]: number };
 }
 
 export const updateUserWorkout = async ({
@@ -166,7 +156,7 @@ export const updateUserWorkout = async ({
   courseId: string;
   userId: string;
   workoutId: string;
-  exercises: Workout[];
+  exercises: Exercise[];
 }) => {
   const workoutRef = ref(database, `courses/${courseId}/users/${userId}`);
   const workoutData = {

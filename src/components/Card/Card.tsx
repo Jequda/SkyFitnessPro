@@ -82,6 +82,22 @@ export default function Card({
     handleCourseId(courseId);
   };
 
+  const updateProgress = (): string => {
+    // if (id === undefined || !userWorkouts || !userWorkouts.workouts[id]) {
+    //   return "0%";
+    // }
+    // const userExerciseData = userWorkouts.workouts[id].exercises[index].quantity;
+    // console.log(userExerciseData)
+
+    // if (userExerciseData === undefined) {
+    //   return "0%";
+    // }
+    // console.log(`${(userExerciseData / percent) * 100}%`)
+
+    return `${(1) * 100}%`;
+  };
+
+
   return (
     <>
       <div className="w-[360px] flex flex-col justify-center items-center gap-[24px] rounded-[30px] shadow-lg">
@@ -251,7 +267,11 @@ export default function Card({
               </div>
             </div>
             <div className="w-[300px] h-[6px] bg-gray-300 rounded-full mt-[10px]">
-              <div className="w-[50%] h-full bg-[#00C1FF] rounded-full"></div>
+              <div className="h-full bg-[#00C1FF] rounded-full"
+              style={{
+                width: updateProgress(),
+              }}
+              ></div>
             </div>
             <button
               onClick={handleClick}
