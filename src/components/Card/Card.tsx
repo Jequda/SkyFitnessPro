@@ -142,11 +142,21 @@ export default function Card({
   };
 
   const updateProgress = (): string => {
-    if (!courses || userId === null || !courses[courseId]?.users[userId]) return "0%";
+    if (
+      !courses ||
+      !workouts ||
+      userId === null ||
+      !courses[courseId]?.users[userId]?.workouts ||
+      Object.keys(courses[courseId].users[userId].workouts).length === 0
+    ) {
+      return "0%";
+    }
 
     const coursesUserWorkouts = courses[courseId].users[userId].workouts;
 
-    return `${(checkUserWorkoutDone() / Object.keys(coursesUserWorkouts).length) * 100}%`;
+    return `${
+      (checkUserWorkoutDone() / Object.keys(coursesUserWorkouts).length) * 100
+    }%`;
   };
 
   const handleCourseId = (courseId: string) => {
