@@ -11,9 +11,9 @@ export default {
         cyanProgress: "#00C1FF"
       },
       fontFamily: {
-        roboto: ['Roboto', 'sans-serif'],
+        roboto: ["Roboto", "sans-serif"],
       },
     },
   },
-  plugins: [],
-}
+  plugins: [require("tailwind-scrollbar")],
+};

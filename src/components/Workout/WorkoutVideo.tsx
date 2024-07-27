@@ -1,19 +1,23 @@
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import Header from "../Header/Header";
-import { getWorkouts, getUser, updateUserWorkout, getCourses} from "../../firebase";
+import { getWorkouts, getUser, updateUserWorkout } from "../../firebase";
 import { useUser } from "../../contexts/UserContext";
 import { useParams } from "react-router-dom";
 import { useCurrentCourse } from "../../contexts/CurrentCourseContext";
 
 interface Exercise {
+  exercises: number;
   quantity: number;
   name: string;
 }
 
 interface Workout {
+  quantity: number;
   exercises: { [key: number]: Exercise };
   name: string;
   video: string;
+  userId: string;
+  id: { [key: number]: number };
 }
 
 interface Workouts {
@@ -21,55 +25,39 @@ interface Workouts {
 }
 
 interface UserWorkouts {
-  workouts: { [key: string]: {exercises: [{ quantity: number }]} };
+  workouts: { [key: string]: number[] };
 }
-interface CoursesData {
-  _id: string
-  complexity: number
-  description: string
-  directions: {[key: number]: string};
-  duration: string
-  fitting: {[key: number]: string}
-  nameEN: string
-  nameRU: string
-  order: number
-  users: {[key: string]: UserWorkouts}
-  workoutTime: string
-  workouts: Workouts
-}
-interface Courses {
-  [key: string]: CoursesData;
-}
+
+const generateRandomId = (length: number = 6): string => {
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  return Array.from({ length }, () =>
+    characters.charAt(Math.floor(Math.random() * characters.length))
+  ).join("");
+};
 
 export default function WorkoutVideo() {
   const { currentCourseId } = useCurrentCourse();
   const { userId } = useUser();
   const { id } = useParams<{ id: string }>();
+  console.log(id);
+  console.log(userId);
+  console.log(currentCourseId);
 
   const [workouts, setWorkouts] = useState<Workouts | null>(null);
-  const [courses, setCourses] = useState<Courses | null>(null);
-
-  const [exerciseData, setExerciseData] = useState<Exercise[]>([]);
+  const [exerciseData, setExerciseData] = useState<Workout[]>([]);
   const [userWorkouts, setUserWorkouts] = useState<UserWorkouts | null>(null);
   const [isOpened, setIsOpened] = useState<boolean>(false);
   const togglePopUp = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setIsOpened(!isOpened);
-  };  
+  };
 
   const loadWorkouts = useCallback(async () => {
     try {
       const data = await getWorkouts();
       setWorkouts(data);
-    } catch {
-      console.log("Failed to fetch workouts");
-    }
-  }, []);
-
-  const loadCourses = useCallback(async () => {
-    try {
-      const data = await getCourses();
-      setCourses(data);
+      console.log(data);
     } catch {
       console.log("Failed to fetch workouts");
     }
@@ -80,6 +68,7 @@ export default function WorkoutVideo() {
     try {
       const data = await getUser({ courseId: currentCourseId, userId });
       setUserWorkouts(data);
+      console.log(data);
     } catch {
       console.log("Failed to fetch user workouts");
     }
@@ -90,55 +79,55 @@ export default function WorkoutVideo() {
   }, [loadWorkouts]);
 
   useEffect(() => {
-    loadCourses();
-  }, [loadCourses]);
-
-  useEffect(() => {
     loadUserWorkouts();
   }, [loadUserWorkouts]);
 
-
   const updateProgressBar = (percent: number, index: number): string => {
-    if (id === undefined ||
-      userWorkouts?.workouts?.[id]?.exercises?.[index]?.quantity === undefined) {
+    // console.log("userWorkouts:", userWorkouts);
+    // console.log("index:", index);
+    // console.log("id:", id);
+    console.log(userWorkouts);
+
+    if (
+      id === undefined ||
+      !userWorkouts ||
+      !userWorkouts.workouts ||
+      !userWorkouts.workouts[id] ||
+      !userWorkouts.workouts[id][index]
+    ) {
+      if (id === undefined || !userWorkouts) {
+        console.log("Вообще конец", userWorkouts);
+        return "0%";
+      }
+      // console.log("Конец", userWorkouts.workouts[id]?.[index]);
       return "0%";
     }
-    const userExerciseData = userWorkouts.workouts[id].exercises[index].quantity;
-    console.log(userExerciseData)
 
-    if (userExerciseData === undefined) {
-      return "0%";
-    }
-    console.log(`${(userExerciseData / percent) * 100}%`)
+    console.log("percent:", percent);
+    console.log(`${(percent / userWorkouts.workouts[id][index]) * 100}%`);
 
-    return `${Math.floor((userExerciseData / percent) * 100)}%`;
+    return `${(userWorkouts.workouts[id][index] / percent) * 100}%`;
   };
 
   const handleChange = (index: number, newQuantity: number) => {
     setExerciseData((prevExercises) => {
       const updatedExercises = [...prevExercises];
-      if (!updatedExercises[index]) {
-        updatedExercises[index] = { quantity: 0, name: "" };
-      }
-      updatedExercises[index].quantity = newQuantity;
+      updatedExercises[index] = {
+        ...updatedExercises[index],
+        quantity: newQuantity,
+      };
       return updatedExercises;
-    })
+    });
   };
 
   const handleSubmit = () => {
-    if (!id || !userId || !currentCourseId || !exerciseData.length) return;
-    
+    if (!id || !userId || !currentCourseId || !exerciseData) return;
     updateUserWorkout({
       courseId: currentCourseId,
       userId,
       workoutId: id,
       exercises: exerciseData,
-      
-    })
-
-    setExerciseData([])
-    loadUserWorkouts
-
+    });
   };
 
   const renderWorkoutItems = () => {
@@ -146,19 +135,19 @@ export default function WorkoutVideo() {
       return <p>Loading workouts...</p>;
     }
 
-    const items = Object.keys(workouts[id].exercises).map((key) => {
+    const items = Object.keys(workouts[id].exercises).map((key, index) => {
       const workoutItem = workouts[id].exercises[parseInt(key)];
       return (
         <div key={key} className="w-[320px]">
           <p className="text-lg break-words mb-[10px]">
             {workoutItem.name}&nbsp;
-            {updateProgressBar(workoutItem.quantity, parseInt(key))}
+            {updateProgressBar(workoutItem.quantity, index)}
           </p>
           <div className="h-1.5 bg-gray-300 rounded-full overflow-hidden">
             <div
               className="bg-cyanProgress h-full transition-all duration-500 ease-out"
               style={{
-                width: updateProgressBar(workoutItem.quantity, parseInt(key)),
+                width: updateProgressBar(workoutItem.quantity, index),
               }}
             ></div>
           </div>
@@ -213,7 +202,7 @@ export default function WorkoutVideo() {
     );
   };
 
-  if (id === undefined || !workouts?.[id] || currentCourseId === null || !courses?.[currentCourseId]) {
+  if (id === undefined || !workouts?.[id]) {
     return <p>Loading workouts...</p>;
   }
 
@@ -232,7 +221,7 @@ export default function WorkoutVideo() {
         <div className="max-w-[1160px] h-[1213px] mx-auto">
           <div className="w-[810px] pb-[24px]">
             <p className="font-roboto font-medium text-[56px] leading-[100%] text-black ">
-              {courses[currentCourseId].nameRU}
+              Йога
             </p>
           </div>
           <div className="font-roboto font-regular text-[32px] leading-[110%] underline text-black">
@@ -258,29 +247,29 @@ export default function WorkoutVideo() {
               onClick={togglePopUp}
             >
               Обновить свой прогресс
+              {isOpened && (
+                <div className="popup-container">
+                  <div>
+                    <h2 className="flex text-3xl mb-12 text-left font-medium">
+                      Мой прогресс
+                    </h2>
+                  </div>
+                  <form className="form-container">
+                    {renderUserProgressWorkouts()}
+                    <button
+                      type="button"
+                      className="btn-green w-[280px] mt-[24px] h-[52px] text-center leading-tight"
+                      onClick={handleSubmit}
+                    >
+                      Сохранить
+                    </button>
+                  </form>
+                </div>
+              )}
             </button>
           </div>
         </div>
       </section>
-      {isOpened && (
-        <div className="popup-container">
-          <div>
-            <h2 className="flex text-3xl mb-12 text-left font-medium">
-              Мой прогресс
-            </h2>
-          </div>
-          <form className="form-container">
-            {renderUserProgressWorkouts()}
-            <button
-              type="button"
-              className="btn-green w-[280px] mt-[24px] h-[52px] text-center leading-tight"
-              onClick={handleSubmit}
-            >
-              Сохранить
-            </button>
-          </form>
-        </div>
-      )}
     </div>
   );
 }
