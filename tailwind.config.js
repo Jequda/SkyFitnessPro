@@ -8,6 +8,7 @@ export default {
         limeHover: "#C6FF00",
         whiteHover: "#F7F7F7",
         whiteActive: "#E9ECED",
+        cyanProgress: "#00C1FF"
       },
       fontFamily: {
         roboto: ["Roboto", "sans-serif"],
