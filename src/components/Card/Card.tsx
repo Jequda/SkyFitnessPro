@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { CourseType } from "../../types";
 import { imgObject } from "../../utills/imgObject";
@@ -28,7 +28,7 @@ interface Exercise {
 
 interface Workout {
   _id: string;
-  exercises?: { [key: number]: Exercise[] };
+  exercises?: { [key: number]: Exercise };
   name: string;
   video: string;
 }
@@ -38,7 +38,7 @@ interface Workouts {
 }
 
 interface UserWorkouts {
-  workouts: { [key: string]: Exercise };
+  workouts: { [key: string]: { exercises: { [key: number]: UserExercise[] } } };
 }
 
 interface CoursesData {
@@ -59,9 +59,11 @@ interface CoursesData {
 interface Courses {
   [key: string]: CoursesData;
 }
-interface ImgObject {
-  [key: number]: { src: string }; // or use string as the key type if necessary
+
+interface UserExercise {
+  quantity: number;
 }
+
 export default function Card({
   openPopLogin,
   card,
@@ -144,73 +146,51 @@ export default function Card({
     loadWorkoutsAndCourses();
   }, [loadWorkoutsAndCourses]);
 
-  const areExercisesEqual = (
-    exercises1: Exercise[],
-    exercises2: Exercise[]
-  ): boolean => {
-    if (exercises1.length !== exercises2.length) return false;
-
-    return exercises1.every(
-      (exercise, index) => exercise.quantity === exercises2[index].quantity
-    );
-  };
-
   const checkUserWorkoutDone = () => {
     if (
       !courses ||
       !workouts ||
       userId === null ||
       !courses[courseId]?.users[userId]
-    )
+    ) {
       return 0;
+    }
 
-    const coursesUserWorkouts = courses[courseId].users[userId].workouts;
+    const coursesUserWorkouts = courses[courseId].users[userId]?.workouts || {};
+    const totalWorkoutCount = Object.keys(
+      courses[courseId]?.workouts || {}
+    ).length;
+    let completedWorkoutCount = 0;
 
-    const currentCoursesIdWorkouts = Object.keys(coursesUserWorkouts)
-      .map((id) => {
-        const userExercises = coursesUserWorkouts[id];
-        const workout = workouts[id];
-        const workoutExercises = workout?.exercises;
+    Object.keys(coursesUserWorkouts).forEach((id) => {
+      const userExercise = coursesUserWorkouts[id];
+      const workout = workouts[id];
+      const workoutExercises = workout?.exercises;
 
-        if (!workoutExercises) return false;
-
-        const allExercisesMatch = Object.keys(workoutExercises).every((key) => {
-          const workoutExerciseArray = workoutExercises[parseInt(key, 10)];
-          // console.log(workoutExerciseArray.quantity);
-          console.log(workout?.exercises);
-
-          if (!Array.isArray(workoutExerciseArray)) {
-            return false;
+      if (workoutExercises) {
+        const allExercisesCompleted = Object.keys(workoutExercises).every(
+          (key: string) => {
+            const workoutExercise = workoutExercises[parseInt(key, 10)];
+            return (
+              userExercise.exercises[key]?.quantity >= workoutExercise.quantity
+            );
           }
+        );
 
-          return workoutExerciseArray.some((exercise) =>
-            areExercisesEqual([exercise], [userExercises])
-          );
-        });
+        if (allExercisesCompleted) {
+          completedWorkoutCount++;
+        }
+      }
+    });
 
-        return allExercisesMatch;
-      })
-      .filter(Boolean);
-    // console.log(currentCoursesIdWorkouts);
-    return currentCoursesIdWorkouts.length;
+    return totalWorkoutCount > 0
+      ? (completedWorkoutCount / totalWorkoutCount) * 100
+      : 0;
   };
 
   const updateProgress = (): string => {
-    if (
-      !courses ||
-      !workouts ||
-      userId === null ||
-      !courses[courseId]?.users[userId]?.workouts ||
-      Object.keys(courses[courseId].users[userId].workouts).length === 0
-    ) {
-      return "0%";
-    }
-
-    const coursesUserWorkouts = courses[courseId].users[userId].workouts;
-
-    return `${
-      (checkUserWorkoutDone() / Object.keys(coursesUserWorkouts).length) * 100
-    }%`;
+    const progress = checkUserWorkoutDone();
+    return `${progress}%`;
   };
 
   return (

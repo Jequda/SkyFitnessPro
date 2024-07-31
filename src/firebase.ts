@@ -8,21 +8,22 @@ import {
 import { getDatabase, ref, set, remove, get, update } from "firebase/database";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDEZ0a2W2aKtWZS0BLkbkukrl4WvUDQLCM",
-  authDomain: "fitness-pro-team3.firebaseapp.com",
+  apiKey: "AIzaSyAgYIN5lzGJhoDtnOth5SDxMmZE3Cbbguw",
+  authDomain: "skyfitnesspro-new.firebaseapp.com",
   databaseURL:
-    "https://fitness-pro-team3-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "fitness-pro-team3",
-  storageBucket: "fitness-pro-team3.appspot.com",
-  messagingSenderId: "974091467525",
-  appId: "1:974091467525:web:d8055b6305f4354315d56c",
+    "https://skyfitnesspro-new-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "skyfitnesspro-new",
+  storageBucket: "skyfitnesspro-new.appspot.com",
+  messagingSenderId: "460967682255",
+  appId: "1:460967682255:web:a60faf56df19f7356f57ba",
+  measurementId: "G-HJGGYQ5DG0",
 };
 
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 const database = getDatabase(app);
 const baseUrl =
-  "https://fitness-pro-team3-default-rtdb.europe-west1.firebasedatabase.app";
+  "https://skyfitnesspro-new-default-rtdb.europe-west1.firebasedatabase.app";
 
 export const getCourses = async () => {
   const response = await fetch(baseUrl + "/courses.json").catch((error) => {
@@ -174,7 +175,10 @@ export const updateUserWorkout = async ({
   workoutId: string;
   exercises: Exercise[];
 }) => {
-  const workoutRef = ref(database, `courses/${courseId}/users/${userId}/workouts/${workoutId}`);
+  const workoutRef = ref(
+    database,
+    `courses/${courseId}/users/${userId}/workouts/${workoutId}`
+  );
 
   try {
     const workoutSnapshot = await get(workoutRef);
@@ -184,7 +188,6 @@ export const updateUserWorkout = async ({
       await update(workoutRef, { exercises });
     } else {
       await set(workoutRef, { exercises });
-
     }
   } catch (error) {
     if (error instanceof Error) throw new Error(error.message);

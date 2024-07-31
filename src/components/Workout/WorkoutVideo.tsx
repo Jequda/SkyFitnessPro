@@ -1,6 +1,11 @@
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import Header from "../Header/Header";
-import { getWorkouts, getUser, updateUserWorkout, getCourses} from "../../firebase";
+import {
+  getWorkouts,
+  getUser,
+  updateUserWorkout,
+  getCourses,
+} from "../../firebase";
 import { useUser } from "../../contexts/UserContext";
 import { useParams } from "react-router-dom";
 import { useCurrentCourse } from "../../contexts/CurrentCourseContext";
@@ -21,21 +26,21 @@ interface Workouts {
 }
 
 interface UserWorkouts {
-  workouts: { [key: string]: {exercises: [{ quantity: number }]} };
+  workouts: { [key: string]: { exercises: [{ quantity: number }] } };
 }
 interface CoursesData {
-  _id: string
-  complexity: number
-  description: string
-  directions: {[key: number]: string};
-  duration: string
-  fitting: {[key: number]: string}
-  nameEN: string
-  nameRU: string
-  order: number
-  users: {[key: string]: UserWorkouts}
-  workoutTime: string
-  workouts: Workouts
+  _id: string;
+  complexity: number;
+  description: string;
+  directions: { [key: number]: string };
+  duration: string;
+  fitting: { [key: number]: string };
+  nameEN: string;
+  nameRU: string;
+  order: number;
+  users: { [key: string]: UserWorkouts };
+  workoutTime: string;
+  workouts: Workouts;
 }
 interface Courses {
   [key: string]: CoursesData;
@@ -55,7 +60,7 @@ export default function WorkoutVideo() {
   const togglePopUp = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setIsOpened(!isOpened);
-  };  
+  };
 
   const loadWorkouts = useCallback(async () => {
     try {
@@ -97,19 +102,21 @@ export default function WorkoutVideo() {
     loadUserWorkouts();
   }, [loadUserWorkouts]);
 
-
   const updateProgressBar = (percent: number, index: number): string => {
-    if (id === undefined ||
-      userWorkouts?.workouts?.[id]?.exercises?.[index]?.quantity === undefined) {
+    if (
+      id === undefined ||
+      userWorkouts?.workouts?.[id]?.exercises?.[index]?.quantity === undefined
+    ) {
       return "0%";
     }
-    const userExerciseData = userWorkouts.workouts[id].exercises[index].quantity;
-    console.log(userExerciseData)
+    const userExerciseData =
+      userWorkouts.workouts[id].exercises[index].quantity;
+    console.log(userExerciseData);
 
     if (userExerciseData === undefined) {
       return "0%";
     }
-    console.log(`${(userExerciseData / percent) * 100}%`)
+    console.log(`${(userExerciseData / percent) * 100}%`);
 
     return `${Math.floor((userExerciseData / percent) * 100)}%`;
   };
@@ -122,23 +129,21 @@ export default function WorkoutVideo() {
       }
       updatedExercises[index].quantity = newQuantity;
       return updatedExercises;
-    })
+    });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!id || !userId || !currentCourseId || !exerciseData.length) return;
-    
-    updateUserWorkout({
+
+    await updateUserWorkout({
       courseId: currentCourseId,
       userId,
       workoutId: id,
       exercises: exerciseData,
-      
-    })
+    });
 
-    setExerciseData([])
-    loadUserWorkouts
-
+    setExerciseData([]);
+    await loadUserWorkouts();
   };
 
   const renderWorkoutItems = () => {
@@ -213,7 +218,12 @@ export default function WorkoutVideo() {
     );
   };
 
-  if (id === undefined || !workouts?.[id] || currentCourseId === null || !courses?.[currentCourseId]) {
+  if (
+    id === undefined ||
+    !workouts?.[id] ||
+    currentCourseId === null ||
+    !courses?.[currentCourseId]
+  ) {
     return <p>Loading workouts...</p>;
   }
 
