@@ -38,7 +38,7 @@ interface Workouts {
 }
 
 interface UserWorkouts {
-  workouts: { [key: string]: { exercises: { [key: number]: UserExercise[] } } };
+  workouts: { [key: string]: { exercises: { [key: number]: UserExercise } } };
 }
 
 interface CoursesData {
@@ -172,7 +172,8 @@ export default function Card({
           (key: string) => {
             const workoutExercise = workoutExercises[parseInt(key, 10)];
             return (
-              userExercise.exercises[key]?.quantity >= workoutExercise.quantity
+              userExercise.exercises[parseInt(key, 10)]?.quantity >=
+              workoutExercise.quantity
             );
           }
         );

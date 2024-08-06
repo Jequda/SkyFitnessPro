@@ -17,7 +17,7 @@ export default function PopSelectTraining({
   const handleClose = () => {
     onClose();
   };
-  const [workouts, setWorkouts] = useState();
+  const [, setWorkouts] = useState();
 
   useEffect(() => {
     const checkFavoriteStatus = async () => {
