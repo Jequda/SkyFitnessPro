@@ -9,11 +9,14 @@ import handleInputChange from "../../../utills/handleInputChange";
 import { signupUser } from "../../../firebase";
 
 type PopSigninType = {
-  openPopLogin?: (e: React.MouseEvent<HTMLButtonElement>) => void,
-  transitionFromMainPage?: boolean
-}
+  openPopLogin?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  transitionFromMainPage?: boolean;
+};
 
-export default function PopSignin({ openPopLogin, transitionFromMainPage }: PopSigninType) {
+export default function PopSignin({
+  openPopLogin,
+  transitionFromMainPage,
+}: PopSigninType) {
   const [signinData, setSigninData] = useState({
     email: "",
     password: "",
@@ -112,7 +115,7 @@ export default function PopSignin({ openPopLogin, transitionFromMainPage }: PopS
   return (
     <div className="popup-container">
       <div className="logo-container">
-        <img src="../public/logo.png" alt="logo" />
+        <img src="/logo.png" alt="logo" />
       </div>
       <form className="form-container">
         <input
@@ -165,12 +168,15 @@ export default function PopSignin({ openPopLogin, transitionFromMainPage }: PopS
         >
           Зарегистироваться
         </button>
-        {transitionFromMainPage ? <button onClick={openPopLogin} className="btn-white">
-          Войти
-        </button> :
+        {transitionFromMainPage ? (
+          <button onClick={openPopLogin} className="btn-white">
+            Войти
+          </button>
+        ) : (
           <Link to={appRoutes.LOGIN} className="btn-white">
             Войти
-          </Link>}
+          </Link>
+        )}
       </form>
     </div>
   );

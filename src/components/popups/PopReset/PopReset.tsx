@@ -1,5 +1,7 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import initializeRedBorder, { removeRedBorder } from "../../../utills/initializeRedBorder";
+import initializeRedBorder, {
+  removeRedBorder,
+} from "../../../utills/initializeRedBorder";
 import handleInputChange from "../../../utills/handleInputChange";
 import { updatePasswordUser, reauthenticateUser } from "../../../firebase";
 
@@ -57,7 +59,7 @@ export default function PopReset({ onClose }: PopResetType) {
         await reauthenticateUser({ password: resetData.password });
         onClose();
       } catch (error) {
-        console.error('Error updating password:', error);
+        console.error("Error updating password:", error);
       }
     }
   };
@@ -75,7 +77,7 @@ export default function PopReset({ onClose }: PopResetType) {
         onClick={(event) => event.stopPropagation()}
       >
         <div className="logo-container">
-          <img src="../public/logo.png" alt="logo" />
+          <img src="/logo.png" alt="logo" />
         </div>
         <form className="form-container">
           <input
