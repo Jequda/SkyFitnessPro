@@ -1273,12 +1273,6 @@ video {
   list-style-type: disc;
 }
 
-.appearance-none {
-  -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
-}
-
 .auto-cols-max {
   grid-auto-columns: max-content;
 }
@@ -1503,10 +1497,6 @@ video {
   background-color: rgb(188 236 48 / var(--tw-bg-opacity));
 }
 
-.bg-transparent {
-  background-color: transparent;
-}
-
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
@@ -1578,10 +1568,6 @@ video {
 .py-\[20px\] {
   padding-top: 20px;
   padding-bottom: 20px;
-}
-
-.pb-\[10px\] {
-  padding-bottom: 10px;
 }
 
 .pb-\[15px\] {

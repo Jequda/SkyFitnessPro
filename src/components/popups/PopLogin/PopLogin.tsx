@@ -10,10 +10,13 @@ import { loginUser } from "../../../firebase";
 import { useEmail } from "../../../contexts/EmailContext";
 
 type PopLoginType = {
-  openPopSignin?: (e: React.MouseEvent<HTMLButtonElement>) => void,
-  transitionFromMainPage?: boolean
-}
-export default function PopLogin({ openPopSignin, transitionFromMainPage }: PopLoginType) {
+  openPopSignin?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  transitionFromMainPage?: boolean;
+};
+export default function PopLogin({
+  openPopSignin,
+  transitionFromMainPage,
+}: PopLoginType) {
   const [loginData, setLoginData] = useState({ login: "", password: "" });
   const inputs = document.querySelectorAll("input");
   const [errorName, setErrorName] = useState("");
@@ -78,7 +81,7 @@ export default function PopLogin({ openPopSignin, transitionFromMainPage }: PopL
   return (
     <div className="popup-container">
       <div className="logo-container">
-        <img src="../public/logo.png" alt="logo" />
+        <img src="/logo.png" alt="logo" />
       </div>
       <form className="form-container">
         <input
@@ -119,14 +122,15 @@ export default function PopLogin({ openPopSignin, transitionFromMainPage }: PopL
         <button className="btn-green w-[280px] mt-[24px]" onClick={handleLogin}>
           Войти
         </button>
-        {transitionFromMainPage ?
+        {transitionFromMainPage ? (
           <button onClick={openPopSignin} className="btn-white">
             Зарегистироваться
-          </button> :
+          </button>
+        ) : (
           <Link to={appRoutes.SIGNIN} className="btn-white">
             Зарегистироваться
           </Link>
-        }
+        )}
       </form>
     </div>
   );
